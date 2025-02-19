@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Test Models
 class test(models.Model):
@@ -136,4 +137,7 @@ class Games(models.Model):
     Breakouts_Via_Pass = models.IntegerField()
     Breakouts_Via_Dump_Out = models.IntegerField()
     Breakouts_Via_Stickhandling = models.IntegerField()
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="games")
 
+    def __str__(self):
+        return self.Opponent
