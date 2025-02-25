@@ -1,10 +1,11 @@
-import react from "react"
+import React from "react"
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
 import Home from "./pages/Home"
 import NotFound from "./pages/NotFound"
 import ProtectedRoute from "./components/ProtectedRoute"
+import Games from "./pages/Games"
 
 function Logout() {
   localStorage.clear()
@@ -14,6 +15,10 @@ function Logout() {
 function RegisterAndLogout() {
   localStorage.clear()
   return <Register />
+}
+
+function GamesPage() { // Rename to GamesPage
+  return <Games />; // Render the Game component
 }
 
 function App() {
@@ -31,6 +36,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />
+        <Route path="/games" element={<GamesPage />} /> {/* Use GamesPage here */}
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </BrowserRouter>
