@@ -381,7 +381,10 @@ function Games() {
     };
     return (
         <div>
+            <div>
             <h1>Games</h1>
+            </div>
+            <h1>Add Game</h1>
             <form onSubmit={createGame}>
                 <input type="date" value={date} onChange={(e) => setDate(e.target.value)} placeholder="Date" />
                 <input type="text" value={opponent} onChange={(e) => setOpponent(e.target.value)} placeholder="Opponent" />
