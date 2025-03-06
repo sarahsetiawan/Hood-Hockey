@@ -123,7 +123,7 @@ function Games() {
     const getGames = () => {
         api
             .get("/hood_hockey_app/games/")
-            .then((res) => setGames(res.data))
+            .then((res) => res.data)
             .then((data) => {
                 setGames(data);
                 console.log(data);
@@ -139,7 +139,6 @@ function Games() {
                 getGames();
             })
             .catch((error) => alert(error));
-        getGames();
     };
 
     const createGame = (e) => {
@@ -383,6 +382,9 @@ function Games() {
         <div>
             <div>
             <h1>Games</h1>
+                {games.map((game) => (
+                    <Game game={game} onDelete={deleteGame} key={game.id} />
+                ))}
             </div>
             <h1>Add Game</h1>
             <form onSubmit={createGame}>
