@@ -114,10 +114,11 @@ function Game({ game, onDelete }) {
             <p className="game-breakoutsViaPass">{game.breakoutsViaPass}</p>
             <p className="game-breakoutsViaDumpOut">{game.breakoutsViaDumpOut}</p>
             <p className="game-breakoutsViaStickhandling">{game.breakoutsViaStickhandling}</p>
-            <button onClick={() => onDelete(game.id)}>Delete</button>
+            <button className="delete-button" onClick={() => onDelete(game.id)}>
+                Delete
+            </button>
         </div>
     );
 }
 
 export default Game;
-

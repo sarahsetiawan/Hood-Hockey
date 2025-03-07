@@ -5,6 +5,8 @@ import "../styles/Games.css";
 
 function Games() {
     const [games, setGames] = useState([]);
+    const [file, setFile] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null); // State for file input
     const [date, setDate] = useState("");
     const [opponent, setOpponent] = useState("");
     const [scoreHC, setScoreHC] = useState("");
@@ -132,6 +134,12 @@ function Games() {
     };
 
     const deleteGame = (id) => {
+        // id is undefined
+        console.log(id);
+        if (!id) {
+            console.error("Game ID is undefined");
+            return;
+        }
         api
             .delete(`/hood_hockey_app/games/delete/${id}/`)
             .then((res) => {
@@ -378,6 +386,36 @@ function Games() {
         setBreakoutsViaDumpOut("");
         setBreakoutsViaStickhandling("");
     };
+        // -------------------------------
+        // File upload consts
+        // -------------------------------
+        const handleFileChange = (event) => {
+            setFile(event.target.files[0]);
+        };
+
+        const uploadFile = () => {
+            if (!file) {
+                alert("Please select a file first.");
+                return;
+            }
+    
+            const formData = new FormData();
+            formData.append("file", file);
+    
+            api.post("hood_hockey_app/upload-file/", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            })
+                .then((response) => {
+                    alert("File uploaded successfully!");
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    alert("File upload failed.");
+                    console.error(error);
+                });
+        };
+    
+
     return (
         <div>
             <div>
@@ -498,11 +536,19 @@ function Games() {
                 <input type="number" value={breakoutsViaPass} onChange={(e) => setBreakoutsViaPass(e.target.value)} placeholder="Breakouts Via Pass" />
                 <input type="number" value={breakoutsViaDumpOut} onChange={(e) => setBreakoutsViaDumpOut(e.target.value)} placeholder="Breakouts Via Dump Out" />
                 <input type="number" value={breakoutsViaStickhandling} onChange={(e) => setBreakoutsViaStickhandling(e.target.value)} placeholder="Breakouts Via Stickhandling" />
-
                 <button type="submit">Add Game</button>
+                <br />
+                <br />
+                <br />
+                {/* File Upload Section */}
+                <label>
+                    Enter a File (.xlsx):
+                    <input type="file" accept=".xlsx" onChange={handleFileChange} />
+                </label>
+                <button type="button" onClick={uploadFile}>Upload File</button>
             </form>
         </div>
     );
-}
+};
 
 export default Games;
