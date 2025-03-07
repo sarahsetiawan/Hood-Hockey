@@ -4,8 +4,8 @@ from rest_framework import generics, status, views
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.parsers import MultiPartParser, FormParser
-from .serializers import GamesSerializer, UserSerializer
-from .models import Games
+from .serializers import GamesSerializer, UserSerializer, testSerializer
+from .models import Games, test
 import pandas as pd
 from sqlalchemy import create_engine
 import os
@@ -22,6 +22,19 @@ DB_HOST = os.getenv("DB_HOST")
 DB_PORT = os.getenv("DB_PORT")
 DB_NAME = os.getenv("DB_NAME")
 
+class testListCreate(generics.ListCreateAPIView):
+    serializer_class = testSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return test.objects
+
+#     def perform_create(self, serializer):
+#         if serializer.is_valid():
+#             serializer.save(author=self.request.user) 
+#         else:
+#             print(serializer.errors)    
 
 class GamesListCreate(generics.ListCreateAPIView):
     serializer_class = GamesSerializer
@@ -56,6 +69,8 @@ class CreateUserView(generics.CreateAPIView):
 # ---------------------------------
 # File Upload Handling
 # ---------------------------------
+
+# Games
 class GamesFileUploadView(views.APIView):
     def post(self, request, *args, **kwargs):
         if 'file' not in request.FILES:
@@ -82,6 +97,7 @@ class GamesFileUploadView(views.APIView):
             # -----------------------------------------
 
             ### Cleaning functions here
+
 
             # Push data to SQL 
             ### change if_exists to append to append data to existing table

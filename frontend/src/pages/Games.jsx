@@ -418,12 +418,14 @@ function Games() {
 
     return (
         <div>
+            {/*
             <div>
             <h1>Games</h1>
                 {games.map((game) => (
                     <Game game={game} onDelete={deleteGame} key={game.id} />
                 ))}
             </div>
+            */}
             <h1>Add Game</h1>
             <form onSubmit={createGame}>
                 <input type="date" value={date} onChange={(e) => setDate(e.target.value)} placeholder="Date" />
