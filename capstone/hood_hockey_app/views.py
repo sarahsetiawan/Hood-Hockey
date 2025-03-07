@@ -77,8 +77,16 @@ class GamesFileUploadView(views.APIView):
             db_url = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
             engine = create_engine(db_url)
 
-            # Push data to SQL (creates a new table if it doesn't exist)
-            table_name = "uploaded_data"  # You can change this
+            # -----------------------------------------
+            # Data cleaning/transformation
+            # -----------------------------------------
+
+            ### Cleaning functions here
+
+            # Push data to SQL 
+            ### change if_exists to append to append data to existing table
+            ### change if_exists to replace to replace data in existing table
+            table_name = "hood_hockey_app_games"  
             df.to_sql(table_name, engine, if_exists='replace', index=False)
 
             return Response({"message": "File uploaded and stored in database!"}, status=status.HTTP_201_CREATED)

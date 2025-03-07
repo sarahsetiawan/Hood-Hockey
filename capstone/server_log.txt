@@ -186,3 +186,22 @@ Watching for file changes with StatReloader
 [07/Mar/2025 12:33:19] "POST /hood_hockey_app/games-upload-file/ HTTP/1.1" 201 51
 [07/Mar/2025 12:33:47] "POST /hood_hockey_app/games/ HTTP/1.1" 201 2299
 [07/Mar/2025 12:33:49] "GET /hood_hockey_app/games/ HTTP/1.1" 200 52906
+C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 07, 2025 - 12:31:57
+Django version 5.1.7, using settings 'capstone.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+Watching for file changes with StatReloader
+[07/Mar/2025 13:21:47] "OPTIONS /hood_hockey_app/token/refresh/ HTTP/1.1" 200 0
+[07/Mar/2025 13:21:47] "OPTIONS /hood_hockey_app/token/refresh/ HTTP/1.1" 200 0
+[07/Mar/2025 13:21:48] "POST /hood_hockey_app/token/refresh/ HTTP/1.1" 200 241
+[07/Mar/2025 13:21:48] "POST /hood_hockey_app/token/refresh/ HTTP/1.1" 200 241
+[07/Mar/2025 13:21:53] "OPTIONS /hood_hockey_app/games/ HTTP/1.1" 200 0
+[07/Mar/2025 13:21:53] "OPTIONS /hood_hockey_app/games/ HTTP/1.1" 200 0
+[07/Mar/2025 13:21:53] "GET /hood_hockey_app/games/ HTTP/1.1" 200 52906
+[07/Mar/2025 13:21:53] "GET /hood_hockey_app/games/ HTTP/1.1" 200 52906
+[07/Mar/2025 13:22:02] "POST /hood_hockey_app/games-upload-file/ HTTP/1.1" 201 51
