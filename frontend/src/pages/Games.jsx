@@ -402,7 +402,7 @@ function Games() {
             const formData = new FormData();
             formData.append("file", file);
     
-            api.post("hood_hockey_app/upload-file/", formData, {
+            api.post("hood_hockey_app/games-upload-file/", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             })
                 .then((response) => {

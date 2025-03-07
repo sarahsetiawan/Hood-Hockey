@@ -51,12 +51,12 @@ class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
-    
+
 
 # ---------------------------------
 # File Upload Handling
 # ---------------------------------
-class FileUploadView(views.APIView):
+class GamesFileUploadView(views.APIView):
     def post(self, request, *args, **kwargs):
         if 'file' not in request.FILES:
             return Response({"error": "No file provided"}, status=status.HTTP_400_BAD_REQUEST)
