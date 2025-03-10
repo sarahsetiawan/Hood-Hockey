@@ -158,3 +158,8 @@ class SkatersFileUploadView(views.APIView):
 class GamesFileUploadView(views.APIView):
     def post(self, request, *args, **kwargs):
         return upload("hood_hockey_app_games", request)
+    
+# Goalies
+class GoaliesFileUploadView(views.APIView):
+    def post(self, request, *args, **kwargs):
+        return upload("hood_hockey_app_goalies", request)

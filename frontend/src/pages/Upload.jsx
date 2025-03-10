@@ -57,6 +57,28 @@ const Upload = () => {
             });
     };
 
+    const uploadGoaliesFile = () => {
+        if (!file) {
+            alert("Please select a file first.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        api.post("hood_hockey_app/goalies-upload-file/", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        })
+            .then((response) => {
+                alert("File uploaded successfully!");
+                console.log(response.data);
+            })
+            .catch((error) => {
+                alert("File upload failed.");
+                console.error(error);
+            });
+    };
+
     
     return (
         <div>
@@ -67,6 +89,13 @@ const Upload = () => {
                 <input type="file" accept=".xlsx" onChange={handleFileChange} />
                 </label>
             <button type="button" onClick={uploadSkatersFile}>Upload File</button>
+            <br />
+                <h2>Goalies</h2>
+                <label>
+                    Enter a File (.xlsx):
+                <input type="file" accept=".xlsx" onChange={handleFileChange} />
+                </label>
+            <button type="button" onClick={uploadGoaliesFile}>Upload File</button>
             <br />
                 <h2>Games</h2>
                 <label>
