@@ -70,6 +70,50 @@ class CreateUserView(generics.CreateAPIView):
 # File Upload Handling
 # ---------------------------------
 
+# File upload function
+def upload(table, request, replace=True):
+        if 'file' not in request.FILES:
+            return Response({"error": "No file provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+        file = request.FILES['file']
+        file_path = os.path.join(settings.MEDIA_ROOT, file.name)
+
+        # Save the file locally
+        with open(file_path, 'wb+') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+
+        try:
+            # Read the Excel file with Pandas
+            df = pd.read_excel(file_path)
+
+            # Connect to PostgreSQL
+            db_url = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+            engine = create_engine(db_url)
+
+            # -----------------------------------------
+            # Data cleaning/transformation
+            # -----------------------------------------
+
+            ### Cleaning functions here
+
+
+            # Push data to SQL 
+            ### change if_exists to append to append data to existing table
+            ### change if_exists to replace to replace data in existing table
+            table_name = table  
+            if replace == True:
+                df.to_sql(table_name, engine, if_exists='replace', index=False)
+            else:
+                df.to_sql(table_name, engine, if_exists='append', index=False)
+
+            return Response({"message": "File uploaded and stored in database!"}, status=status.HTTP_201_CREATED)
+
+        except pd.errors.ParserError as pe:
+            return Response({"error": f"Pandas parsing error: {str(pe)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 # Games
 class GamesFileUploadView(views.APIView):
     def post(self, request, *args, **kwargs):
@@ -111,3 +155,42 @@ class GamesFileUploadView(views.APIView):
             return Response({"error": f"Pandas parsing error: {str(pe)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Exception as e:
             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
+        
+# Test
+class testFileUpload(views.APIView):
+    def post(self, request, *args, **kwargs):
+        if 'file' not in request.FILES:
+            return Response({"error": "No file provided"}, status=status.HTTP_400_BAD_REQUEST)
+
+        file = request.FILES['file']
+        file_path = os.path.join(settings.MEDIA_ROOT, file.name)
+
+        # Save the file locally
+        with open(file_path, 'wb+') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+
+        try:
+            # Read the Excel file with Pandas
+            df = pd.read_excel(file_path)
+
+            # Connect to PostgreSQL
+            db_url = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+            engine = create_engine(db_url)
+
+            # Push data to SQL 
+            ### change if_exists to append to append data to existing table
+            ### change if_exists to replace to replace data in existing table
+            table_name = "hood_hockey_app_test"  
+            df.to_sql(table_name, engine, if_exists='append', index=False)
+
+            # -----------------------------------------
+        except pd.errors.ParserError as pe:
+            return Response({"error": f"Pandas parsing error: {str(pe)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+# Skaters 
+class SkatersFileUploadView(views.APIView):
+    def post(self, request, *args, **kwargs):
+        return upload("hood_hockey_app_skaters", request)

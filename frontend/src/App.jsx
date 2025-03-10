@@ -7,6 +7,7 @@ import NotFound from "./pages/NotFound"
 import ProtectedRoute from "./components/ProtectedRoute"
 import Games from "./pages/Games"
 import Test from "./pages/test"
+import Upload from "./pages/Upload"
 
 function Logout() {
   localStorage.clear()
@@ -39,6 +40,7 @@ function App() {
         <Route path="/register" element={<RegisterAndLogout />} />
         <Route path="/games" element={<GamesPage />} /> {/* Use GamesPage here */}
         <Route path="/test" element={<Test />} />
+        <Route path="/upload" element={<Upload />} />
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </BrowserRouter>

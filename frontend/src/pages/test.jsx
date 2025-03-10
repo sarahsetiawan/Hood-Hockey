@@ -44,6 +44,34 @@ function Test() {
             .catch((err) => alert(err));
     };
 
+    // -------------------------------
+    // File upload consts
+    // -------------------------------
+    const handleFileChange = (event) => {
+        setFile(event.target.files[0]);
+    };
+    const uploadFile = () => {
+        if (!file) {
+            alert("Please select a file first.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        api.post("hood_hockey_app/tests-upload-file/", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        })
+            .then((response) => {
+                alert("File uploaded successfully!");
+                console.log(response.data);
+            })
+            .catch((error) => {
+                alert("File upload failed.");
+                console.error(error);
+            });
+    };
+
     return (
         <div>
             <h2>Create a Test</h2>
@@ -70,6 +98,13 @@ function Test() {
                 ></textarea>
                 <br />
                 <input type="submit" value="Submit"></input>
+                <br />
+                {/* File Upload Section */}
+                <label>
+                    Enter a File (.xlsx):
+                    <input type="file" accept=".xlsx" onChange={handleFileChange} />
+                </label>
+                <button type="button" onClick={uploadFile}>Upload File</button>
             </form>
         </div>
     );
