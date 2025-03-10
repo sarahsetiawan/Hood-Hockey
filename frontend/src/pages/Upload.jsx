@@ -12,7 +12,8 @@ const Upload = () => {
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
     };
-    const uploadFile = () => {
+
+    const uploadSkatersFile = () => {
         if (!file) {
             alert("Please select a file first.");
             return;
@@ -33,15 +34,46 @@ const Upload = () => {
                 console.error(error);
             });
     };
+
+    const uploadGamesFile = () => {
+        if (!file) {
+            alert("Please select a file first.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        api.post("hood_hockey_app/games-upload-file/", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        })
+            .then((response) => {
+                alert("File uploaded successfully!");
+                console.log(response.data);
+            })
+            .catch((error) => {
+                alert("File upload failed.");
+                console.error(error);
+            });
+    };
+
     
     return (
         <div>
             <form>
-            <label>
-                Enter a File (.xlsx):
+                <h2>Skaters</h2>
+                <label>
+                    Enter a File (.xlsx):
                 <input type="file" accept=".xlsx" onChange={handleFileChange} />
-            </label>
-            <button type="button" onClick={uploadFile}>Upload File</button>
+                </label>
+            <button type="button" onClick={uploadSkatersFile}>Upload File</button>
+            <br />
+                <h2>Games</h2>
+                <label>
+                    Enter a File (.xlsx):
+                <input type="file" accept=".xlsx" onChange={handleFileChange} />
+                </label>
+            <button type="button" onClick={uploadGamesFile}>Upload File</button>
             </form>
         </div>
     );
