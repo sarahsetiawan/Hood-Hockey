@@ -91,6 +91,8 @@ def clean_skaters(skaters):
     skaters['Penalty time (Seconds)'] = skaters['Penalty time (Seconds)'].astype(int)
     # Drop the original columns
     skaters = skaters.drop(['Time on ice', 'Penalty time'], axis=1)
+    # Replace NaN values with 0
+    skaters = skaters.fillna(0)
     return skaters
 
 # ---------------------------------
