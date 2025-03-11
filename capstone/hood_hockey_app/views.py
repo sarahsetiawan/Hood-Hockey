@@ -65,6 +65,33 @@ class CreateUserView(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
+# -----------------------------
+# Cleaning Functions
+# -----------------------------
+
+def clean_skaters(skaters):
+    ### Warning message
+    # <ipython-input-5-24ca94916310>:1: FutureWarning: Downcasting behavior in `replace` is deprecated 
+    # and will be removed in a future version. To retain the old behavior, explicitly call `result.infer_objects(copy=False)`. 
+    # To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+    skaters = skaters.replace('-', 0)
+    percentage_columns = ['Faceoffs won, %', 'Faceoffs won in DZ, %', 'Faceoffs won in NZ, %', 'Faceoffs won in OZ, %']
+    for col in percentage_columns:
+        skaters[col] = skaters[col].str.replace('%', '').astype(float)
+    # Convert '0' values to '00:00' in specified time columns if they exist
+    skaters['Time on ice'] = skaters['Time on ice'].apply(lambda x: '00:00' if x == 0 else x)
+    skaters['Penalty time'] = skaters['Penalty time'].apply(lambda x: '00:00' if x == 0 else x)
+    # Splitting 'Time on ice' column into minutes and seconds
+    skaters[['Time on ice (Minutes)', 'Time on ice (Seconds)']] = skaters['Time on ice'].str.split(':', expand=True)
+    skaters['Time on ice (Minutes)'] = skaters['Time on ice (Minutes)'].astype(int)
+    skaters['Time on ice (Seconds)'] = skaters['Time on ice (Seconds)'].astype(int)
+    # Splitting 'Penalty time' into minutes and seconds
+    skaters[['Penalty time (Minutes)', 'Penalty time (Seconds)']] = skaters['Penalty time'].str.split(':', expand=True)
+    skaters['Penalty time (Minutes)'] = skaters['Penalty time (Minutes)'].astype(int)
+    skaters['Penalty time (Seconds)'] = skaters['Penalty time (Seconds)'].astype(int)
+    # Drop the original columns
+    skaters = skaters.drop(['Time on ice', 'Penalty time'], axis=1)
+    return skaters
 
 # ---------------------------------
 # File Upload Handling
@@ -91,11 +118,10 @@ def upload(table, request, replace=True):
             db_url = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
             engine = create_engine(db_url)
 
-            # -----------------------------------------
             # Data cleaning/transformation
-            # -----------------------------------------
+            if table == "hood_hockey_app_skaters":
+                df = clean_skaters(df)
 
-            ### Cleaning functions here
 
 
             # Push data to SQL 
