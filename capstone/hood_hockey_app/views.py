@@ -100,7 +100,7 @@ def clean_skaters(skaters):
 # ---------------------------------
 
 # File upload function
-def upload(table, request, replace=True):
+def upload(table, request, replace=True, json=False):
         if 'file' not in request.FILES:
             return Response({"error": "No file provided"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -113,8 +113,12 @@ def upload(table, request, replace=True):
                 destination.write(chunk)
 
         try:
-            # Read the Excel file with Pandas
-            df = pd.read_excel(file_path)
+            if json == False:
+                # Read the Excel file with Pandas
+                df = pd.read_excel(file_path)
+            else:
+                # Read the JSON file with Pandas
+                df = pd.read_json(file_path)
 
             # Connect to PostgreSQL
             db_url = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
@@ -196,3 +200,8 @@ class GoaliesFileUploadView(views.APIView):
 class LinesFileUploadView(views.APIView):
     def post(self, request, *args, **kwargs):
         return upload("hood_hockey_app_lines", request)
+    
+# Drive
+class DriveFileUploadView(views.APIView):
+    def post(self, request, *args, **kwargs):
+        return upload("hood_hockey_app_drive", request, json=True)

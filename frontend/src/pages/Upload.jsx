@@ -101,6 +101,28 @@ const Upload = () => {
             });
     };
 
+    const uploadDriveFile = () => {
+        if (!file) {
+            alert("Please select a file first.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        api.post("hood_hockey_app/drive-upload-file/", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        })
+            .then((response) => {
+                alert("File uploaded successfully!");
+                console.log(response.data);
+            })
+            .catch((error) => {
+                alert("File upload failed.");
+                console.error(error);
+            });
+    };
+
     
     return (
         <div>
@@ -133,6 +155,13 @@ const Upload = () => {
                     <input type="file" accept=".xlsx" onChange={handleFileChange} />
                 </label>
                 <button type="button" onClick={uploadLinesFile}>Upload File</button>
+                <br />
+                <h2>Drive</h2>
+                <label>
+                    Enter a File (.json):
+                    <input type="file" accept=".json" onChange={handleFileChange} />
+                </label>
+                <button type="button" onClick={uploadDriveFile}>Upload File</button>
             </form>
         </div>
     );
