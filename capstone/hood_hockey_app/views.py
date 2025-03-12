@@ -69,6 +69,41 @@ class CreateUserView(generics.CreateAPIView):
 # Cleaning Functions
 # -----------------------------
 
+def clean_goalies(goalies_df):
+    goalies_df.replace('-', 0, inplace=True)
+    # Convert '0' values to '00:00' in specified time columns if they exist
+    time_columns = ['Time on ice', 'Penalty time']
+    for col in time_columns:
+        if col in goalies_df.columns:
+            goalies_df[col] = goalies_df[col].replace('0', '00:00')
+        else:
+            print(f"Column '{col}' not found in DataFrame")
+    # Convert percentage columns to float after removing '%'
+    percentage_columns = ['Saves, %', 'Scoring chance saves, %']
+    for col in percentage_columns:
+        if col in goalies_df.columns:
+            goalies_df[col] = goalies_df[col].str.replace('%', '').astype(float)
+            # Convert the column to string before replacing '%'
+            goalies_df[col] = goalies_df[col].astype(str).str.replace('%', '').astype(float)
+        else:
+            print(f"Column '{col}' not found in DataFrame")
+    time_columns = ['Time on ice', 'Penalty time']
+    for col in time_columns:
+        if col in goalies_df.columns:
+            goalies_df[col] = goalies_df[col].replace('0', '00:00')
+            # Fill NaN values with '00:00' before splitting
+            goalies_df[col] = goalies_df[col].fillna('00:00')
+            # Split the time into minutes and seconds
+            goalies_df[[f'{col} (mins)', f'{col} (secs)']] = goalies_df[col].str.split(':', expand=True)
+            # Fill NaN values in the new columns with 0 and convert to integers
+            goalies_df[f'{col} (mins)'] = goalies_df[f'{col} (mins)'].fillna(0).astype(int)
+            goalies_df[f'{col} (secs)'] = goalies_df[f'{col} (secs)'].fillna(0).astype(int)
+        else:
+            print(f"Column '{col}' not found in DataFrame")
+    # Drop the original columns
+    goalies_df = goalies_df.drop(time_columns, axis=1)
+    return goalies_df
+
 def clean_skaters(skaters):
     ### Warning message
     # <ipython-input-5-24ca94916310>:1: FutureWarning: Downcasting behavior in `replace` is deprecated 
@@ -127,6 +162,8 @@ def upload(table, request, replace=True, json=False):
             # Data cleaning/transformation
             if table == "hood_hockey_app_skaters":
                 df = clean_skaters(df)
+            elif table == "hood_hockey_app_goalies":
+                df = clean_goalies(df)
 
 
 
