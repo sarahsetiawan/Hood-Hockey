@@ -69,6 +69,37 @@ class CreateUserView(generics.CreateAPIView):
 # Cleaning Functions
 # -----------------------------
 
+def clean_games(games):
+    games.replace('-', 0, inplace=True)
+    # Remove rows where 'Opponent' contains 'Average'
+    games_cleaned = games[~games['Opponent'].str.contains('Average', na=False)]
+    # Split the 'Score' column into two separate columns
+    games_cleaned[['Hood Score', 'Opponent Score']] = games_cleaned['Score'].str.split(':', expand=True)
+
+    # Convert the new columns to numeric type
+    games_cleaned['Hood Score'] = pd.to_numeric(games_cleaned['Hood Score']).astype(int)
+    games_cleaned['Opponent Score'] = pd.to_numeric(games_cleaned['Opponent Score']).astype(int)
+
+    # Convert percentage columns to float after removing '%'
+    percentage_columns = ['Faceoffs won, %', 'Faceoffs won in DZ, %', 'Faceoffs won in NZ, %', 'Faceoffs won in OZ, %']
+    for col in percentage_columns:
+        if col in games_cleaned.columns:
+            games_cleaned[col] = games_cleaned[col].str.replace('%', '').astype(float)
+            # Convert the column to string before replacing '%'
+            games_cleaned[col] = games_cleaned[col].astype(str).str.replace('%', '').astype(float)
+        else:
+            print(f"Column '{col}' not found in DataFrame")
+    # Splitting 'Penalty time' into minutes and seconds
+    games_cleaned[['Penalty time (Minutes)', 'Penalty time (Seconds)']] = games_cleaned['Penalty time'].str.split(':', expand=True)
+    games_cleaned['Penalty time (Minutes)'] = games_cleaned['Penalty time (Minutes)'].astype(int)
+    games_cleaned['Penalty time (Seconds)'] = games_cleaned['Penalty time (Seconds)'].astype(int)
+    # Drop the Score and Goal column -- Drop Date column for now
+    games_cleaned = games_cleaned.drop(columns=['Score', 'Goals', 'Date', 'Penalty time'])
+    # Replace NaN values with 0
+    games_cleaned = games_cleaned.fillna(0)
+    return games_cleaned
+
+
 def clean_goalies(goalies_df):
     goalies_df.replace('-', 0, inplace=True)
     # Convert '0' values to '00:00' in specified time columns if they exist
@@ -164,6 +195,8 @@ def upload(table, request, replace=True, json=False):
                 df = clean_skaters(df)
             elif table == "hood_hockey_app_goalies":
                 df = clean_goalies(df)
+            elif table == "hood_hockey_app_games":
+                df = clean_games(df)
 
 
 
