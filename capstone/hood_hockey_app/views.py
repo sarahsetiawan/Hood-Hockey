@@ -69,6 +69,40 @@ class CreateUserView(generics.CreateAPIView):
 # Cleaning Functions
 # -----------------------------
 
+def clean_lines(lines_df):
+    # Replace '-' with 0
+    lines_df.replace('-', 0, inplace=True)
+    # Convert '0' values to '00:00' in specified time columns if they exist
+    time_columns = ['Time on ice', 'Power play time']
+    for col in time_columns:
+        if col in lines_df.columns:
+            lines_df[col] = lines_df[col].replace('0', '00:00')
+            # Fill NaN values with '00:00' before splitting
+            lines_df[col] = lines_df[col].fillna('00:00')
+            # Split the time into minutes and seconds
+            lines_df[[f'{col} (mins)', f'{col} (secs)']] = lines_df[col].str.split(':', expand=True)
+            # Fill NaN values in the new columns with 0 and convert to integers
+            lines_df[f'{col} (mins)'] = lines_df[f'{col} (mins)'].fillna(0).astype(int)
+            lines_df[f'{col} (secs)'] = lines_df[f'{col} (secs)'].fillna(0).astype(int)
+        else:
+            print(f"Column '{col}' not found in DataFrame")
+    # Split the time columns into minutes and seconds, fill NaN values with 0, and convert to integers
+    for col in time_columns:
+        if col in lines_df.columns:
+            lines_df[col] = lines_df[col].replace('0', '00:00')
+            # Fill NaN values with '00:00' before splitting
+            lines_df[col] = lines_df[col].fillna('00:00')
+            # Split the time into minutes and seconds
+            lines_df[[f'{col} (mins)', f'{col} (secs)']] = lines_df[col].str.split(':', expand=True)
+            # Fill NaN values in the new columns with 0 and convert to integers
+            lines_df[f'{col} (mins)'] = lines_df[f'{col} (mins)'].fillna(0).astype(int)
+            lines_df[f'{col} (secs)'] = lines_df[f'{col} (secs)'].fillna(0).astype(int)
+        else:
+            print(f"Column '{col}' not found in DataFrame")
+    # Drop the original columns
+    lines_df = lines_df.drop(time_columns, axis=1)
+    return lines_df
+
 def clean_games(games):
     games.replace('-', 0, inplace=True)
     # Remove rows where 'Opponent' contains 'Average'
@@ -197,6 +231,10 @@ def upload(table, request, replace=True, json=False):
                 df = clean_goalies(df)
             elif table == "hood_hockey_app_games":
                 df = clean_games(df)
+            elif table == "hood_hockey_app_lines":
+                df = clean_lines(df)
+            else:
+                print("No cleaning function found for this table")
 
 
 
