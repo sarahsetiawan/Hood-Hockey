@@ -10,6 +10,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 import os
 from django.conf import settings
+from django.db import connection
 
 # ------------------------------------------------------
 # PostgreSQL database connection settings 
@@ -306,10 +307,32 @@ class GoaliesFileUploadView(views.APIView):
     
 # Lines
 class LinesFileUploadView(views.APIView):
+    print("-----------------------------------------------------------")
+    print("Lines Upload View")
+    print("-----------------------------------------------------------")
     def post(self, request, *args, **kwargs):
+        print("-----------------------------------------------------------")
+        print("Lines post function")
+        print("-----------------------------------------------------------")
         return upload("hood_hockey_app_lines", request)
     
 # Drive
 class DriveFileUploadView(views.APIView):
     def post(self, request, *args, **kwargs):
         return upload("hood_hockey_app_drive", request, json=True)
+
+# ------------------------
+# Lines Rankings 
+# ------------------------
+
+class LinesRankingsView(views.APIView):
+    permission_classes = [AllowAny]
+    def get(self, request, *args, **kwargs):
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM hood_hockey_app_lines;")
+                columns = [col[0] for col in cursor.description]
+                results = [dict(zip(columns, row)) for row in cursor.fetchall()]
+            return Response(results, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
