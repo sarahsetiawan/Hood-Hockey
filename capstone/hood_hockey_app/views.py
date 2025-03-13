@@ -330,9 +330,33 @@ class LinesRankingsView(views.APIView):
     def get(self, request, *args, **kwargs):
         try:
             with connection.cursor() as cursor:
-                cursor.execute("SELECT * FROM hood_hockey_app_lines;")
-                columns = [col[0] for col in cursor.description]
-                results = [dict(zip(columns, row)) for row in cursor.fetchall()]
-            return Response(results, status=status.HTTP_200_OK)
+                # Query for CORSI ranking
+                cursor.execute("""
+                    SELECT "Line", "CORSI", 
+                           RANK() OVER (ORDER BY "CORSI" DESC) AS "CORSI Rank"
+                    FROM hood_hockey_app_lines
+                    LIMIT 5
+                """)
+                corsi_columns = [col[0] for col in cursor.description]
+                corsi_results = [dict(zip(corsi_columns, row)) for row in cursor.fetchall()]
+
+                # Query for Goals ranking
+                cursor.execute("""
+                    SELECT "Line", "Goals", 
+                           RANK() OVER (ORDER BY "Goals" DESC) AS "Goals Rank"
+                    FROM hood_hockey_app_lines
+                    LIMIT 5
+                """)
+                goals_columns = [col[0] for col in cursor.description]
+                goals_results = [dict(zip(goals_columns, row)) for row in cursor.fetchall()]
+
+            # Return a combined JSON response
+            return Response(
+                {
+                    "corsi": corsi_results,
+                    "goals": goals_results
+                },
+                status=status.HTTP_200_OK
+            )
         except Exception as e:
             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
