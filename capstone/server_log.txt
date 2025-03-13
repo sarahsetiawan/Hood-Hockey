@@ -1,0 +1,2008 @@
+Watching for file changes with StatReloader
+C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 07, 2025 - 11:47:46
+Django version 5.1.7, using settings 'capstone.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+Watching for file changes with StatReloader
+Unauthorized: /hood_hockey_app/games/
+[07/Mar/2025 11:51:36] "GET /hood_hockey_app/games/ HTTP/1.1" 401 172
+Unauthorized: /hood_hockey_app/games/
+[07/Mar/2025 11:51:36] "GET /hood_hockey_app/games/ HTTP/1.1" 401 172
+[07/Mar/2025 11:51:52] "OPTIONS /hood_hockey_app/token/ HTTP/1.1" 200 0
+Unauthorized: /hood_hockey_app/token/
+[07/Mar/2025 11:51:54] "POST /hood_hockey_app/token/ HTTP/1.1" 401 63
+[07/Mar/2025 11:52:08] "POST /hood_hockey_app/token/ HTTP/1.1" 200 483
+[07/Mar/2025 11:52:48] "GET /hood_hockey_app/games/ HTTP/1.1" 200 48306
+[07/Mar/2025 11:52:49] "GET /hood_hockey_app/games/ HTTP/1.1" 200 48306
+[07/Mar/2025 11:53:02] "OPTIONS /hood_hockey_app/user/register/ HTTP/1.1" 200 0
+[07/Mar/2025 11:53:04] "POST /hood_hockey_app/user/register/ HTTP/1.1" 201 30
+[07/Mar/2025 11:53:14] "POST /hood_hockey_app/token/ HTTP/1.1" 200 483
+[07/Mar/2025 11:53:20] "GET /hood_hockey_app/games/ HTTP/1.1" 200 2
+[07/Mar/2025 11:53:20] "GET /hood_hockey_app/games/ HTTP/1.1" 200 2
+[07/Mar/2025 11:53:52] "POST /hood_hockey_app/games/ HTTP/1.1" 201 2309
+[07/Mar/2025 11:53:53] "GET /hood_hockey_app/games/ HTTP/1.1" 200 2311
+Internal Server Error: /hood_hockey_app/upload-file/
+[07/Mar/2025 11:54:13] "POST /hood_hockey_app/upload-file/ HTTP/1.1" 500 109
+Method Not Allowed: /hood_hockey_app/upload-file/
+[07/Mar/2025 11:54:59] "GET /hood_hockey_app/upload-file/ HTTP/1.1" 405 5735
+C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 07, 2025 - 11:51:23
+Django version 5.1.7, using settings 'capstone.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+{'username': 'adrianna', 'password': 'password'}
+Watching for file changes with StatReloader
+[07/Mar/2025 12:05:14] "GET /hood_hockey_app/games/ HTTP/1.1" 200 2311
+[07/Mar/2025 12:05:14] "GET /hood_hockey_app/games/ HTTP/1.1" 200 2311
+Internal Server Error: /hood_hockey_app/upload-file/
+[07/Mar/2025 12:05:24] "POST /hood_hockey_app/upload-file/ HTTP/1.1" 500 235
+C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 07, 2025 - 11:59:09
+Django version 5.1.7, using settings 'capstone.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+Watching for file changes with StatReloader
+[07/Mar/2025 12:06:29] "GET /hood_hockey_app/games/ HTTP/1.1" 200 2311
+[07/Mar/2025 12:06:30] "GET /hood_hockey_app/games/ HTTP/1.1" 200 2311
+[07/Mar/2025 12:06:40] "POST /hood_hockey_app/upload-file/ HTTP/1.1" 201 51
+C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\capstone\settings.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 07, 2025 - 12:06:23
+Django version 5.1.7, using settings 'capstone.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+Watching for file changes with StatReloader
+[07/Mar/2025 12:16:54] "GET /hood_hockey_app/games/ HTTP/1.1" 200 2311
+[07/Mar/2025 12:16:54] "GET /hood_hockey_app/games/ HTTP/1.1" 200 2311
+[07/Mar/2025 12:17:09] "POST /hood_hockey_app/token/ HTTP/1.1" 200 483
+[07/Mar/2025 12:17:13] "GET /hood_hockey_app/games/ HTTP/1.1" 200 48306
+[07/Mar/2025 12:17:13] "GET /hood_hockey_app/games/ HTTP/1.1" 200 48306
+[07/Mar/2025 12:17:42] "POST /hood_hockey_app/games/ HTTP/1.1" 201 2299
+[07/Mar/2025 12:17:43] "GET /hood_hockey_app/games/ HTTP/1.1" 200 50606
+[07/Mar/2025 12:17:52] "POST /hood_hockey_app/upload-file/ HTTP/1.1" 201 51
+[07/Mar/2025 12:18:37] "POST /hood_hockey_app/upload-file/ HTTP/1.1" 201 51
+C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 07, 2025 - 12:16:20
+Django version 5.1.7, using settings 'capstone.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+Watching for file changes with StatReloader
+C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 07, 2025 - 12:20:31
+Django version 5.1.7, using settings 'capstone.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+Watching for file changes with StatReloader
+C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 07, 2025 - 12:22:25
+Django version 5.1.7, using settings 'capstone.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+Watching for file changes with StatReloader
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "C:\Users\roade\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\roade\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\utils\autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+    ~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\management\commands\runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\management\base.py", line 486, in check
+    all_issues = checks.run_checks(
+        app_configs=app_configs,
+    ...<2 lines>...
+        databases=databases,
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\checks\registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\checks\urls.py", line 16, in check_url_config
+    return check_resolver(resolver)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\checks\urls.py", line 26, in check_resolver
+    return check_method()
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\urls\resolvers.py", line 531, in check
+    for pattern in self.url_patterns:
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\utils\functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\urls\resolvers.py", line 718, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\utils\functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\urls\resolvers.py", line 711, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "C:\Users\roade\AppData\Local\Programs\Python\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\capstone\urls.py", line 12, in <module>
+    path("hood_hockey_app/", include("hood_hockey_app.urls")),
+                             ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\urls\conf.py", line 39, in include
+    urlconf_module = import_module(urlconf_module)
+  File "C:\Users\roade\AppData\Local\Programs\Python\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\urls.py", line 3, in <module>
+    from .views import FileUploadView
+ImportError: cannot import name 'FileUploadView' from 'hood_hockey_app.views' (C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\views.py)
+C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\urls.py changed, reloading.
+Performing system checks...
+
+Watching for file changes with StatReloader
+[07/Mar/2025 12:32:55] "GET /hood_hockey_app/games/ HTTP/1.1" 200 50606
+[07/Mar/2025 12:32:55] "GET /hood_hockey_app/games/ HTTP/1.1" 200 50606
+[07/Mar/2025 12:33:03] "POST /hood_hockey_app/token/ HTTP/1.1" 200 483
+[07/Mar/2025 12:33:08] "GET /hood_hockey_app/games/ HTTP/1.1" 200 50606
+[07/Mar/2025 12:33:08] "GET /hood_hockey_app/games/ HTTP/1.1" 200 50606
+[07/Mar/2025 12:33:18] "OPTIONS /hood_hockey_app/games-upload-file/ HTTP/1.1" 200 0
+[07/Mar/2025 12:33:19] "POST /hood_hockey_app/games-upload-file/ HTTP/1.1" 201 51
+[07/Mar/2025 12:33:47] "POST /hood_hockey_app/games/ HTTP/1.1" 201 2299
+[07/Mar/2025 12:33:49] "GET /hood_hockey_app/games/ HTTP/1.1" 200 52906
+C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 07, 2025 - 12:31:57
+Django version 5.1.7, using settings 'capstone.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+Watching for file changes with StatReloader
+[07/Mar/2025 13:21:47] "OPTIONS /hood_hockey_app/token/refresh/ HTTP/1.1" 200 0
+[07/Mar/2025 13:21:47] "OPTIONS /hood_hockey_app/token/refresh/ HTTP/1.1" 200 0
+[07/Mar/2025 13:21:48] "POST /hood_hockey_app/token/refresh/ HTTP/1.1" 200 241
+[07/Mar/2025 13:21:48] "POST /hood_hockey_app/token/refresh/ HTTP/1.1" 200 241
+[07/Mar/2025 13:21:53] "OPTIONS /hood_hockey_app/games/ HTTP/1.1" 200 0
+[07/Mar/2025 13:21:53] "OPTIONS /hood_hockey_app/games/ HTTP/1.1" 200 0
+[07/Mar/2025 13:21:53] "GET /hood_hockey_app/games/ HTTP/1.1" 200 52906
+[07/Mar/2025 13:21:53] "GET /hood_hockey_app/games/ HTTP/1.1" 200 52906
+[07/Mar/2025 13:22:02] "POST /hood_hockey_app/games-upload-file/ HTTP/1.1" 201 51
+C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 07, 2025 - 13:15:15
+Django version 5.1.7, using settings 'capstone.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+Watching for file changes with StatReloader
+Unauthorized: /hood_hockey_app/token/
+[07/Mar/2025 13:46:18] "POST /hood_hockey_app/token/ HTTP/1.1" 401 63
+[07/Mar/2025 13:46:23] "POST /hood_hockey_app/token/ HTTP/1.1" 200 483
+Internal Server Error: /hood_hockey_app/games/
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 795, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 714, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 400, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+[07/Mar/2025 13:46:27] "GET /hood_hockey_app/games/ HTTP/1.1" 500 211137
+Internal Server Error: /hood_hockey_app/games/
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 795, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 714, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 400, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+[07/Mar/2025 13:46:27] "GET /hood_hockey_app/games/ HTTP/1.1" 500 211137
+Internal Server Error: /hood_hockey_app/games/
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 795, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 714, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 400, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+[07/Mar/2025 13:50:18] "GET /hood_hockey_app/games/ HTTP/1.1" 500 210863
+Internal Server Error: /hood_hockey_app/games/
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 795, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 714, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 400, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+[07/Mar/2025 13:50:18] "GET /hood_hockey_app/games/ HTTP/1.1" 500 210863
+Internal Server Error: /hood_hockey_app/games/
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 795, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 714, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 400, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+[07/Mar/2025 13:50:41] "GET /hood_hockey_app/games/ HTTP/1.1" 500 210863
+Internal Server Error: /hood_hockey_app/games/
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 795, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 714, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 400, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+[07/Mar/2025 13:50:42] "GET /hood_hockey_app/games/ HTTP/1.1" 500 210863
+[07/Mar/2025 13:51:02] "POST /hood_hockey_app/token/ HTTP/1.1" 200 483
+Internal Server Error: /hood_hockey_app/games/
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 795, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 714, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 400, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+[07/Mar/2025 13:51:06] "GET /hood_hockey_app/games/ HTTP/1.1" 500 211137
+Internal Server Error: /hood_hockey_app/games/
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 795, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 714, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 400, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+[07/Mar/2025 13:51:06] "GET /hood_hockey_app/games/ HTTP/1.1" 500 211137
+Internal Server Error: /hood_hockey_app/games/
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 795, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 714, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 400, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+[07/Mar/2025 13:51:13] "GET /hood_hockey_app/games/ HTTP/1.1" 500 210863
+Internal Server Error: /hood_hockey_app/games/
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 795, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 714, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 400, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+[07/Mar/2025 13:51:14] "GET /hood_hockey_app/games/ HTTP/1.1" 500 210863
+Internal Server Error: /hood_hockey_app/games/
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column "Score_HC" of relation "hood_hockey_app_games" does not exist
+LINE 1: ...INTO "hood_hockey_app_games" ("Date", "Opponent", "Score_HC"...
+                                                             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\generics.py", line 246, in post
+    return self.create(request, *args, **kwargs)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\mixins.py", line 19, in create
+    self.perform_create(serializer)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\views.py", line 36, in perform_create
+    serializer.save(author=self.request.user)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 208, in save
+    self.instance = self.create(validated_data)
+                    ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 679, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\base.py", line 892, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\base.py", line 998, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\base.py", line 1161, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, fields, returning_fields, raw
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\base.py", line 1202, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 1847, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\sql\compiler.py", line 1836, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column "Score_HC" of relation "hood_hockey_app_games" does not exist
+LINE 1: ...INTO "hood_hockey_app_games" ("Date", "Opponent", "Score_HC"...
+                                                             ^
+
+[07/Mar/2025 13:52:05] "POST /hood_hockey_app/games/ HTTP/1.1" 500 290378
+[07/Mar/2025 13:52:19] "POST /hood_hockey_app/games-upload-file/ HTTP/1.1" 201 51
+Bad Request: /hood_hockey_app/games/
+[07/Mar/2025 13:53:05] "POST /hood_hockey_app/games/ HTTP/1.1" 400 45
+Internal Server Error: /hood_hockey_app/games/
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 795, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 714, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 400, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+[07/Mar/2025 13:53:10] "GET /hood_hockey_app/games/ HTTP/1.1" 500 210863
+Internal Server Error: /hood_hockey_app/games/
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 795, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 714, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 400, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+[07/Mar/2025 13:53:10] "GET /hood_hockey_app/games/ HTTP/1.1" 500 210863
+[07/Mar/2025 13:53:21] "POST /hood_hockey_app/games-upload-file/ HTTP/1.1" 201 51
+[07/Mar/2025 13:53:34] "POST /hood_hockey_app/games-upload-file/ HTTP/1.1" 201 51
+C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\urls.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 07, 2025 - 13:45:02
+Django version 5.1.7, using settings 'capstone.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+Watching for file changes with StatReloader
+C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\serializers.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 07, 2025 - 14:05:02
+Django version 5.1.7, using settings 'capstone.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+Watching for file changes with StatReloader
+C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 07, 2025 - 14:10:05
+Django version 5.1.7, using settings 'capstone.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+Watching for file changes with StatReloader
+Internal Server Error: /hood_hockey_app/games/
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 795, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 714, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 400, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+[07/Mar/2025 14:19:51] "GET /hood_hockey_app/games/ HTTP/1.1" 500 211137
+Internal Server Error: /hood_hockey_app/games/
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 795, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 714, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 400, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+[07/Mar/2025 14:19:51] "GET /hood_hockey_app/games/ HTTP/1.1" 500 211137
+Method Not Allowed: /hood_hockey_app/test/
+[07/Mar/2025 14:20:05] "GET /hood_hockey_app/test/ HTTP/1.1" 405 40
+Method Not Allowed: /hood_hockey_app/test/
+[07/Mar/2025 14:20:05] "GET /hood_hockey_app/test/ HTTP/1.1" 405 40
+Unauthorized: /hood_hockey_app/test/
+[07/Mar/2025 14:21:24] "GET /hood_hockey_app/test/ HTTP/1.1" 401 172
+Unauthorized: /hood_hockey_app/test/
+[07/Mar/2025 14:21:24] "GET /hood_hockey_app/test/ HTTP/1.1" 401 172
+[07/Mar/2025 14:21:35] "OPTIONS /hood_hockey_app/token/ HTTP/1.1" 200 0
+[07/Mar/2025 14:21:37] "POST /hood_hockey_app/token/ HTTP/1.1" 200 483
+Internal Server Error: /hood_hockey_app/games/
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 795, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 714, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 400, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+[07/Mar/2025 14:21:41] "GET /hood_hockey_app/games/ HTTP/1.1" 500 210863
+Internal Server Error: /hood_hockey_app/games/
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+psycopg2.errors.UndefinedColumn: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\generics.py", line 243, in get
+    return self.list(request, *args, **kwargs)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\mixins.py", line 46, in list
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 795, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 714, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 400, in __iter__
+    self._fetch_all()
+    ~~~~~~~~~~~~~~~^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+        chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\sql\compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        sql, params, many=False, executor=self._execute
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\backends\utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+django.db.utils.ProgrammingError: column hood_hockey_app_games.id does not exist
+LINE 1: SELECT "hood_hockey_app_games"."id", "hood_hockey_app_games"...
+               ^
+
+[07/Mar/2025 14:21:42] "GET /hood_hockey_app/games/ HTTP/1.1" 500 210863
+[07/Mar/2025 14:22:18] "POST /hood_hockey_app/games-upload-file/ HTTP/1.1" 201 51
+[07/Mar/2025 14:22:34] "POST /hood_hockey_app/games-upload-file/ HTTP/1.1" 201 51
+Method Not Allowed: /hood_hockey_app/test/
+[07/Mar/2025 14:22:44] "GET /hood_hockey_app/test/ HTTP/1.1" 405 40
+Method Not Allowed: /hood_hockey_app/test/
+[07/Mar/2025 14:22:44] "GET /hood_hockey_app/test/ HTTP/1.1" 405 40
+Bad Request: /hood_hockey_app/test/
+[07/Mar/2025 14:23:04] "POST /hood_hockey_app/test/ HTTP/1.1" 400 28
+Method Not Allowed: /hood_hockey_app/test/
+[07/Mar/2025 14:24:46] "GET /hood_hockey_app/test/ HTTP/1.1" 405 40
+Method Not Allowed: /hood_hockey_app/test/
+[07/Mar/2025 14:24:46] "GET /hood_hockey_app/test/ HTTP/1.1" 405 40
+Bad Request: /hood_hockey_app/test/
+[07/Mar/2025 14:24:51] "POST /hood_hockey_app/test/ HTTP/1.1" 400 28
+Method Not Allowed: /hood_hockey_app/test/
+[07/Mar/2025 14:26:30] "GET /hood_hockey_app/test/ HTTP/1.1" 405 40
+Method Not Allowed: /hood_hockey_app/test/
+[07/Mar/2025 14:26:32] "GET /hood_hockey_app/test/ HTTP/1.1" 405 40
+Method Not Allowed: /hood_hockey_app/test/
+[07/Mar/2025 14:26:32] "GET /hood_hockey_app/test/ HTTP/1.1" 405 40
+Bad Request: /hood_hockey_app/test/
+[07/Mar/2025 14:26:36] "POST /hood_hockey_app/test/ HTTP/1.1" 400 28
+Method Not Allowed: /hood_hockey_app/test/
+[07/Mar/2025 14:27:54] "GET /hood_hockey_app/test/ HTTP/1.1" 405 40
+Method Not Allowed: /hood_hockey_app/test/
+[07/Mar/2025 14:27:54] "GET /hood_hockey_app/test/ HTTP/1.1" 405 40
+Bad Request: /hood_hockey_app/test/
+[07/Mar/2025 14:28:00] "POST /hood_hockey_app/test/ HTTP/1.1" 400 28
+Bad Request: /hood_hockey_app/test/
+[07/Mar/2025 14:32:26] "POST /hood_hockey_app/test/ HTTP/1.1" 400 28
+C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\urls.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 07, 2025 - 14:12:04
+Django version 5.1.7, using settings 'capstone.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+Watching for file changes with StatReloader
+[07/Mar/2025 14:35:51] "GET /hood_hockey_app/test/ HTTP/1.1" 200 2
+[07/Mar/2025 14:35:51] "GET /hood_hockey_app/test/ HTTP/1.1" 200 2
+Internal Server Error: /hood_hockey_app/test/
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 677, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\base.py", line 567, in __init__
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: test() got unexpected keyword arguments: 'author'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\generics.py", line 246, in post
+    return self.create(request, *args, **kwargs)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\mixins.py", line 19, in create
+    self.perform_create(serializer)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\views.py", line 35, in perform_create
+    serializer.save(author=self.request.user)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 208, in save
+    self.instance = self.create(validated_data)
+                    ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 1008, in create
+    raise TypeError(msg)
+TypeError: Got a `TypeError` when calling `test.objects.create()`. This may be because you have a writable field on the serializer class that is not a valid argument to `test.objects.create()`. You may need to make the field read-only, or override the testSerializer.create() method to handle this correctly.
+Original exception was:
+ Traceback (most recent call last):
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\rest_framework\serializers.py", line 989, in create
+    instance = ModelClass._default_manager.create(**validated_data)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\query.py", line 677, in create
+    obj = self.model(**kwargs)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\db\models\base.py", line 567, in __init__
+    raise TypeError(
+    ...<2 lines>...
+    )
+TypeError: test() got unexpected keyword arguments: 'author'
+
+[07/Mar/2025 14:35:56] "POST /hood_hockey_app/test/ HTTP/1.1" 500 149055
+C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 07, 2025 - 14:35:25
+Django version 5.1.7, using settings 'capstone.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+Watching for file changes with StatReloader
+[07/Mar/2025 14:48:51] "GET /hood_hockey_app/test/ HTTP/1.1" 200 2
+[07/Mar/2025 14:48:51] "GET /hood_hockey_app/test/ HTTP/1.1" 200 2
+[07/Mar/2025 14:48:54] "POST /hood_hockey_app/test/ HTTP/1.1" 201 29
+[07/Mar/2025 14:48:56] "GET /hood_hockey_app/test/ HTTP/1.1" 200 31
+C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\urls.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 07, 2025 - 14:48:39
+Django version 5.1.7, using settings 'capstone.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+Watching for file changes with StatReloader
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "C:\Users\roade\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\roade\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\utils\autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+    ~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\management\commands\runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\management\base.py", line 486, in check
+    all_issues = checks.run_checks(
+        app_configs=app_configs,
+    ...<2 lines>...
+        databases=databases,
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\checks\registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\checks\urls.py", line 16, in check_url_config
+    return check_resolver(resolver)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\checks\urls.py", line 26, in check_resolver
+    return check_method()
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\urls\resolvers.py", line 531, in check
+    for pattern in self.url_patterns:
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\utils\functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\urls\resolvers.py", line 718, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\utils\functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\urls\resolvers.py", line 711, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "C:\Users\roade\AppData\Local\Programs\Python\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\capstone\urls.py", line 12, in <module>
+    path("hood_hockey_app/", include("hood_hockey_app.urls")),
+                             ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\urls\conf.py", line 39, in include
+    urlconf_module = import_module(urlconf_module)
+  File "C:\Users\roade\AppData\Local\Programs\Python\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\urls.py", line 10, in <module>
+    path('tests-upload-file/', testFileUpload.as_view(), name='test-file-upload'),
+                               ^^^^^^^^^^^^^^
+NameError: name 'testFileUpload' is not defined
+C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\views.py changed, reloading.
+Performing system checks...
+
+Watching for file changes with StatReloader
+Exception in thread django-main-thread:
+Traceback (most recent call last):
+  File "C:\Users\roade\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1041, in _bootstrap_inner
+    self.run()
+    ~~~~~~~~^^
+  File "C:\Users\roade\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 992, in run
+    self._target(*self._args, **self._kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\utils\autoreload.py", line 64, in wrapper
+    fn(*args, **kwargs)
+    ~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\management\commands\runserver.py", line 134, in inner_run
+    self.check(display_num_errors=True)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\management\base.py", line 486, in check
+    all_issues = checks.run_checks(
+        app_configs=app_configs,
+    ...<2 lines>...
+        databases=databases,
+    )
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\checks\registry.py", line 88, in run_checks
+    new_errors = check(app_configs=app_configs, databases=databases)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\checks\urls.py", line 16, in check_url_config
+    return check_resolver(resolver)
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\core\checks\urls.py", line 26, in check_resolver
+    return check_method()
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\urls\resolvers.py", line 531, in check
+    for pattern in self.url_patterns:
+                   ^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\utils\functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\urls\resolvers.py", line 718, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+                       ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\utils\functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\urls\resolvers.py", line 711, in urlconf_module
+    return import_module(self.urlconf_name)
+  File "C:\Users\roade\AppData\Local\Programs\Python\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\capstone\urls.py", line 12, in <module>
+    path("hood_hockey_app/", include("hood_hockey_app.urls")),
+                             ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\env\Lib\site-packages\django\urls\conf.py", line 39, in include
+    urlconf_module = import_module(urlconf_module)
+  File "C:\Users\roade\AppData\Local\Programs\Python\Python313\Lib\importlib\__init__.py", line 88, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 1026, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\urls.py", line 10, in <module>
+    path('tests-upload-file/', testFileUpload.as_view(), name='test-file-upload'),
+                               ^^^^^^^^^^^^^^
+NameError: name 'testFileUpload' is not defined
+C:\Users\roade\OneDrive\Documents\Desktop\Hood-Hockey\capstone\hood_hockey_app\urls.py changed, reloading.
+Performing system checks...
+
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 07, 2025 - 15:02:49
+Django version 5.1.7, using settings 'capstone.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
