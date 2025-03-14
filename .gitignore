@@ -5,3 +5,51 @@ db.sqlite3
 *.env
 /capstone/media/
 .vscode
+data/instat/Games - Hood Blazers, 30-Jan-2025.xlsx
+data/instat/Games Even Strength - Hood Blazers, 30-Jan-2025.xlsx
+data/instat/Games Penalty Kill - Hood Blazers, 30-Jan-2025 .xlsx
+data/instat/Games Power - Hood Blazers, 30-Jan-2025 .xlsx
+data/instat/Goalies - Hood Blazers, 30-Jan-2025 (1).xlsx
+data/instat/Goalies - Hood Blazers, 30-Jan-2025 (2).xlsx
+data/instat/Goalies - Hood Blazers, 30-Jan-2025 (3).xlsx
+data/instat/Goalies - Hood Blazers, 30-Jan-2025.xlsx
+data/instat/Lines - Current season - Total - Basic.xlsx
+data/instat/Lines - Hood Blazers, 04-Feb-2025 (1).xlsx
+data/instat/Lines - Hood Blazers, 30-Jan-2025 (1).xlsx
+data/instat/Lines - Hood Blazers, 30-Jan-2025 (2).xlsx
+data/instat/Lines - Hood Blazers, 30-Jan-2025 (3).xlsx
+data/instat/Lines - Hood Blazers, 30-Jan-2025 (4).xlsx
+data/instat/Lines - Hood Blazers, 30-Jan-2025.xlsx
+data/instat/Skaters - Hood Blazers, 30-Jan-2025 (1).xlsx
+data/instat/Skaters - Hood Blazers, 30-Jan-2025 (2).xlsx
+data/instat/Skaters - Hood Blazers, 30-Jan-2025 (3).xlsx
+data/instat/Skaters - Hood Blazers, 30-Jan-2025.xlsx
+data/drive/_Status_Table_Schema.pdf
+data/drive/SC700002NCAHOPUN240930SK.json
+data/drive/SC700003NCAHOPUN241002SK.json
+data/drive/SC700005NCAHOPUN241008SK.json
+data/drive/SC700006NCAHOCUN241008SK.json
+data/drive/SC700008NCAHOPUN241015SK.json
+.gitignore
+data/drive/drive.xlsx
+data/drive/SC700009NCAHOPUN241022SK.json
+data/drive/SC700010NCAUSGHO241026MC.json
+data/drive/SC700011NCAHOPUN241204HA.json
+data/instat/Games_EV_CS.xlsx
+data/instat/Games_GamesTotal_CS.xlsx
+data/instat/Games_PK_CS.xlsx
+data/instat/Games_PP_CS.xlsx
+data/instat/Goalies_EV_CS.xlsx
+data/instat/Goalies_GamesTotal_CS.xlsx
+data/instat/Goalies_PK_CS.xlsx
+data/instat/Goalies_PP_CS.xlsx
+data/instat/Lines_BasicLines_CS.xlsx
+data/instat/Lines_DefencemenLines_CS.xlsx
+data/instat/Lines_ForwardLines_CS.xlsx
+data/instat/Lines_PenaltyKillersLines_CS.xlsx
+data/instat/Lines_PowerPlayersLines_CS.xlsx
+data/instat/Skaters_EV_CS.xlsx
+data/instat/Skaters_GamesTotal_CS.xlsx
+data/instat/Skaters_PK_CS.xlsx
+data/instat/Skaters_PP_CS.xlsx
+data/instat/~$Combined_Lines.xlsx
