@@ -319,7 +319,7 @@ class LinesFileUploadView(views.APIView):
 # Drive
 class DriveFileUploadView(views.APIView):
     def post(self, request, *args, **kwargs):
-        return upload("hood_hockey_app_drive", request, json=True)
+        return upload("hood_hockey_app_drive", request, json=True, replace=False)
 
 # ------------------------
 # Lines Rankings 
