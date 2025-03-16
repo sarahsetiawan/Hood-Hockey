@@ -46,3 +46,10 @@ data/instat/Skaters_GamesTotal_CS.xlsx
 data/instat/Skaters_PK_CS.xlsx
 data/instat/Skaters_PP_CS.xlsx
 data/instat/~$Combined_Lines.xlsx
+*.pyc
+__pycache__
+db.sqlite3
+/env
+*.env
+/capstone/media/
+.vscode
