@@ -9,6 +9,7 @@ import Games from "./pages/Games"
 import Test from "./pages/test"
 import Upload from "./pages/Upload"
 import LinesQuery from "./pages/Lines"
+import Skaters from "./pages/Skaters"
 
 function Logout() {
   localStorage.clear()
@@ -43,6 +44,7 @@ function App() {
         <Route path="/test" element={<Test />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/lines" element={<LinesQuery />} />
+        <Route path="/skaters" element={<Skaters />} />
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </BrowserRouter>

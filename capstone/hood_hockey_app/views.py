@@ -11,6 +11,7 @@ from sqlalchemy import create_engine
 import os
 from django.conf import settings
 from django.db import connection
+import numpy as np
 
 # ------------------------------------------------------
 # PostgreSQL database connection settings 
@@ -69,6 +70,61 @@ class CreateUserView(generics.CreateAPIView):
 # -----------------------------
 # Cleaning Functions
 # -----------------------------
+
+def clean_drive(df):
+    # Add extra columns to the DataFrame 
+    extra_cols = [
+        'with_puck', 'sk_back', 'endurance', 'endurance_on',
+        'zoneT', 'period', 'homeSide', 'zoneCat',
+        'NumInD', 'NumInO', 'NumInN', 'TotalOnIce',
+        'playDirection', 'zoneCat_team', 'closestOppTagId',
+        'dist_to_opp', 'closestOppx', 'closestOppy', 'playerId_y'
+    ]
+
+    for col in extra_cols:
+        if col not in df.columns:
+            df[col] = np.nan
+    
+    # ✅ Replace empty strings across the whole DataFrame
+    df.replace('', np.nan, inplace=True)
+
+    # ✅ Convert boolean-like columns to float
+    bool_cols = ['with_puck', 'sk_back', 'endurance', 'endurance_on', 
+                 'speedUp', 'speedDown_end', 'speedUp_start', 
+                 'gap', 'deaccel', 'g_force_peak']
+
+    for col in bool_cols:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
+
+    # ✅ Remove non-numeric columns from float conversion
+    float_cols = [
+        'x', 'y', 'vx', 'vy', 'q', 'superframe', 'speed', 'acceleration',
+        'ax', 'ay', 'totalDistance', 'displacement', 'skatingAngle',
+        'curvature', 'radius_curvature', 'a_tot', 'a_centripetal',
+        'g_force', 'lean', 'g_force_avg', 'toi'
+    ]
+
+    for col in float_cols:
+        if col in df.columns:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
+
+    # ✅ Rearrange columns to match the other data frames
+    df = df[['tagId', 'timestamp', 'x', 'y', 'vx', 'vy', 'q', 'superframe', 'speed',
+       'acceleration', 'ax', 'ay', 'totalDistance', 'displacement', 'playerId',
+       'gameStatus', 'skatingAngle', 'speedUp', 'zone', 'playingPosition',
+       'speedDown_end', 'speedUp_start', 'team', 'gap', 'curvature',
+       'radius_curvature', 'a_tot', 'a_centripetal', 'g_force', 'lean',
+       'skatingEdge', 'g_force_avg', 'g_force_peak', 'deaccel',
+       'sustained_speed', 'anomaly', 'playerShift', 'playerShiftNum', 'toi',
+       'with_puck', 'sk_back', 'endurance', 'endurance_on', 'zoneT', 'period',
+       'homeSide', 'zoneCat', 'NumInD', 'NumInO', 'NumInN', 'TotalOnIce',
+       'playDirection', 'zoneCat_team', 'closestOppTagId', 'dist_to_opp',
+       'closestOppx', 'closestOppy', 'playerId_y']]
+
+    return df
+
+
 
 def clean_lines(lines_df):
     # Replace '-' with 0
@@ -234,14 +290,14 @@ def upload(table, request, replace=True, json=False):
                 df = clean_games(df)
             elif table == "hood_hockey_app_lines":
                 df = clean_lines(df)
+            elif table == "hood_hockey_app_drive":
+                df = clean_drive(df)
             else:
                 print("No cleaning function found for this table")
 
 
 
-            # Push data to SQL 
-            ### change if_exists to append to append data to existing table
-            ### change if_exists to replace to replace data in existing table
+            # Push data to SQL -- replace or append 
             table_name = table  
             if replace == True:
                 df.to_sql(table_name, engine, if_exists='replace', index=False)
@@ -321,10 +377,11 @@ class DriveFileUploadView(views.APIView):
     def post(self, request, *args, **kwargs):
         return upload("hood_hockey_app_drive", request, json=True, replace=False)
 
-# ------------------------
-# Lines Rankings 
-# ------------------------
+# ------------
+# Lines 
+# ------------
 
+# Lines ranking 
 class LinesRankingsView(views.APIView):
     permission_classes = [AllowAny]
     def get(self, request, *args, **kwargs):
@@ -358,5 +415,25 @@ class LinesRankingsView(views.APIView):
                 },
                 status=status.HTTP_200_OK
             )
+        except Exception as e:
+            return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# ------------
+# Skaters
+# ------------
+
+# Fitness correlation
+class FitnessCorrelationView(views.APIView):
+    permission_classes = [AllowAny]
+    def get(self, request, *args, **kwargs):
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT *
+                    FROM hood_hockey_app_skaters
+                """)
+                columns = [col[0] for col in cursor.description]
+                results = [dict(zip(columns, row)) for row in cursor.fetchall()]
+            return Response(results, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
