@@ -427,15 +427,6 @@ class LinesRankingsView(views.APIView):
 import io
 import base64
 
-import io
-import base64
-import matplotlib.pyplot as plt
-import pandas as pd
-from django.db import connection
-from rest_framework import views, status
-from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
-
 class FitnessCorrelationView(views.APIView):
     permission_classes = [AllowAny]
 
@@ -446,7 +437,7 @@ class FitnessCorrelationView(views.APIView):
                 cursor.execute("""
                     SELECT "Shirt number", "Goals"
                     FROM hood_hockey_app_skaters
-                """)  # Removed ORDER BY, as pandas will handle sorting
+                """)
                 skater_results = cursor.fetchall()
                 skater_columns = [col[0] for col in cursor.description]
 
@@ -455,40 +446,53 @@ class FitnessCorrelationView(views.APIView):
                     SELECT "playerId", MAX("speed") AS max_speed
                     FROM hood_hockey_app_drive
                     GROUP BY "playerId"
-                """) # Added alias for clarity and removed ORDER BY
+                """)
                 drive_results = cursor.fetchall()
                 drive_columns = [col[0] for col in cursor.description]
-                
 
             # Initial data frames
             skaters_df = pd.DataFrame(skater_results, columns=skater_columns)
             drive_df = pd.DataFrame(drive_results, columns=drive_columns)
+            print("----------------------------------------------------------")
+            print("Inititial DFs")
+            print("----------------------------------------------------------")
+            print("skaters")
+            print(skaters_df)
+            print("drive")
+            print(drive_df)
 
             # --- Data Cleaning and Processing ---
 
-            # DRIVE processing:  Convert playerId to integer
+            # DRIVE processing: Convert playerId to integer
             drive_df['playerId'] = drive_df['playerId'].str.lstrip('h').astype(int)
             drive_df = drive_df.rename(columns={'playerId': 'player_id', 'max_speed': 'max_speed'})
 
-
-            # Skaters processing: Replace '-' with 0 and ensure correct types
+            # Skaters processing:  Rename, Replace, *then* assign player_id
             skaters_df = skaters_df.rename(columns={'Shirt number': 'shirt_number', 'Goals': 'goals'})
-            skaters_df['goals'] = skaters_df['goals'].replace('-', 0).astype(int)
             skaters_df['shirt_number'] = skaters_df['shirt_number'].astype(int)
-            skaters_df['player_id'] = skaters_df['shirt_number'] # Add the player_id column.
+            skaters_df['player_id'] = skaters_df['shirt_number']  # Assign player_id *after* cleaning goals
+
+            print("----------------------------------------------------------")
+            print("After processing")
+            print("----------------------------------------------------------")
+            print("skaters")
+            print(skaters_df)
+            print("drive")
+            print(drive_df)
 
             # --- Data Merging ---
-            # Merge dataframes on 'player_id' using an INNER JOIN
-            # This ensures we only keep rows where we have both speed and goals data.
             merged_df = pd.merge(drive_df, skaters_df, on='player_id', how='inner')
 
-            # --- Scatterplot Data Prep ---
-            # No need for separate arrays, use the merged DataFrame directly
-            if merged_df.empty:  # Handle the case where the merge results in no data
+            print("----------------------------------------------------------")
+            print("Merged df")
+            print("----------------------------------------------------------")
+            print(merged_df)
+
+            if merged_df.empty:
                 return Response({"message": "No matching data found for players and their speeds/goals."}, status=status.HTTP_204_NO_CONTENT)
 
-            # --- Create the scatter plot ---
-            plt.figure(figsize=(8, 6))  # Set figure size for better visualization
+            # --- Scatterplot Data Prep and Plotting ---
+            plt.figure(figsize=(8, 6))
             plt.scatter(merged_df['max_speed'], merged_df['goals'])
             plt.xlabel('Max Speed')
             plt.ylabel('Goals')
