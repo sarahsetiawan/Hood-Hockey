@@ -29,6 +29,7 @@ function LinesQuery() {
 
     return (
         <div>
+            <h1> Lineups </h1>
             {/* CORSI Table */}
             {corsiData.length > 0 && (
                 <div>

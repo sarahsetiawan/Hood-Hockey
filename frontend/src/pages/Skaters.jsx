@@ -34,6 +34,8 @@ function Skaters() {
 
   return (
     <div>
+      <h1>Skaters</h1>
+      <br />
       <h2>Scatterplot of Max Speed vs Goals</h2>
       {imageData ? (
         <img src={`data:image/png;base64,${imageData}`} alt="Scatterplot" />
