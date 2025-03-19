@@ -512,3 +512,28 @@ class FitnessCorrelationView(views.APIView):
         except Exception as e:
             print(f"Error in FitnessCorrelationView: {e}")
             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+# --------------------
+# Games
+# --------------------
+
+# Basic query 
+class GamesQueryView(views.APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        try:
+            with connection.cursor() as cursor:
+                # Get skaters data
+                cursor.execute("""
+                    SELECT *
+                    FROM hood_hockey_app_games
+                """)
+                results = cursor.fetchall()
+                columns = [col[0] for col in cursor.description]
+                games_data = [dict(zip(columns, row)) for row in results]
+                return Response({"games": games_data}, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(f"Error in GamesQueryView: {e}")
+            return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

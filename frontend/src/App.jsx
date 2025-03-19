@@ -40,7 +40,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />
-        <Route path="/games" element={<GamesPage />} /> {/* Use GamesPage here */}
+        <Route path="/games" element={<Games />} /> {/* Use GamesPage here */}
         <Route path="/test" element={<Test />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/lines" element={<LinesQuery />} />

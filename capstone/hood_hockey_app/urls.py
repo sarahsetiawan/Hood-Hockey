@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import GamesFileUploadView, testListCreate, testFileUpload, SkatersFileUploadView, GoaliesFileUploadView, LinesFileUploadView, DriveFileUploadView, LinesRankingsView, FitnessCorrelationView
+from .views import GamesFileUploadView, GamesQueryView, testListCreate, testFileUpload, SkatersFileUploadView, GoaliesFileUploadView, LinesFileUploadView, DriveFileUploadView, LinesRankingsView, FitnessCorrelationView
 
 urlpatterns = [
     path("games/", views.GamesListCreate.as_view(), name="games-list"),
@@ -14,4 +14,5 @@ urlpatterns = [
     path('drive-upload-file/', DriveFileUploadView.as_view(), name='drive-file-upload'),
     path('lines-rankings/', LinesRankingsView.as_view(), name='lines-rankings'),
     path('fitness-corr/', FitnessCorrelationView.as_view(), name='fitness-corr'),
+    path('games-query/', GamesQueryView.as_view(), name='display-games'),
 ]
