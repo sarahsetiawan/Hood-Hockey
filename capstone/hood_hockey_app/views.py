@@ -599,4 +599,38 @@ class GoaliesSavePercentBarChartView(views.APIView):
             print(f"Error in FitnessCorrelationView: {e}")
             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+# Saves per game bar chart
+class SavesPerGameView(views.APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        try:
+            with connection.cursor() as cursor:
+                # Get goalies data
+                cursor.execute("""
+                    SELECT "Player", "Games played", "Saves"
+                    FROM hood_hockey_app_goalies
+                """) 
+                results = cursor.fetchall()
+                columns = [col[0] for col in cursor.description]
+                goalies = pd.DataFrame(results, columns=columns)
+                # Add saves per game to df
+                goalies['Saves per Game'] = goalies['Saves'] / goalies['Games played']
+                # Saves per game bar chart
+                plt.bar(goalies['Player'], goalies['Saves per Game'])
+                plt.xlabel('Player')
+                plt.ylabel('Saves per Game')
+                plt.title('Saves per Game by Player')
+                plt.xticks(rotation=45)
+                # Save and Return Image 
+                buf = io.BytesIO()
+                plt.savefig(buf, format='png')
+                plt.close()
+                buf.seek(0)
+                image_base64 = base64.b64encode(buf.read()).decode('utf-8')
+                return Response({'image': image_base64}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(f"Error in FitnessCorrelationView: {e}")
+            return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
                 
