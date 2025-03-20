@@ -11,6 +11,7 @@ import Upload from "./pages/Upload"
 import LinesQuery from "./pages/Lines"
 import Skaters from "./pages/Skaters"
 import Goalies from "./pages/Goalies"
+import Drive from "./pages/Drive"
 
 function Logout() {
   localStorage.clear()
@@ -47,6 +48,7 @@ function App() {
         <Route path="/lines" element={<LinesQuery />} />
         <Route path="/skaters" element={<Skaters />} />
         <Route path="/goalies" element={<Goalies />} />
+        <Route path="/drive" element = {<Drive />} />
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </BrowserRouter>

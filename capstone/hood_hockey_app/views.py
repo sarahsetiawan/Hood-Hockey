@@ -594,7 +594,7 @@ class GoaliesQueryView(views.APIView):
                 results = cursor.fetchall()
                 columns = [col[0] for col in cursor.description]
                 goalies_data = [dict(zip(columns, row)) for row in results]
-                return Response({"goalies": goalies_data}, status=status.HTTP_200_OK) # Changed key name
+                return Response({"goalies": goalies_data}, status=status.HTTP_200_OK) 
 
         except Exception as e:
             print(f"Error in GoaliesQueryView: {e}")  # Corrected class name
@@ -671,4 +671,26 @@ class SavesPerGameView(views.APIView):
             print(f"Error in FitnessCorrelationView: {e}")
             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-                
+# -------------------
+# Drive
+# -------------------
+
+# Basic query
+class DriveBasicQueryView(views.APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("""
+                    SELECT *
+                    FROM hood_hockey_app_drive 
+                    LIMIT 5
+                """)
+                results = cursor.fetchall()
+                columns = [col[0] for col in cursor.description]
+                drive_data = [dict(zip(columns, row)) for row in results]
+                return Response({"drive": drive_data}, status=status.HTTP_200_OK) 
+        except Exception as e:
+            print(f"Error in GoaliesQueryView: {e}")  # Corrected class name
+            return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
