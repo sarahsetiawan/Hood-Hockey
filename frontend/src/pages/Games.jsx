@@ -2,34 +2,58 @@ import React, { useState, useEffect } from 'react';
 
 function Games() {
   const [games, setGames] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [loadingGames, setLoadingGames] = useState(true);
+  const [errorGames, setErrorGames] = useState(null);
+  const [graphImage, setGraphImage] = useState(null);
+  const [loadingGraph, setLoadingGraph] = useState(true);
+  const [errorGraph, setErrorGraph] = useState(null);
 
   useEffect(() => {
     const fetchGamesData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/hood_hockey_app/games-query/'); 
+        const response = await fetch('http://127.0.0.1:8000/hood_hockey_app/games-query/');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        setGames(data.games); // Access the 'games' key from the response
-        setLoading(false);
+        setGames(data.games);
+        setLoadingGames(false);
       } catch (error) {
-        setError(error.message);
-        setLoading(false);
+        setErrorGames(error.message);
+        setLoadingGames(false);
+      }
+    };
+
+    const fetchGraphData = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/hood_hockey_app/faceoff-wins-graph/');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setGraphImage(`data:image/png;base64,${data.image}`);
+        setLoadingGraph(false);
+      } catch (error) {
+        setErrorGraph(error.message);
+        setLoadingGraph(false);
       }
     };
 
     fetchGamesData();
+    fetchGraphData();
   }, []);
 
-  if (loading) {
-    return <div>Loading games data...</div>;
+  if (loadingGames || loadingGraph) {
+    return <div>Loading data...</div>;
   }
 
-  if (error) {
-    return <div>Error: {error}</div>;
+  if (errorGames || errorGraph) {
+    return (
+      <div>
+        {errorGames && <div>Error loading games: {errorGames}</div>}
+        {errorGraph && <div>Error loading graph: {errorGraph}</div>}
+      </div>
+    );
   }
 
   if (!games || games.length === 0) {
@@ -42,7 +66,6 @@ function Games() {
       <table>
         <thead>
           <tr>
-            {/* Dynamically generate table headers from the first game object */}
             {Object.keys(games[0]).map((key) => (
               <th key={key}>{key}</th>
             ))}
@@ -51,7 +74,6 @@ function Games() {
         <tbody>
           {games.map((game, index) => (
             <tr key={index}>
-              {/* Dynamically generate table cells from each game object */}
               {Object.values(game).map((value, cellIndex) => (
                 <td key={cellIndex}>{value}</td>
               ))}
@@ -59,6 +81,9 @@ function Games() {
           ))}
         </tbody>
       </table>
+
+      <h2>Faceoff Win Percentage Over Time</h2>
+      {graphImage && <img src={graphImage} alt="Faceoff Win Percentage" />}
     </div>
   );
 }

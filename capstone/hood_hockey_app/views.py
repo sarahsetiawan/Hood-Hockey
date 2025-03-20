@@ -188,8 +188,10 @@ def clean_games(games):
     games_cleaned[['Penalty time (Minutes)', 'Penalty time (Seconds)']] = games_cleaned['Penalty time'].str.split(':', expand=True)
     games_cleaned['Penalty time (Minutes)'] = games_cleaned['Penalty time (Minutes)'].astype(int)
     games_cleaned['Penalty time (Seconds)'] = games_cleaned['Penalty time (Seconds)'].astype(int)
-    # Drop the Score and Goal column -- Drop Date column for now
-    games_cleaned = games_cleaned.drop(columns=['Score', 'Goals', 'Date', 'Penalty time'])
+    # Convert date column to datetime 
+    games_cleaned['Date'] = pd.to_datetime(games_cleaned['Date'], format='%m/%d/%Y')
+    # Drop the Score and Goal column 
+    games_cleaned = games_cleaned.drop(columns=['Score', 'Goals', 'Penalty time'])
     # Replace NaN values with 0
     games_cleaned = games_cleaned.fillna(0)
     return games_cleaned
@@ -536,6 +538,40 @@ class GamesQueryView(views.APIView):
 
         except Exception as e:
             print(f"Error in GamesQueryView: {e}")
+            return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# Faceoff win %
+class FaceoffWinPercentView(views.APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        try:
+            with connection.cursor() as cursor:
+                # Get skaters data
+                cursor.execute("""
+                    SELECT "Date", "Faceoffs won, %"
+                    FROM hood_hockey_app_games
+                """)
+                results = cursor.fetchall()
+                columns = [col[0] for col in cursor.description]
+                games = pd.DataFrame(results, columns=columns)
+                games = games.sort_values(by='Date')
+                # Line graph
+                plt.plot(games['Date'], games['Faceoffs won, %'], marker='o', linestyle='-', color='b')
+                plt.xlabel('Date')
+                plt.ylabel('Faceoffs won (%)')
+                plt.title('Faceoff Win Percentage Over Time')
+                plt.xticks(rotation=45)
+                plt.grid(True)
+                # Save and Return Image
+                buf = io.BytesIO()
+                plt.savefig(buf, format='png')
+                plt.close()
+                buf.seek(0)
+                image_base64 = base64.b64encode(buf.read()).decode('utf-8')
+                return Response({'image': image_base64}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(f"Error in FitnessCorrelationView: {e}")
             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
