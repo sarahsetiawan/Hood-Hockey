@@ -10,6 +10,7 @@ import Test from "./pages/test"
 import Upload from "./pages/Upload"
 import LinesQuery from "./pages/Lines"
 import Skaters from "./pages/Skaters"
+import Goalies from "./pages/Goalies"
 
 function Logout() {
   localStorage.clear()
@@ -40,11 +41,12 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />
-        <Route path="/games" element={<Games />} /> {/* Use GamesPage here */}
+        <Route path="/games" element={<Games />} /> 
         <Route path="/test" element={<Test />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/lines" element={<LinesQuery />} />
         <Route path="/skaters" element={<Skaters />} />
+        <Route path="/goalies" element={<Goalies />} />
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </BrowserRouter>

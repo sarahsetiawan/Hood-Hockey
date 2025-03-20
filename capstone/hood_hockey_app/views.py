@@ -537,3 +537,31 @@ class GamesQueryView(views.APIView):
         except Exception as e:
             print(f"Error in GamesQueryView: {e}")
             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+# -------------------
+# Goalies
+# -------------------
+
+# Basic query
+# Basic query
+class GoaliesQueryView(views.APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        try:
+            with connection.cursor() as cursor:
+                # Get goalies data
+                cursor.execute("""
+                    SELECT * 
+                    FROM hood_hockey_app_goalies
+                """)  
+                results = cursor.fetchall()
+                columns = [col[0] for col in cursor.description]
+                goalies_data = [dict(zip(columns, row)) for row in results]
+                return Response({"goalies": goalies_data}, status=status.HTTP_200_OK) # Changed key name
+
+        except Exception as e:
+            print(f"Error in GoaliesQueryView: {e}")  # Corrected class name
+            return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                
