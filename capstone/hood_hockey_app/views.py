@@ -581,6 +581,7 @@ class GoaliesSavePercentBarChartView(views.APIView):
                 goalies = pd.DataFrame(results, columns=columns)
                 #goalies['Saves, %'] = goalies['Saves, %'].str.rstrip('%').astype(float)
                 # Save % bar chart
+                plt.figure()
                 plt.bar(goalies['Player'], goalies['Saves, %'])
                 plt.xlabel('Player')
                 plt.ylabel('Saves (%)')
@@ -617,6 +618,7 @@ class SavesPerGameView(views.APIView):
                 # Add saves per game to df
                 goalies['Saves per Game'] = goalies['Saves'] / goalies['Games played']
                 # Saves per game bar chart
+                plt.figure()
                 plt.bar(goalies['Player'], goalies['Saves per Game'])
                 plt.xlabel('Player')
                 plt.ylabel('Saves per Game')
