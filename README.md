@@ -11,7 +11,7 @@ predictive analytics tools to forecast player and team performance, and it will 
 with a user-friendly interface tailored to the needs of coaches, analysts, and organizations.</p>
 
 ## Tech Stack
-- Python: Pandas/Polars, SK Learn, Matplotlip, Chart.js
-- Backend: Flask or Django
+- Python: Pandas, SK Learn, Matplotlip
+- Backend: Django
 - Frontend: React
-- Database: MySQL
+- Database: PostgreSQL
