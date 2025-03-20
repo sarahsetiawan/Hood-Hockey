@@ -544,7 +544,6 @@ class GamesQueryView(views.APIView):
 # -------------------
 
 # Basic query
-# Basic query
 class GoaliesQueryView(views.APIView):
     permission_classes = [AllowAny]
 
@@ -564,4 +563,40 @@ class GoaliesQueryView(views.APIView):
         except Exception as e:
             print(f"Error in GoaliesQueryView: {e}")  # Corrected class name
             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# Save percentage bar chart
+class GoaliesSavePercentBarChartView(views.APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        try:
+            with connection.cursor() as cursor:
+                # Get goalies data
+                cursor.execute("""
+                    SELECT "Player", "Games played", "Saves", "Saves, %"
+                    FROM hood_hockey_app_goalies
+                """) 
+                results = cursor.fetchall()
+                columns = [col[0] for col in cursor.description]
+                goalies = pd.DataFrame(results, columns=columns)
+                #goalies['Saves, %'] = goalies['Saves, %'].str.rstrip('%').astype(float)
+                # Save % bar chart
+                plt.bar(goalies['Player'], goalies['Saves, %'])
+                plt.xlabel('Player')
+                plt.ylabel('Saves (%)')
+                plt.title('Save Percentage by Player')
+                plt.ylim(0, 100)  # Set y-axis limits from 0 to 100
+                plt.yticks(ticks=[10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+                plt.xticks(rotation=45)
+                # Save and Return Image 
+                buf = io.BytesIO()
+                plt.savefig(buf, format='png')
+                plt.close()
+                buf.seek(0)
+                image_base64 = base64.b64encode(buf.read()).decode('utf-8')
+                return Response({'image': image_base64}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(f"Error in FitnessCorrelationView: {e}")
+            return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
                 

@@ -25,7 +25,7 @@ function Skaters() {
   }, []);
 
   if (loading) {
-    return <div>Loading scatterplot...</div>;
+    return <div>Loading...</div>;
   }
 
   if (error) {

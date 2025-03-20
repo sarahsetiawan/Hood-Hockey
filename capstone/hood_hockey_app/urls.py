@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import GamesFileUploadView, GamesQueryView, GoaliesQueryView, testListCreate, testFileUpload, SkatersFileUploadView, GoaliesFileUploadView, LinesFileUploadView, DriveFileUploadView, LinesRankingsView, FitnessCorrelationView
+from .views import GamesFileUploadView, GamesQueryView, GoaliesQueryView, GoaliesSavePercentBarChartView, testListCreate, testFileUpload, SkatersFileUploadView, GoaliesFileUploadView, LinesFileUploadView, DriveFileUploadView, LinesRankingsView, FitnessCorrelationView
 
 urlpatterns = [
     path("games/", views.GamesListCreate.as_view(), name="games-list"),
@@ -16,4 +16,5 @@ urlpatterns = [
     path('fitness-corr/', FitnessCorrelationView.as_view(), name='fitness-corr'),
     path('games-query/', GamesQueryView.as_view(), name='display-games'),
     path('goalies-query/', GoaliesQueryView.as_view(), name='display-goalies'),
+    path('goalies-savepercent-barchart/', GoaliesSavePercentBarChartView.as_view(), name='savepercent-chart'),
 ]
