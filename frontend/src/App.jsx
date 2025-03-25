@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useContext } from "react"; // Import useContext
 import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
-import { Navbar, Nav, Container } from 'react-bootstrap'; // Import Bootstrap components
+import { Navbar, Nav, Container } from 'react-bootstrap';
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
@@ -13,9 +13,11 @@ import LinesQuery from "./pages/Lines";
 import Skaters from "./pages/Skaters";
 import Goalies from "./pages/Goalies";
 import Drive from "./pages/Drive";
+import { AuthContext } from './context/AuthContext'; // Import AuthContext
 
 function Logout() {
-    localStorage.clear();
+    const { logout } = useContext(AuthContext); // Get logout from context
+    logout(); // Call logout function from context
     return <Navigate to="/login" />;
 }
 
@@ -24,8 +26,9 @@ function RegisterAndLogout() {
     return <Register />;
 }
 
-
 function App() {
+    const { isAuthenticated } = useContext(AuthContext); // Consume AuthContext
+
     return (
         <BrowserRouter>
             <Navbar bg="light" expand="lg">
@@ -35,44 +38,44 @@ function App() {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
                             <Nav.Link as={Link} to="/">Home</Nav.Link>
-                            <Nav.Link as={Link} to="/games">Games</Nav.Link>
-                            <Nav.Link as={Link} to="/skaters">Skaters</Nav.Link>
-                            <Nav.Link as={Link} to="/goalies">Goalies</Nav.Link>
-                            <Nav.Link as={Link} to="/lines">Lines</Nav.Link>
-                            {/* Add more links as needed */}
+                            {isAuthenticated && (<>
+                                <Nav.Link as={Link} to="/games">Games</Nav.Link>
+                                <Nav.Link as={Link} to="/skaters">Skaters</Nav.Link>
+                                <Nav.Link as={Link} to="/goalies">Goalies</Nav.Link>
+                                <Nav.Link as={Link} to="/lines">Lines</Nav.Link>
+                                <Nav.Link as={Link} to="/upload">Upload</Nav.Link>
+                                <Nav.Link as={Link} to="/drive">Drive</Nav.Link>
+                            </>)}
                         </Nav>
                         <Nav>
-                            {/* Conditionally render Login/Logout based on authentication */}
-                            {localStorage.getItem('accessToken') ? ( // Or your preferred token key
+                            {isAuthenticated ? (
                                 <Nav.Link as={Link} to="/logout">Logout</Nav.Link>
                             ) : (
-                                <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                                <>
+                                    <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                                    <Nav.Link as={Link} to="/register">Register</Nav.Link>
+                                </>
                             )}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-            <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <ProtectedRoute>
-                            <Home />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route path="/login" element={<Login />} />
-                <Route path="/logout" element={<Logout />} />
-                <Route path="/register" element={<RegisterAndLogout />} />
-                <Route path="/games" element={<Games />} />
-                <Route path="/test" element={<Test />} />
-                <Route path="/upload" element={<Upload />} />
-                <Route path="/lines" element={<LinesQuery />} />
-                <Route path="/skaters" element={<Skaters />} />
-                <Route path="/goalies" element={<Goalies />} />
-                <Route path="/drive" element={<Drive />} />
-                <Route path="*" element={<NotFound />}></Route>
-            </Routes>
+            <Container>
+                <Routes>
+                    <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/logout" element={<Logout />} />
+                    <Route path="/register" element={<RegisterAndLogout />} />
+                    <Route path="/games" element={<ProtectedRoute><Games /></ProtectedRoute>} />
+                    <Route path="/test" element={<Test />} />
+                    <Route path="/upload" element={<ProtectedRoute><Upload /></ProtectedRoute>} />
+                    <Route path="/lines" element={<ProtectedRoute><LinesQuery /></ProtectedRoute>} />
+                    <Route path="/skaters" element={<ProtectedRoute><Skaters /></ProtectedRoute>} />
+                    <Route path="/goalies" element={<ProtectedRoute><Goalies /></ProtectedRoute>} />
+                    <Route path="/drive" element={<ProtectedRoute><Drive /></ProtectedRoute>} />
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </Container>
         </BrowserRouter>
     );
 }

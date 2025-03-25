@@ -1,123 +1,96 @@
 import React from "react";
-import "../styles/Games.css";
+import "../styles/Games.css"; // Keep your custom styles if needed
+import { Card, ListGroup, Button } from 'react-bootstrap';
 
 function Game({ game, onDelete }) {
     return (
-        <div className="game-container">
-            <p className="game-date">{game.date}</p>
-            <p className="game-opponent">{game.opponent}</p>
-            <p className="game-scoreHC">{game.scoreHC}</p>
-            <p className="game-scoreOpp">{game.scoreOpp}</p>
-            <p className="game-goals">{game.goals}</p>
-            <p className="game-penalties">{game.penalties}</p>
-            <p className="game-penaltiesDrawn">{game.penaltiesDrawn}</p>
-            <p className="game-penaltyTimeMin">{game.penaltyTimeMin}</p>
-            <p className="game-penaltyTimeSec">{game.penaltyTimeSec}</p>
-            <p className="game-faceoffs">{game.faceoffs}</p>
-            <p className="game-faceoffsWon">{game.faceoffsWon}</p>
-            <p className="game-faceoffWinPercentage">{game.faceoffWinPercentage}</p>
-            <p className="game-hits">{game.hits}</p>
-            <p className="game-faceoffsDZ">{game.faceoffsDZ}</p>
-            <p className="game-faceoffsWonDZ">{game.faceoffsWonDZ}</p>
-            <p className="game-faceoffsWonDZPercentage">{game.faceoffsWonDZPercentage}</p>
-            <p className="game-faceoffsNZ">{game.faceoffsNZ}</p>
-            <p className="game-faceoffsWonNZ">{game.faceoffsWonNZ}</p>
-            <p className="game-faceoffsWonNZPercentage">{game.faceoffsWonNZPercentage}</p>
-            <p className="game-faceoffsOZ">{game.faceoffsOZ}</p>
-            <p className="game-faceoffsWonOZ">{game.faceoffsWonOZ}</p>
-            <p className="game-faceoffsWonOZPercentage">{game.faceoffsWonOZPercentage}</p>
-            <p className="game-blockedShots">{game.blockedShots}</p>
-            <p className="game-faceoffsLost">{game.faceoffsLost}</p>
-            <p className="game-scoringChances">{game.scoringChances}</p>
-            <p className="game-corsiPercentage">{game.corsiPercentage}</p>
-            <p className="game-hitsAgainst">{game.hitsAgainst}</p>
-            <p className="game-powerPlay">{game.powerPlay}</p>
-            <p className="game-successfulPowerPlay">{game.successfulPowerPlay}</p>
-            <p className="game-powerPlayMin">{game.powerPlayMin}</p>
-            <p className="game-powerPlaySec">{game.powerPlaySec}</p>
-            <p className="game-powerPlayPercentage">{game.powerPlayPercentage}</p>
-            <p className="game-shortHanded">{game.shortHanded}</p>
-            <p className="game-penaltyKilling">{game.penaltyKilling}</p>
-            <p className="game-shortHandedMin">{game.shortHandedMin}</p>
-            <p className="game-shortHandedSec">{game.shortHandedSec}</p>
-            <p className="game-shortHandedPercentage">{game.shortHandedPercentage}</p>
-            <p className="game-xGPerShot">{game.xGPerShot}</p>
-            <p className="game-opponentsXGPerShot">{game.opponentsXGPerShot}</p>
-            <p className="game-netXG">{game.netXG}</p>
-            <p className="game-xGConversion">{game.xGConversion}</p>
-            <p className="game-xG">{game.xG}</p>
-            <p className="game-opponentXG">{game.opponentXG}</p>
-            <p className="game-xGPerGoal">{game.xGPerGoal}</p>
-            <p className="game-shots">{game.shots}</p>
-            <p className="game-shotsOnGoal">{game.shotsOnGoal}</p>
-            <p className="game-shotsBlocking">{game.shotsBlocking}</p>
-            <p className="game-missedShots">{game.missedShots}</p>
-            <p className="game-percentageShotsOnGoal">{game.percentageShotsOnGoal}</p>
-            <p className="game-slapshot">{game.slapshot}</p>
-            <p className="game-wristShot">{game.wristShot}</p>
-            <p className="game-powerPlayShots">{game.powerPlayShots}</p>
-            <p className="game-shortHandedShots">{game.shortHandedShots}</p>
-            <p className="game-shootoutsScored">{game.shootoutsScored}</p>
-            <p className="game-offensivePlayMin">{game.offensivePlayMin}</p>
-            <p className="game-offensivePlaySec">{game.offensivePlaySec}</p>
-            <p className="game-defensivePlayMin">{game.defensivePlayMin}</p>
-            <p className="game-defensivePlaySec">{game.defensivePlaySec}</p>
-            <p className="game-ozPossessionMin">{game.ozPossessionMin}</p>
-            <p className="game-ozPossessionSec">{game.ozPossessionSec}</p>
-            <p className="game-nzPossessionMin">{game.nzPossessionMin}</p>
-            <p className="game-nzPossessionSec">{game.nzPossessionSec}</p>
-            <p className="game-dzPossessionMin">{game.dzPossessionMin}</p>
-            <p className="game-dzPossessionSec">{game.dzPossessionSec}</p>
-            <p className="game-puckBattles">{game.puckBattles}</p>
-            <p className="game-puckBattlesWon">{game.puckBattlesWon}</p>
-            <p className="game-puckBattlesWonPercentage">{game.puckBattlesWonPercentage}</p>
-            <p className="game-puckBattlesOZ">{game.puckBattlesOZ}</p>
-            <p className="game-puckBattlesNZ">{game.puckBattlesNZ}</p>
-            <p className="game-puckBattlesDZ">{game.puckBattlesDZ}</p>
-            <p className="game-dekes">{game.dekes}</p>
-            <p className="game-dekesSuccessful">{game.dekesSuccessful}</p>
-            <p className="game-dekesUnsuccessful">{game.dekesUnsuccessful}</p>
-            <p className="game-dekesSuccessfulPercentage">{game.dekesSuccessfulPercentage}</p>
-            <p className="game-passesTotal">{game.passesTotal}</p>
-            <p className="game-accuratePasses">{game.accuratePasses}</p>
-            <p className="game-accuratePassesPercentage">{game.accuratePassesPercentage}</p>
-            <p className="game-preShotPasses">{game.preShotPasses}</p>
-            <p className="game-dumpIns">{game.dumpIns}</p>
-            <p className="game-dumpOuts">{game.dumpOuts}</p>
-            <p className="game-passesToTheSlot">{game.passesToTheSlot}</p>
-            <p className="game-ozPlay">{game.ozPlay}</p>
-            <p className="game-ozPlayWithShots">{game.ozPlayWithShots}</p>
-            <p className="game-ozPlayWithShotsPercentage">{game.ozPlayWithShotsPercentage}</p>
-            <p className="game-counterAttacks">{game.counterAttacks}</p>
-            <p className="game-counterAttackWithShots">{game.counterAttackWithShots}</p>
-            <p className="game-counterAttackWithShotsPercentage">{game.counterAttackWithShotsPercentage}</p>
-            <p className="game-takeaways">{game.takeaways}</p>
-            <p className="game-takeawaysInNZ">{game.takeawaysInNZ}</p>
-            <p className="game-takeawaysInDZ">{game.takeawaysInDZ}</p>
-            <p className="game-puckLosses">{game.puckLosses}</p>
-            <p className="game-puckLossesOZ">{game.puckLossesOZ}</p>
-            <p className="game-puckLossesNZ">{game.puckLossesNZ}</p>
-            <p className="game-puckLossesDZ">{game.puckLossesDZ}</p>
-            <p className="game-retrievals">{game.retrievals}</p>
-            <p className="game-powerPlayRetrievals">{game.powerPlayRetrievals}</p>
-            <p className="game-penaltyKillRetrievals">{game.penaltyKillRetrievals}</p>
-            <p className="game-evOzRetrievals">{game.evOzRetrievals}</p>
-            <p className="game-evDzRetrievals">{game.evDzRetrievals}</p>
-            <p className="game-takeawaysInOZ">{game.takeawaysInOZ}</p>
-            <p className="game-loosePuckRecovery">{game.loosePuckRecovery}</p>
-            <p className="game-opponentDumpInRetrievals">{game.opponentDumpInRetrievals}</p>
-            <p className="game-entries">{game.entries}</p>
-            <p className="game-entriesViaPass">{game.entriesViaPass}</p>
-            <p className="game-entriesViaDumpIn">{game.entriesViaDumpIn}</p>
-            <p className="game-entriesViaStickhandling">{game.entriesViaStickhandling}</p>
-            <p className="game-breakouts">{game.breakouts}</p>
-            <p className="game-breakoutsViaPass">{game.breakoutsViaPass}</p>
-            <p className="game-breakoutsViaDumpOut">{game.breakoutsViaDumpOut}</p>
-            <p className="game-breakoutsViaStickhandling">{game.breakoutsViaStickhandling}</p>
-            <button className="delete-button" onClick={() => onDelete(game.id)}>
-                Delete
-            </button>
-        </div>
+        <Card className="mb-3">
+            <Card.Body>
+                <Card.Title>Game on {game.date}</Card.Title>
+                <ListGroup variant="flush">
+                    <ListGroup.Item>Opponent: {game.opponent}</ListGroup.Item>
+                    <ListGroup.Item>Score (HC): {game.scoreHC}</ListGroup.Item>
+                    <ListGroup.Item>Score (Opp): {game.scoreOpp}</ListGroup.Item>
+                    {/* ... (List all game details in ListGroup.Item components) ... */}
+                     <ListGroup.Item>xGPerShot: {game.xGPerShot}</ListGroup.Item>
+                    <ListGroup.Item>Opponent xGPerShot: {game.opponentsXGPerShot}</ListGroup.Item>
+                    <ListGroup.Item>Net xG: {game.netXG}</ListGroup.Item>
+                    <ListGroup.Item>xG Conversion: {game.xGConversion}</ListGroup.Item>
+                    <ListGroup.Item>xG: {game.xG}</ListGroup.Item>
+                    <ListGroup.Item>Opponent xG: {game.opponentXG}</ListGroup.Item>
+                    <ListGroup.Item>xG Per Goal: {game.xGPerGoal}</ListGroup.Item>
+                    <ListGroup.Item>Shots: {game.shots}</ListGroup.Item>
+                    <ListGroup.Item>Shots on Goal: {game.shotsOnGoal}</ListGroup.Item>
+                    <ListGroup.Item>Shots Blocking: {game.shotsBlocking}</ListGroup.Item>
+                    <ListGroup.Item>Missed Shots: {game.missedShots}</ListGroup.Item>
+                    <ListGroup.Item>Percentage Shots on Goal: {game.percentageShotsOnGoal}</ListGroup.Item>
+                    <ListGroup.Item>Slapshot: {game.slapshot}</ListGroup.Item>
+                    <ListGroup.Item>Wrist Shot: {game.wristShot}</ListGroup.Item>
+                    <ListGroup.Item>Power Play Shots: {game.powerPlayShots}</ListGroup.Item>
+                    <ListGroup.Item>Short Handed Shots: {game.shortHandedShots}</ListGroup.Item>
+                    <ListGroup.Item>Shootouts Scored: {game.shootoutsScored}</ListGroup.Item>
+                    <ListGroup.Item>Offensive Play Min: {game.offensivePlayMin}</ListGroup.Item>
+                    <ListGroup.Item>Offensive Play Sec: {game.offensivePlaySec}</ListGroup.Item>
+                    <ListGroup.Item>Defensive Play Min: {game.defensivePlayMin}</ListGroup.Item>
+                    <ListGroup.Item>Defensive Play Sec: {game.defensivePlaySec}</ListGroup.Item>
+                    <ListGroup.Item>OZ Possession Min: {game.ozPossessionMin}</ListGroup.Item>
+                    <ListGroup.Item>OZ Possession Sec: {game.ozPossessionSec}</ListGroup.Item>
+                    <ListGroup.Item>NZ Possession Min: {game.nzPossessionMin}</ListGroup.Item>
+                    <ListGroup.Item>NZ Possession Sec: {game.nzPossessionSec}</ListGroup.Item>
+                    <ListGroup.Item>DZ Possession Min: {game.dzPossessionMin}</ListGroup.Item>
+                    <ListGroup.Item>DZ Possession Sec: {game.dzPossessionSec}</ListGroup.Item>
+                    <ListGroup.Item>Puck Battles: {game.puckBattles}</ListGroup.Item>
+                    <ListGroup.Item>Puck Battles Won: {game.puckBattlesWon}</ListGroup.Item>
+                    <ListGroup.Item>Puck Battles Won Percentage: {game.puckBattlesWonPercentage}</ListGroup.Item>
+                    <ListGroup.Item>Puck Battles OZ: {game.puckBattlesOZ}</ListGroup.Item>
+                    <ListGroup.Item>Puck Battles NZ: {game.puckBattlesNZ}</ListGroup.Item>
+                    <ListGroup.Item>Puck Battles DZ: {game.puckBattlesDZ}</ListGroup.Item>
+                    <ListGroup.Item>Dekes: {game.dekes}</ListGroup.Item>
+                    <ListGroup.Item>Dekes Successful: {game.dekesSuccessful}</ListGroup.Item>
+                    <ListGroup.Item>Dekes Unsuccessful: {game.dekesUnsuccessful}</ListGroup.Item>
+                    <ListGroup.Item>Dekes Successful Percentage: {game.dekesSuccessfulPercentage}</ListGroup.Item>
+                    <ListGroup.Item>Passes Total: {game.passesTotal}</ListGroup.Item>
+                    <ListGroup.Item>Accurate Passes: {game.accuratePasses}</ListGroup.Item>
+                    <ListGroup.Item>Accurate Passes Percentage: {game.accuratePassesPercentage}</ListGroup.Item>
+                    <ListGroup.Item>Pre Shot Passes: {game.preShotPasses}</ListGroup.Item>
+                    <ListGroup.Item>Dump Ins: {game.dumpIns}</ListGroup.Item>
+                    <ListGroup.Item>Dump Outs: {game.dumpOuts}</ListGroup.Item>
+                    <ListGroup.Item>Passes to the Slot: {game.passesToTheSlot}</ListGroup.Item>
+                    <ListGroup.Item>OZ Play: {game.ozPlay}</ListGroup.Item>
+                    <ListGroup.Item>OZ Play with Shots: {game.ozPlayWithShots}</ListGroup.Item>
+                    <ListGroup.Item>OZ Play with Shots Percentage: {game.ozPlayWithShotsPercentage}</ListGroup.Item>
+                    <ListGroup.Item>Counter Attacks: {game.counterAttacks}</ListGroup.Item>
+                    <ListGroup.Item>Counter Attack with Shots: {game.counterAttackWithShots}</ListGroup.Item>
+                    <ListGroup.Item>Counter Attack with Shots Percentage: {game.counterAttackWithShotsPercentage}</ListGroup.Item>
+                    <ListGroup.Item>Takeaways: {game.takeaways}</ListGroup.Item>
+                    <ListGroup.Item>Takeaways in NZ: {game.takeawaysInNZ}</ListGroup.Item>
+                    <ListGroup.Item>Takeaways in DZ: {game.takeawaysInDZ}</ListGroup.Item>
+                    <ListGroup.Item>Puck Losses: {game.puckLosses}</ListGroup.Item>
+                    <ListGroup.Item>Puck Losses OZ: {game.puckLossesOZ}</ListGroup.Item>
+                    <ListGroup.Item>Puck Losses NZ: {game.puckLossesNZ}</ListGroup.Item>
+                    <ListGroup.Item>Puck Losses DZ: {game.puckLossesDZ}</ListGroup.Item>
+                    <ListGroup.Item>Retrievals: {game.retrievals}</ListGroup.Item>
+                    <ListGroup.Item>Power Play Retrievals: {game.powerPlayRetrievals}</ListGroup.Item>
+                    <ListGroup.Item>Penalty Kill Retrievals: {game.penaltyKillRetrievals}</ListGroup.Item>
+                    <ListGroup.Item>EV OZ Retrievals: {game.evOzRetrievals}</ListGroup.Item>
+                    <ListGroup.Item>EV DZ Retrievals: {game.evDzRetrievals}</ListGroup.Item>
+                    <ListGroup.Item>Takeaways in OZ: {game.takeawaysInOZ}</ListGroup.Item>
+                    <ListGroup.Item>Loose Puck Recovery: {game.loosePuckRecovery}</ListGroup.Item>
+                    <ListGroup.Item>Opponent Dump In Retrievals: {game.opponentDumpInRetrievals}</ListGroup.Item>
+                    <ListGroup.Item>Entries: {game.entries}</ListGroup.Item>
+                    <ListGroup.Item>Entries via Pass: {game.entriesViaPass}</ListGroup.Item>
+                    <ListGroup.Item>Entries via Dump In: {game.entriesViaDumpIn}</ListGroup.Item>
+                    <ListGroup.Item>Entries via Stickhandling: {game.entriesViaStickhandling}</ListGroup.Item>
+                    <ListGroup.Item>Breakouts: {game.breakouts}</ListGroup.Item>
+                    <ListGroup.Item>Breakouts via Pass: {game.breakoutsViaPass}</ListGroup.Item>
+                    <ListGroup.Item>Breakouts via Dump Out: {game.breakoutsViaDumpOut}</ListGroup.Item>
+                    <ListGroup.Item>Breakouts via Stickhandling: {game.breakoutsViaStickhandling}</ListGroup.Item>
+                </ListGroup>
+                <Button variant="danger" onClick={() => onDelete(game.id)} className="mt-3">
+                    Delete Game
+                </Button>
+            </Card.Body>
+        </Card>
     );
 }
 
