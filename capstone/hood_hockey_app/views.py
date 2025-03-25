@@ -431,6 +431,52 @@ class LinesRankingsView(views.APIView):
 import io
 import base64
 
+# GAR
+class GARView(views.APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        try:
+            with connection.cursor() as cursor:
+                    # Get skaters data
+                    cursor.execute("""
+                        SELECT "Shirt number", "Player", "Position", "Points"
+                        FROM hood_hockey_app_skaters
+                    """)
+                    results = cursor.fetchall()
+                    columns = [col[0] for col in cursor.description]
+
+                    # All skaters
+                    skaters = pd.DataFrame(results, columns=columns)
+                    # Forwards
+                    forwards = skaters[skaters['Position'] == 'F']
+                    # Defenders
+                    defenders = skaters[skaters['Position'] == 'D']
+
+                    # Calculate replacement level (30th percentile -- may need adjustment) for each position
+                    replacement_points_fwd = forwards['Points'].quantile(0.30)
+                    replacement_points_def = defenders['Points'].quantile(0.30)
+                    # Add PAR to data frames and rank
+                    forwards['PAR'] = forwards['Points'] - replacement_points_fwd
+                    forwards = forwards.sort_values(by='PAR', ascending=False)
+                    defenders['PAR'] = defenders['Points'] - replacement_points_def
+                    defenders = defenders.sort_values(by='PAR', ascending=False)
+
+                    # Return the top 5 forwards and defenders
+                    top_forwards = forwards.head(5)
+                    top_defenders = defenders.head(5)
+
+                    return Response(
+                        {
+                            "top_forwards": top_forwards.to_dict(orient='records'),
+                            "top_defenders": top_defenders.to_dict(orient='records')
+                        },
+                        status=status.HTTP_200_OK
+                    )
+        except Exception as e:
+            return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+# Goals Vs. Max Speed
 class FitnessCorrelationView(views.APIView):
     permission_classes = [AllowAny]
 
