@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Table, Image, Spinner, Alert } from 'react-bootstrap';
 
 function Goalies() {
     const [tableData, setTableData] = useState([]);
     const [savePercentImageData, setSavePercentImageData] = useState(null);
-    const [savesPerGameImageData, setSavesPerGameImageData] = useState(null); 
+    const [savesPerGameImageData, setSavesPerGameImageData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -26,7 +27,7 @@ function Goalies() {
                 const savesPerGameChartResponse = await fetch('http://127.0.0.1:8000/hood_hockey_app/saves-per-game/');
                 if (!savesPerGameChartResponse.ok) throw new Error(`HTTP error! status: ${savesPerGameChartResponse.status}`);
                 const savesPerGameChartJson = await savesPerGameChartResponse.json();
-                setSavesPerGameImageData(savesPerGameChartJson.image); 
+                setSavesPerGameImageData(savesPerGameChartJson.image);
 
 
                 setLoading(false);
@@ -39,37 +40,69 @@ function Goalies() {
         fetchData();
     }, []);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
-    if (!tableData || tableData.length === 0) return (<div>No Table Data</div>)
+    if (loading) {
+        return (
+            <Container className="text-center mt-5">
+                <Spinner animation="border" role="status" />
+                <p>Loading...</p>
+            </Container>
+        );
+    }
+
+    if (error) {
+        return (
+            <Container className="mt-5">
+                <Alert variant="danger">Error: {error}</Alert>
+            </Container>
+        );
+    }
+
+    if (!tableData || tableData.length === 0) {
+        return (
+            <Container className="mt-5">
+                <Alert variant="info">No Table Data</Alert>
+            </Container>
+        );
+    }
 
 
     return (
-        <div>
+        <Container>
             <h2>Goalies Data</h2>
 
             {/* Save Percentage Bar Chart */}
-            <h3>Save Percentage</h3>
-            {savePercentImageData ? (
-                <img src={`data:image/png;base64,${savePercentImageData}`} alt="Save Percentage Chart" style={{ width: '100%', maxWidth: '800px' }} />
-            ) : (
-                <div>Loading Save Percentage chart...</div>
-            )}
+             <Row className="mt-3">
+                <Col>
+                    <h3>Save Percentage</h3>
+                     {savePercentImageData ? (
+                        <Image src={`data:image/png;base64,${savePercentImageData}`} alt="Save Percentage Chart" fluid />
+                    ) : (
+                        <Spinner animation="border" role="status" />
+                    )}
+                </Col>
+            </Row>
 
             {/* Saves Per Game Bar Chart */}
-            <h3>Saves Per Game</h3>
-            {savesPerGameImageData ? (  // Conditional rendering for the new chart
-                <img src={`data:image/png;base64,${savesPerGameImageData}`} alt="Saves Per Game Chart" style={{ width: '100%', maxWidth: '800px' }} />
-            ) : (
-                <div>Loading Saves Per Game chart...</div>
-            )}
+            <Row className="mt-3">
+                <Col>
+                    <h3>Saves Per Game</h3>
+                    {savesPerGameImageData ? (  // Conditional rendering for the new chart
+                        <Image src={`data:image/png;base64,${savesPerGameImageData}`} alt="Saves Per Game Chart" fluid />
+                    ) : (
+                         <Spinner animation="border" role="status" />
+                    )}
+                </Col>
+            </Row>
+
 
             {/* Table of All Stats */}
+            <Row className="mt-3">
+                <Col>
             <h3>All Stats</h3>
-            <table>
+            <Table striped bordered hover responsive>
                 <thead>
                     <tr>
-                        {Object.keys(tableData[0]).map((key) => (
+                         {Object.keys(tableData[0]).map((key) => (
                             <th key={key}>{key}</th>
                         ))}
                     </tr>
@@ -77,14 +110,16 @@ function Goalies() {
                 <tbody>
                     {tableData.map((goalie, index) => (
                         <tr key={index}>
-                            {Object.values(goalie).map((value, cellIndex) => (
+                             {Object.values(goalie).map((value, cellIndex) => (
                                 <td key={cellIndex}>{value}</td>
                             ))}
                         </tr>
                     ))}
                 </tbody>
-            </table>
-        </div>
+            </Table>
+            </Col>
+            </Row>
+        </Container>
     );
 }
 

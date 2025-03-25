@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Table, Spinner, Alert, Image, Container, Row, Col } from 'react-bootstrap';
 
 function Games() {
   const [games, setGames] = useState([]);
@@ -43,48 +44,66 @@ function Games() {
     fetchGraphData();
   }, []);
 
-  if (loadingGames || loadingGraph) {
-    return <div>Loading data...</div>;
+    if (loadingGames || loadingGraph) {
+    return (
+      <Container className="text-center mt-5">
+        <Spinner animation="border" role="status" />
+        <p>Loading data...</p>
+      </Container>
+    );
   }
 
   if (errorGames || errorGraph) {
     return (
-      <div>
-        {errorGames && <div>Error loading games: {errorGames}</div>}
-        {errorGraph && <div>Error loading graph: {errorGraph}</div>}
-      </div>
+      <Container className="mt-5">
+        <Alert variant="danger">
+          {errorGames && <p>Error loading games: {errorGames}</p>}
+          {errorGraph && <p>Error loading graph: {errorGraph}</p>}
+        </Alert>
+      </Container>
     );
   }
 
   if (!games || games.length === 0) {
-    return <div>No games data found.</div>;
+    return (
+      <Container className="mt-5">
+        <Alert variant="info">No games data found.</Alert>
+      </Container>
+    );
   }
 
   return (
-    <div>
-      <h2>Games Data</h2>
-      <table>
-        <thead>
-          <tr>
-            {Object.keys(games[0]).map((key) => (
-              <th key={key}>{key}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {games.map((game, index) => (
-            <tr key={index}>
-              {Object.values(game).map((value, cellIndex) => (
-                <td key={cellIndex}>{value}</td>
+    <Container>
+      <Row>
+        <Col>
+          <h2>Games Data</h2>
+          <Table striped bordered hover responsive>
+            <thead>
+              <tr>
+                {Object.keys(games[0]).map((key) => (
+                  <th key={key}>{key.replace('game_', '').replace(/([A-Z])/g, ' $1').trim()}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {games.map((game, index) => (
+                <tr key={index}>
+                  {Object.values(game).map((value, cellIndex) => (
+                    <td key={cellIndex}>{value}</td>
+                  ))}
+                </tr>
               ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <h2>Faceoff Win Percentage Over Time</h2>
-      {graphImage && <img src={graphImage} alt="Faceoff Win Percentage" />}
-    </div>
+            </tbody>
+          </Table>
+        </Col>
+      </Row>
+      <Row className="mt-4">
+        <Col>
+          <h2>Faceoff Win Percentage Over Time</h2>
+          {graphImage && <Image src={graphImage} alt="Faceoff Win Percentage" fluid />}
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

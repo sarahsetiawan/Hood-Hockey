@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Image, Spinner, Alert } from 'react-bootstrap';
 
 function Skaters() {
   const [imageData, setImageData] = useState(null);
@@ -24,25 +25,37 @@ function Skaters() {
     fetchImage();
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+    if (loading) {
+        return (
+            <Container className="text-center mt-5">
+                <Spinner animation="border" role="status" />
+                <p>Loading...</p>
+            </Container>
+        );
+    }
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+    if (error) {
+        return (
+            <Container className="mt-5">
+                <Alert variant="danger">Error: {error}</Alert>
+            </Container>
+        );
+    }
 
   return (
-    <div>
-      <h1>Skaters</h1>
-      <br />
-      <h2>Scatterplot of Max Speed vs Goals</h2>
-      {imageData ? (
-        <img src={`data:image/png;base64,${imageData}`} alt="Scatterplot" />
-      ) : (
-        <div>No image data found.</div>
-      )}
-    </div>
+    <Container>
+      <Row>
+        <Col>
+          <h1>Skaters</h1>
+          <h2 className="mt-3">Scatterplot of Max Speed vs Goals</h2>
+          {imageData ? (
+            <Image src={`data:image/png;base64,${imageData}`} alt="Scatterplot" fluid />
+          ) : (
+              <Alert variant="info">No image data found.</Alert>
+          )}
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
