@@ -119,7 +119,7 @@ function Skaters() {
           ) : (
             <Row>
               <Col md={6}>
-                <h3>Top 5 Forwards</h3>
+                <h3>Forwards</h3>
                 {topForwards.length > 0 ? (
                   <Table striped bordered hover responsive size="sm">
                     <thead>
@@ -147,7 +147,7 @@ function Skaters() {
               </Col>
 
               <Col md={6}>
-                <h3>Top 5 Defenders</h3>
+                <h3>Defenders</h3>
                 {topDefenders.length > 0 ? (
                   <Table striped bordered hover responsive size="sm">
                     <thead>

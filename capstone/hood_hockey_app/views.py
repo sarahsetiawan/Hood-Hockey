@@ -493,7 +493,7 @@ class GARView(views.APIView):
                     forwards.loc[:, ar_column_name] = forwards[metric] - replacement_fwd
                     forwards = forwards.sort_values(by=ar_column_name, ascending=False)
                     # Select desired columns using a LIST and include the new AR column
-                    top_forwards = forwards[['Shirt number', 'Player', metric, ar_column_name]].head(5)
+                    top_forwards = forwards[['Shirt number', 'Player', metric, ar_column_name]]
                     print(f"--- GARView: Top Forwards calculated:\n{top_forwards} ---") # DEBUGGING
                 else:
                     print("--- GARView: No forwards found. ---") # DEBUGGING
@@ -507,7 +507,7 @@ class GARView(views.APIView):
                     defenders.loc[:, ar_column_name] = defenders[metric] - replacement_def
                     defenders = defenders.sort_values(by=ar_column_name, ascending=False)
                     # Select desired columns using a LIST and include the new AR column
-                    top_defenders = defenders[['Shirt number', 'Player', metric, ar_column_name]].head(5)
+                    top_defenders = defenders[['Shirt number', 'Player', metric, ar_column_name]]
                     print(f"--- GARView: Top Defenders calculated:\n{top_defenders} ---") # DEBUGGING
                 else:
                     print("--- GARView: No defenders found. ---") # DEBUGGING
