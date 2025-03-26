@@ -431,50 +431,162 @@ class LinesRankingsView(views.APIView):
 import io
 import base64
 
-# GAR
+# GAR - CORRECTED VERSION - Make sure you are using this one!
 class GARView(views.APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
+        # Get metric from query parameters, default to 'Points'
+        metric = request.query_params.get('metric', 'Points')
+        allowed_metrics = ['Points', 'Goals', 'Assists']
+
+        print(f"--- GARView: Received request for metric = {metric} ---") # DEBUGGING
+
+        if metric not in allowed_metrics:
+            return Response(
+                {"error": f"Invalid metric. Allowed metrics are: {', '.join(allowed_metrics)}"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         try:
             with connection.cursor() as cursor:
-                    # Get skaters data
-                    cursor.execute("""
-                        SELECT "Shirt number", "Player", "Position", "Points"
-                        FROM hood_hockey_app_skaters
-                    """)
-                    results = cursor.fetchall()
-                    columns = [col[0] for col in cursor.description]
+                # Get skaters data
+                cursor.execute("""
+                    SELECT "Shirt number", "Player", "Position", "Points", "Goals", "Assists"
+                    FROM hood_hockey_app_skaters
+                """)
+                results = cursor.fetchall()
+                columns = [col[0] for col in cursor.description]
 
-                    # All skaters
-                    skaters = pd.DataFrame(results, columns=columns)
-                    # Forwards
-                    forwards = skaters[skaters['Position'] == 'F']
-                    # Defenders
-                    defenders = skaters[skaters['Position'] == 'D']
+                # All skaters
+                skaters = pd.DataFrame(results, columns=columns)
+                print(f"--- GARView: Initial skaters DataFrame head:\n{skaters.head()} ---") # DEBUGGING
 
-                    # Calculate replacement level (30th percentile -- may need adjustment) for each position
-                    replacement_points_fwd = forwards['Points'].quantile(0.30)
-                    replacement_points_def = defenders['Points'].quantile(0.30)
-                    # Add PAR to data frames and rank
-                    forwards['PAR'] = forwards['Points'] - replacement_points_fwd
-                    forwards = forwards.sort_values(by='PAR', ascending=False)
-                    defenders['PAR'] = defenders['Points'] - replacement_points_def
-                    defenders = defenders.sort_values(by='PAR', ascending=False)
+                # Ensure metric columns are numeric, coercing errors
+                print(f"--- GARView: Converting metrics to numeric... ---") # DEBUGGING
+                for col in allowed_metrics:
+                    skaters[col] = pd.to_numeric(skaters[col], errors='coerce')
 
-                    # Return the top 5 forwards and defenders
-                    top_forwards = forwards.head(5)
-                    top_defenders = defenders.head(5)
+                # Drop rows where ANY of the metric conversions failed
+                initial_rows = len(skaters)
+                skaters.dropna(subset=allowed_metrics, inplace=True)
+                dropped_rows = initial_rows - len(skaters)
+                if dropped_rows > 0:
+                   print(f"--- GARView: Dropped {dropped_rows} rows due to non-numeric metric values. ---") # DEBUGGING
 
-                    return Response(
-                        {
-                            "top_forwards": top_forwards.to_dict(orient='records'),
-                            "top_defenders": top_defenders.to_dict(orient='records')
-                        },
-                        status=status.HTTP_200_OK
-                    )
+
+                # Forwards and Defenders (use .copy())
+                forwards = skaters[skaters['Position'] == 'F'].copy()
+                defenders = skaters[skaters['Position'] == 'D'].copy()
+                print(f"--- GARView: Number of Forwards: {len(forwards)}, Defenders: {len(defenders)} ---") # DEBUGGING
+
+
+                # Define the name for the "Above Replacement" column dynamically
+                ar_column_name = f"{metric}AR" # e.g., PointsAR, GoalsAR, AssistsAR
+                print(f"--- GARView: Using metric '{metric}' and AR column '{ar_column_name}' ---") # DEBUGGING
+
+                # --- Calculate for Forwards ---
+                if not forwards.empty:
+                    replacement_fwd = forwards[metric].quantile(0.30)
+                    print(f"--- GARView: Forward Replacement Level ({metric}): {replacement_fwd} ---") # DEBUGGING
+                    # Use .loc to assign the new column
+                    forwards.loc[:, ar_column_name] = forwards[metric] - replacement_fwd
+                    forwards = forwards.sort_values(by=ar_column_name, ascending=False)
+                    # Select desired columns using a LIST and include the new AR column
+                    top_forwards = forwards[['Shirt number', 'Player', metric, ar_column_name]].head(5)
+                    print(f"--- GARView: Top Forwards calculated:\n{top_forwards} ---") # DEBUGGING
+                else:
+                    print("--- GARView: No forwards found. ---") # DEBUGGING
+                    top_forwards = pd.DataFrame(columns=['Shirt number', 'Player', metric, ar_column_name]) # Empty DF if no forwards
+
+                # --- Calculate for Defenders ---
+                if not defenders.empty:
+                    replacement_def = defenders[metric].quantile(0.30)
+                    print(f"--- GARView: Defender Replacement Level ({metric}): {replacement_def} ---") # DEBUGGING
+                     # Use .loc to assign the new column
+                    defenders.loc[:, ar_column_name] = defenders[metric] - replacement_def
+                    defenders = defenders.sort_values(by=ar_column_name, ascending=False)
+                    # Select desired columns using a LIST and include the new AR column
+                    top_defenders = defenders[['Shirt number', 'Player', metric, ar_column_name]].head(5)
+                    print(f"--- GARView: Top Defenders calculated:\n{top_defenders} ---") # DEBUGGING
+                else:
+                    print("--- GARView: No defenders found. ---") # DEBUGGING
+                    top_defenders = pd.DataFrame(columns=['Shirt number', 'Player', metric, ar_column_name]) # Empty DF if no defenders
+
+                response_data = {
+                        "top_forwards": top_forwards.to_dict(orient='records'),
+                        "top_defenders": top_defenders.to_dict(orient='records')
+                    }
+                print(f"--- GARView: Sending response data: {response_data} ---") # DEBUGGING
+
+                return Response(response_data, status=status.HTTP_200_OK)
+
         except Exception as e:
-            return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            print(f"!!! ERROR in GARView for metric '{metric}' !!!") # DEBUGGING
+            return Response({"error": f"An error occurred processing metric '{metric}': {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+# GAR
+# class GARView(views.APIView):
+#     permission_classes = [AllowAny]
+# 
+#     def get(self, request, metric="Points"):
+#         try:
+#             with connection.cursor() as cursor:
+#                     # Get skaters data
+#                     cursor.execute("""
+#                         SELECT "Shirt number", "Player", "Position", "Points", "Goals", "Assists"
+#                         FROM hood_hockey_app_skaters
+#                     """)
+#                     results = cursor.fetchall()
+#                     columns = [col[0] for col in cursor.description]
+# 
+#                     # All skaters
+#                     skaters = pd.DataFrame(results, columns=columns)
+#                     # Forwards
+#                     forwards = skaters[skaters['Position'] == 'F']
+#                     # Defenders
+#                     defenders = skaters[skaters['Position'] == 'D']
+# 
+#                     # Calculate replacement level (30th percentile -- may need adjustment) for each position
+#                     replacement_fwd = forwards[metric].quantile(0.30)
+#                     replacement_def = defenders[metric].quantile(0.30)
+#                     # Add PAR/GAR/AAR to data frames and rank
+#                     if metric == "Points":
+#                         forwards['PointsAR'] = forwards['Points'] - replacement_fwd
+#                         forwards = forwards.sort_values(by='PointsAR', ascending=False)
+#                         defenders['PointsAR'] = defenders['Points'] - replacement_def
+#                         defenders = defenders.sort_values(by='PointsAR', ascending=False)
+#                         # Top 5 forwards and defenders
+#                         top_forwards = forwards[['Shirt number', 'Player', metric, 'PointsAR']].head(5)
+#                         top_defenders = defenders[['Shirt number', 'Player', metric, 'PointsAR']].head(5)
+#                     elif metric == "Goals":
+#                         forwards['GoalsAR'] = forwards['Goals'] - replacement_fwd
+#                         forwards = forwards.sort_values(by='GoalsAR', ascending=False)
+#                         defenders['GoalsAR'] = defenders['Goals'] - replacement_def
+#                         defenders = defenders.sort_values(by='GoalsAR', ascending=False)
+#                         # Top 5 forwards and defenders
+#                         top_forwards = forwards[['Shirt number', 'Player', metric, 'GoalsAR']].head(5)
+#                         top_defenders = defenders[['Shirt number', 'Player', metric, 'GoalsAR']].head(5)
+#                     elif metric == "Assists":
+#                         forwards['AssistsAR'] = forwards['Assists'] - replacement_fwd
+#                         forwards = forwards.sort_values(by='AssistsAR', ascending=False)
+#                         defenders['AssistsAR'] = defenders['Assists'] - replacement_def
+#                         defenders = defenders.sort_values(by='AssistsAR', ascending=False)
+#                         # Top 5 forwards and defenders
+#                         top_forwards = forwards[['Shirt number', 'Player', metric, 'AssistsAR']].head(5)
+#                         top_defenders = defenders[['Shirt number', 'Player', metric, 'AssistsAR']].head(5)
+#                     else:
+#                         return Response({"error": "Invalid metric. Please choose 'Points', 'Goals', or 'Assists'."}, status=status.HTTP_400_BAD_REQUEST)
+# 
+#                     return Response(
+#                         {
+#                             "top_forwards": top_forwards.to_dict(orient='records'),
+#                             "top_defenders": top_defenders.to_dict(orient='records')
+#                         },
+#                         status=status.HTTP_200_OK
+#                     )
+#         except Exception as e:
+#             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
 # Goals Vs. Max Speed
 class FitnessCorrelationView(views.APIView):
