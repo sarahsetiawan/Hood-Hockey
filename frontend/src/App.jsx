@@ -66,6 +66,7 @@ function App() {
                     <Route path="/logout" element={<Logout />} />
                     <Route path="/register" element={<RegisterAndLogout />} />
                     <Route path="/games" element={<ProtectedRoute><Games /></ProtectedRoute>} />
+        
                     <Route path="/upload" element={<ProtectedRoute><Upload /></ProtectedRoute>} />
                     <Route path="/lines" element={<ProtectedRoute><LinesQuery /></ProtectedRoute>} />
                     <Route path="/skaters" element={<ProtectedRoute><Skaters /></ProtectedRoute>} />

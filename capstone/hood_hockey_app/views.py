@@ -432,7 +432,7 @@ class LinesRankingsView(views.APIView):
 import io
 import base64
 
-# GAR - Modified to return chart data
+# GAR - Modified for AR bars split at zero
 class GARView(views.APIView):
     permission_classes = [AllowAny]
 
@@ -452,7 +452,7 @@ class GARView(views.APIView):
 
         try:
             with connection.cursor() as cursor:
-                cursor.execute("""
+                cursor.execute(f"""
                     SELECT "Shirt number", "Player", "Position", "Points", "Goals", "Assists"
                     FROM hood_hockey_app_skaters
                 """)
@@ -476,58 +476,63 @@ class GARView(views.APIView):
 
                 # --- Process Forwards ---
                 if not forwards.empty:
-                    replacement_fwd = forwards[metric].quantile(0.30)
+                    replacement_fwd = float(forwards[metric].quantile(0.30))
                     forwards.loc[:, ar_column_name] = forwards[metric] - replacement_fwd
                     forwards = forwards.sort_values(by=ar_column_name, ascending=False)
-                    top_forwards_df = forwards[['Shirt number', 'Player', metric, ar_column_name]].head(5) # For table
+                    top_forwards_df = forwards[['Shirt number', 'Player', metric, ar_column_name]].head(5)
 
-                    # Prepare chart data for *all* forwards (not just top 5)
-                    chart_forwards = forwards.sort_values(by=ar_column_name, ascending=False) # Sort all for chart
-                    par_values_fwd = chart_forwards[ar_column_name]
-                    blue_heights_fwd = np.minimum(par_values_fwd, 0).astype(float) # Only negative part or 0
-                    red_heights_fwd = np.maximum(0, par_values_fwd).astype(float)    # Only positive part or 0
+                    # --- Prepare Chart Data (Split AR Bars at Zero) ---
+                    chart_forwards = forwards.sort_values(by=ar_column_name, ascending=False)
+                    ar_values_fwd = chart_forwards[ar_column_name]
+                    threshold_ar = replacement_fwd # Threshold for color split
+
+                    # Blue Height: Negative part of AR (or 0)
+                    blue_heights_fwd = np.minimum(ar_values_fwd, threshold_ar).astype(float)
+                    # Red Height: Positive part of AR (or 0)
+                    red_heights_fwd = np.maximum(0, ar_values_fwd - threshold_ar).astype(float)
 
                     chart_data_forwards = {
                         "players": chart_forwards['Player'].tolist(),
-                        "ar_values": par_values_fwd.tolist(), # Send the actual AR values for hover text
-                        "below_threshold": blue_heights_fwd.tolist(), # Use 0 as threshold for split color
-                        "above_threshold": red_heights_fwd.tolist(),
-                        "threshold": 0, # The effective threshold for color split is 0 (Above/Below Replacement)
+                        "ar_values": ar_values_fwd.tolist(), # Original AR values for hover/data
+                        "below_replacement_ar": blue_heights_fwd.tolist(), # Negative AR segment
+                        "above_replacement_ar": red_heights_fwd.tolist(), # Positive AR segment
+                        "threshold_ar": threshold_ar, # The split point (0)
                         "metric": metric,
                         "ar_column": ar_column_name,
-                        "replacement_level": float(replacement_fwd) # Send actual replacement level
+                        # "replacement_level_metric": replacement_fwd # Keep if needed elsewhere
                     }
 
 
-                # --- Process Defenders ---
+                # --- Process Defenders (Similar Logic) ---
                 if not defenders.empty:
-                    replacement_def = defenders[metric].quantile(0.30)
+                    replacement_def = float(defenders[metric].quantile(0.30))
                     defenders.loc[:, ar_column_name] = defenders[metric] - replacement_def
                     defenders = defenders.sort_values(by=ar_column_name, ascending=False)
-                    top_defenders_df = defenders[['Shirt number', 'Player', metric, ar_column_name]].head(5) # For table
+                    top_defenders_df = defenders[['Shirt number', 'Player', metric, ar_column_name]].head(5)
 
-                     # Prepare chart data for *all* defenders
                     chart_defenders = defenders.sort_values(by=ar_column_name, ascending=False)
-                    par_values_def = chart_defenders[ar_column_name]
-                    blue_heights_def = np.minimum(par_values_def, 0).astype(float)
-                    red_heights_def = np.maximum(0, par_values_def).astype(float)
+                    ar_values_def = chart_defenders[ar_column_name]
+                    threshold_ar_def = replacement_def # Threshold for color split is replacement value
+
+                    blue_heights_def = np.minimum(ar_values_def, threshold_ar_def).astype(float)
+                    red_heights_def = np.maximum(0, ar_values_def - threshold_ar_def).astype(float)
 
                     chart_data_defenders = {
                         "players": chart_defenders['Player'].tolist(),
-                        "ar_values": par_values_def.tolist(),
-                        "below_threshold": blue_heights_def.tolist(),
-                        "above_threshold": red_heights_def.tolist(),
-                        "threshold": 0, # Effective threshold for color split
+                        "ar_values": ar_values_def.tolist(),
+                        "below_replacement_ar": blue_heights_def.tolist(),
+                        "above_replacement_ar": red_heights_def.tolist(),
+                        "threshold_ar": threshold_ar_def,
                         "metric": metric,
                         "ar_column": ar_column_name,
-                        "replacement_level": float(replacement_def) # Send actual replacement level
+                        # "replacement_level_metric": replacement_def
                     }
 
                 response_data = {
                         "top_forwards": top_forwards_df.to_dict(orient='records'),
                         "top_defenders": top_defenders_df.to_dict(orient='records'),
-                        "chart_data_forwards": chart_data_forwards, # Add chart data
-                        "chart_data_defenders": chart_data_defenders # Add chart data
+                        "chart_data_forwards": chart_data_forwards,
+                        "chart_data_defenders": chart_data_defenders
                     }
                 print(f"--- GARView: Sending response data keys: {response_data.keys()} ---")
 
