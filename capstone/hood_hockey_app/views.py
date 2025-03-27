@@ -16,6 +16,7 @@ import json
 import matplotlib
 matplotlib.use('Agg') # Fix threading issue
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 
 # ------------------------------------------------------
 # PostgreSQL database connection settings 
@@ -431,16 +432,15 @@ class LinesRankingsView(views.APIView):
 import io
 import base64
 
-# GAR - CORRECTED VERSION - Make sure you are using this one!
+# GAR - Modified to return chart data
 class GARView(views.APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        # Get metric from query parameters, default to 'Points'
         metric = request.query_params.get('metric', 'Points')
         allowed_metrics = ['Points', 'Goals', 'Assists']
 
-        print(f"--- GARView: Received request for metric = {metric} ---") # DEBUGGING
+        print(f"--- GARView: Received request for metric = {metric} ---")
 
         if metric not in allowed_metrics:
             return Response(
@@ -448,81 +448,93 @@ class GARView(views.APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+        ar_column_name = f"{metric}AR"
+
         try:
             with connection.cursor() as cursor:
-                # Get skaters data
                 cursor.execute("""
                     SELECT "Shirt number", "Player", "Position", "Points", "Goals", "Assists"
                     FROM hood_hockey_app_skaters
                 """)
                 results = cursor.fetchall()
                 columns = [col[0] for col in cursor.description]
-
-                # All skaters
                 skaters = pd.DataFrame(results, columns=columns)
-                print(f"--- GARView: Initial skaters DataFrame head:\n{skaters.head()} ---") # DEBUGGING
 
-                # Ensure metric columns are numeric, coercing errors
-                print(f"--- GARView: Converting metrics to numeric... ---") # DEBUGGING
                 for col in allowed_metrics:
                     skaters[col] = pd.to_numeric(skaters[col], errors='coerce')
+                essential_cols = ['Shirt number', 'Player', 'Position', metric]
+                skaters.dropna(subset=essential_cols, inplace=True)
 
-                # Drop rows where ANY of the metric conversions failed
-                initial_rows = len(skaters)
-                skaters.dropna(subset=allowed_metrics, inplace=True)
-                dropped_rows = initial_rows - len(skaters)
-                if dropped_rows > 0:
-                   print(f"--- GARView: Dropped {dropped_rows} rows due to non-numeric metric values. ---") # DEBUGGING
-
-
-                # Forwards and Defenders (use .copy())
                 forwards = skaters[skaters['Position'] == 'F'].copy()
                 defenders = skaters[skaters['Position'] == 'D'].copy()
-                print(f"--- GARView: Number of Forwards: {len(forwards)}, Defenders: {len(defenders)} ---") # DEBUGGING
 
+                chart_data_forwards = None
+                top_forwards_df = pd.DataFrame(columns=['Shirt number', 'Player', metric, ar_column_name])
 
-                # Define the name for the "Above Replacement" column dynamically
-                ar_column_name = f"{metric}AR" # e.g., PointsAR, GoalsAR, AssistsAR
-                print(f"--- GARView: Using metric '{metric}' and AR column '{ar_column_name}' ---") # DEBUGGING
+                chart_data_defenders = None
+                top_defenders_df = pd.DataFrame(columns=['Shirt number', 'Player', metric, ar_column_name])
 
-                # --- Calculate for Forwards ---
+                # --- Process Forwards ---
                 if not forwards.empty:
                     replacement_fwd = forwards[metric].quantile(0.30)
-                    print(f"--- GARView: Forward Replacement Level ({metric}): {replacement_fwd} ---") # DEBUGGING
-                    # Use .loc to assign the new column
                     forwards.loc[:, ar_column_name] = forwards[metric] - replacement_fwd
                     forwards = forwards.sort_values(by=ar_column_name, ascending=False)
-                    # Select desired columns using a LIST and include the new AR column
-                    top_forwards = forwards[['Shirt number', 'Player', metric, ar_column_name]]
-                    print(f"--- GARView: Top Forwards calculated:\n{top_forwards} ---") # DEBUGGING
-                else:
-                    print("--- GARView: No forwards found. ---") # DEBUGGING
-                    top_forwards = pd.DataFrame(columns=['Shirt number', 'Player', metric, ar_column_name]) # Empty DF if no forwards
+                    top_forwards_df = forwards[['Shirt number', 'Player', metric, ar_column_name]].head(5) # For table
 
-                # --- Calculate for Defenders ---
+                    # Prepare chart data for *all* forwards (not just top 5)
+                    chart_forwards = forwards.sort_values(by=ar_column_name, ascending=False) # Sort all for chart
+                    par_values_fwd = chart_forwards[ar_column_name]
+                    blue_heights_fwd = np.minimum(par_values_fwd, 0).astype(float) # Only negative part or 0
+                    red_heights_fwd = np.maximum(0, par_values_fwd).astype(float)    # Only positive part or 0
+
+                    chart_data_forwards = {
+                        "players": chart_forwards['Player'].tolist(),
+                        "ar_values": par_values_fwd.tolist(), # Send the actual AR values for hover text
+                        "below_threshold": blue_heights_fwd.tolist(), # Use 0 as threshold for split color
+                        "above_threshold": red_heights_fwd.tolist(),
+                        "threshold": 0, # The effective threshold for color split is 0 (Above/Below Replacement)
+                        "metric": metric,
+                        "ar_column": ar_column_name,
+                        "replacement_level": float(replacement_fwd) # Send actual replacement level
+                    }
+
+
+                # --- Process Defenders ---
                 if not defenders.empty:
                     replacement_def = defenders[metric].quantile(0.30)
-                    print(f"--- GARView: Defender Replacement Level ({metric}): {replacement_def} ---") # DEBUGGING
-                     # Use .loc to assign the new column
                     defenders.loc[:, ar_column_name] = defenders[metric] - replacement_def
                     defenders = defenders.sort_values(by=ar_column_name, ascending=False)
-                    # Select desired columns using a LIST and include the new AR column
-                    top_defenders = defenders[['Shirt number', 'Player', metric, ar_column_name]]
-                    print(f"--- GARView: Top Defenders calculated:\n{top_defenders} ---") # DEBUGGING
-                else:
-                    print("--- GARView: No defenders found. ---") # DEBUGGING
-                    top_defenders = pd.DataFrame(columns=['Shirt number', 'Player', metric, ar_column_name]) # Empty DF if no defenders
+                    top_defenders_df = defenders[['Shirt number', 'Player', metric, ar_column_name]].head(5) # For table
+
+                     # Prepare chart data for *all* defenders
+                    chart_defenders = defenders.sort_values(by=ar_column_name, ascending=False)
+                    par_values_def = chart_defenders[ar_column_name]
+                    blue_heights_def = np.minimum(par_values_def, 0).astype(float)
+                    red_heights_def = np.maximum(0, par_values_def).astype(float)
+
+                    chart_data_defenders = {
+                        "players": chart_defenders['Player'].tolist(),
+                        "ar_values": par_values_def.tolist(),
+                        "below_threshold": blue_heights_def.tolist(),
+                        "above_threshold": red_heights_def.tolist(),
+                        "threshold": 0, # Effective threshold for color split
+                        "metric": metric,
+                        "ar_column": ar_column_name,
+                        "replacement_level": float(replacement_def) # Send actual replacement level
+                    }
 
                 response_data = {
-                        "top_forwards": top_forwards.to_dict(orient='records'),
-                        "top_defenders": top_defenders.to_dict(orient='records')
+                        "top_forwards": top_forwards_df.to_dict(orient='records'),
+                        "top_defenders": top_defenders_df.to_dict(orient='records'),
+                        "chart_data_forwards": chart_data_forwards, # Add chart data
+                        "chart_data_defenders": chart_data_defenders # Add chart data
                     }
-                print(f"--- GARView: Sending response data: {response_data} ---") # DEBUGGING
+                print(f"--- GARView: Sending response data keys: {response_data.keys()} ---")
 
                 return Response(response_data, status=status.HTTP_200_OK)
 
         except Exception as e:
-            print(f"!!! ERROR in GARView for metric '{metric}' !!!") # DEBUGGING
+            print(f"!!! ERROR in GARView for metric '{metric}' !!!")
             return Response({"error": f"An error occurred processing metric '{metric}': {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # GAR

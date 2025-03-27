@@ -11,3 +11,5 @@ python-dotenv
 openpyxl
 pandas
 sqlalchemy
+plotly
+numpy
