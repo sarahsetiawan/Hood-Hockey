@@ -7,7 +7,6 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Games from "./pages/Games";
-import Test from "./pages/test";
 import Upload from "./pages/Upload";
 import LinesQuery from "./pages/Lines";
 import Skaters from "./pages/Skaters";
@@ -67,7 +66,6 @@ function App() {
                     <Route path="/logout" element={<Logout />} />
                     <Route path="/register" element={<RegisterAndLogout />} />
                     <Route path="/games" element={<ProtectedRoute><Games /></ProtectedRoute>} />
-                    <Route path="/test" element={<Test />} />
                     <Route path="/upload" element={<ProtectedRoute><Upload /></ProtectedRoute>} />
                     <Route path="/lines" element={<ProtectedRoute><LinesQuery /></ProtectedRoute>} />
                     <Route path="/skaters" element={<ProtectedRoute><Skaters /></ProtectedRoute>} />
