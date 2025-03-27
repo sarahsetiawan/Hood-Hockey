@@ -432,7 +432,7 @@ class LinesRankingsView(views.APIView):
 import io
 import base64
 
-# GAR - Modified for AR bars split at zero
+## GAR - Modified to send raw data for frontend splitting
 class GARView(views.APIView):
     permission_classes = [AllowAny]
 
@@ -481,29 +481,20 @@ class GARView(views.APIView):
                     forwards = forwards.sort_values(by=ar_column_name, ascending=False)
                     top_forwards_df = forwards[['Shirt number', 'Player', metric, ar_column_name]].head(5)
 
-                    # --- Prepare Chart Data (Split AR Bars at Zero) ---
+                    # --- Prepare Chart Data (Raw Values for Frontend Splitting) ---
                     chart_forwards = forwards.sort_values(by=ar_column_name, ascending=False)
-                    ar_values_fwd = chart_forwards[ar_column_name]
-                    threshold_ar = replacement_fwd # Threshold for color split
-
-                    # Blue Height: Negative part of AR (or 0)
-                    blue_heights_fwd = np.minimum(ar_values_fwd, threshold_ar).astype(float)
-                    # Red Height: Positive part of AR (or 0)
-                    red_heights_fwd = np.maximum(0, ar_values_fwd - threshold_ar).astype(float)
 
                     chart_data_forwards = {
                         "players": chart_forwards['Player'].tolist(),
-                        "ar_values": ar_values_fwd.tolist(), # Original AR values for hover/data
-                        "below_replacement_ar": blue_heights_fwd.tolist(), # Negative AR segment
-                        "above_replacement_ar": red_heights_fwd.tolist(), # Positive AR segment
-                        "threshold_ar": threshold_ar, # The split point (0)
+                        "metric_values": chart_forwards[metric].tolist(), # Send base metric values
+                        "ar_values": chart_forwards[ar_column_name].tolist(), # Send AR values
+                        "threshold_metric": replacement_fwd, # Send the threshold value
                         "metric": metric,
                         "ar_column": ar_column_name,
-                        # "replacement_level_metric": replacement_fwd # Keep if needed elsewhere
                     }
 
 
-                # --- Process Defenders (Similar Logic) ---
+                # --- Process Defenders ---
                 if not defenders.empty:
                     replacement_def = float(defenders[metric].quantile(0.30))
                     defenders.loc[:, ar_column_name] = defenders[metric] - replacement_def
@@ -511,21 +502,14 @@ class GARView(views.APIView):
                     top_defenders_df = defenders[['Shirt number', 'Player', metric, ar_column_name]].head(5)
 
                     chart_defenders = defenders.sort_values(by=ar_column_name, ascending=False)
-                    ar_values_def = chart_defenders[ar_column_name]
-                    threshold_ar_def = replacement_def # Threshold for color split is replacement value
-
-                    blue_heights_def = np.minimum(ar_values_def, threshold_ar_def).astype(float)
-                    red_heights_def = np.maximum(0, ar_values_def - threshold_ar_def).astype(float)
 
                     chart_data_defenders = {
                         "players": chart_defenders['Player'].tolist(),
-                        "ar_values": ar_values_def.tolist(),
-                        "below_replacement_ar": blue_heights_def.tolist(),
-                        "above_replacement_ar": red_heights_def.tolist(),
-                        "threshold_ar": threshold_ar_def,
+                        "metric_values": chart_defenders[metric].tolist(),
+                        "ar_values": chart_defenders[ar_column_name].tolist(),
+                        "threshold_metric": replacement_def,
                         "metric": metric,
                         "ar_column": ar_column_name,
-                        # "replacement_level_metric": replacement_def
                     }
 
                 response_data = {

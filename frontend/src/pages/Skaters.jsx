@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Image, Spinner, Alert, Table, Form } from 'react-bootstrap';
 import Plot from 'react-plotly.js';
+// Import numpy-like functionality if needed for complex array math,
+// otherwise use standard JS array methods. For min/max, Math.min/max works per element.
+// import * as np from 'numjs'; // Example if using numjs: npm install numjs
 
 function Skaters() {
   const [imageData, setImageData] = useState(null); // For scatterplot
   const [topForwards, setTopForwards] = useState([]); // For table
   const [topDefenders, setTopDefenders] = useState([]); // For table
-  const [forwardChartData, setForwardChartData] = useState(null); // For forward chart
-  const [defenderChartData, setDefenderChartData] = useState(null); // For defender chart
+  const [forwardChartData, setForwardChartData] = useState(null); // For forward chart data FROM BACKEND
+  const [defenderChartData, setDefenderChartData] = useState(null); // For defender chart data FROM BACKEND
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedMetric, setSelectedMetric] = useState('Points');
@@ -17,7 +20,7 @@ function Skaters() {
   const currentARColumn = `${selectedMetric}AR`;
 
   useEffect(() => {
-    // ... (fetchData logic remains the same) ...
+    // ... (fetchData logic remains the same - fetches raw chart data now) ...
      const fetchData = async () => {
       setLoading(true);
       setError(null);
@@ -39,7 +42,9 @@ function Skaters() {
         if (!garResponse.ok) throw new Error(`GAR data fetch error! status: ${garResponse.status}`);
         const garData = await garResponse.json();
 
-        if (!garData || !garData.top_forwards || !garData.top_defenders) {
+        if (!garData || !garData.top_forwards || !garData.top_defenders || !garData.chart_data_forwards || !garData.chart_data_defenders) {
+             // Check for chart data existence as well
+             console.error("Received data:", garData); // Log data if structure is wrong
              throw new Error("Invalid data structure received from GAR API.");
         }
 
@@ -67,62 +72,68 @@ function Skaters() {
     setSelectedMetric(event.target.value);
   };
 
-  // Helper function to create Plotly data and layout for AR bars split at ZERO
+  // Helper function to create Plotly data and layout for SPLIT bars at THRESHOLD
   const createChartConfig = (chartData, positionTitle) => {
       if (!chartData) return null;
 
-      // Destructure data received from backend
+      // Destructure raw data received from backend
       const {
           players,
-          ar_values,             // Original AR values for hover
-          below_replacement_ar, // Negative AR segment heights (<= 0)
-          above_replacement_ar, // Positive AR segment heights (> 0)
-          threshold_ar,         // This is 0
+          metric_values, // Original base metric values
+          ar_values,     // Original AR values
+          threshold_metric, // The actual replacement level threshold
           metric,
           ar_column
-          // replacement_level_metric // Not directly used for this chart's line
       } = chartData;
 
+      // --- Calculate Bar Segments in Frontend ---
+      const blue_heights = metric_values.map(value => Math.min(value, threshold_metric < 0 ? 0 : threshold_metric)); // Cap at threshold, ensure base is >= 0 if threshold is neg
+      const red_heights = metric_values.map(value => Math.max(0, value - threshold_metric));
+
+      // Prepare customdata for hover text (combine base metric and AR)
+      const customData = metric_values.map((metricVal, index) => ({
+            metricValue: metricVal,
+            arValue: ar_values[index]
+      }));
+
       const plotData = [
-          // Blue Bars (Negative AR or Zero)
+          // Blue Bars (Value Below or At Threshold)
           {
               x: players,
-              y: below_replacement_ar, // Use the negative AR segment height
+              y: blue_heights,
               type: 'bar',
-              name: 'Below/At Replacement (AR ≤ 0)',
+              name: `Below/At Repl. (${metric} ≤ ${threshold_metric?.toFixed(2)})`,
               marker: { color: 'blue' },
-              customdata: ar_values, // Show full AR value on hover
-              hovertemplate: `<b>%{x}</b><br>${ar_column}: %{customdata:.2f}<extra></extra>`
+              customdata: customData, // Use combined custom data
+              hovertemplate: `<b>%{x}</b><br>${metric}: %{customdata.metricValue:.2f}<br>${ar_column}: %{customdata.arValue:.2f}<extra></extra>`
           },
-          // Red Bars (Positive AR) - Stacked on blue (which ends at y=0 or below)
+          // Red Bars (Value Above Threshold) - Stacked on top of blue
           {
               x: players,
-              y: above_replacement_ar, // Use the positive AR segment height
+              y: red_heights,
               type: 'bar',
-              base: below_replacement_ar, // Start red bar where blue bar ends (at y=0 or below)
-              // Alternatively, if blue_heights are always <=0 and red_heights always >=0:
-              // base: 0, // Can also set base to 0 if blue is always <= 0
-              name: 'Above Replacement (AR > 0)',
+              base: blue_heights, // Start red bars where blue bars end
+              name: `Above Repl. (${metric} > ${threshold_metric?.toFixed(2)})`,
               marker: { color: 'red' },
-              customdata: ar_values, // Show full AR value on hover
-              hovertemplate: `<b>%{x}</b><br>${ar_column}: %{customdata:.2f}<extra></extra>`
+              customdata: customData, // Use combined custom data
+              hovertemplate: `<b>%{x}</b><br>${metric}: %{customdata.metricValue:.2f}<br>${ar_column}: %{customdata.arValue:.2f}<extra></extra>`
           }
       ];
 
       const plotLayout = {
-          title: `${ar_column} for ${positionTitle} `,
+          title: `${metric} for ${positionTitle} (Split by Replacement Level)`,
           xaxis: { title: 'Player', tickangle: -45 },
-          yaxis: { title: `${metric} Above Replacement (${ar_column})` }, // Y-axis represents AR value
-          barmode: 'relative', // 'relative' works well for stacking positive/negative
-          legend: { title: { text: 'AR vs 0' } },
-          shapes: [ // Line at AR = 0
+          yaxis: { title: `${metric}` }, // Y-axis represents the base metric
+          barmode: 'relative', // Use 'relative' for stacking segments
+          legend: { title: { text: 'vs Replacement' } },
+          shapes: [ // Line for the actual replacement level threshold
              {
                 type: 'line',
                 xref: 'paper',
                 x0: 0,
-                y0: threshold_ar, // Use the threshold_ar which is 0
+                y0: threshold_metric, // Use the actual threshold value
                 x1: 1,
-                y1: threshold_ar, // Line at y=0
+                y1: threshold_metric,
                 line: {
                     color: 'grey',
                     width: 2,
@@ -130,18 +141,18 @@ function Skaters() {
                 }
              }
           ],
-          annotations: [ // Label the AR = 0 line
+          annotations: [ // Label the replacement level line
              {
                 xref: 'paper',
-                x: 0.98,
-                y: threshold_ar, // Use the threshold_ar which is 0
-                text: `Replacement Level`, // Label the zero line
+                x: 0.98, // Position near right
+                y: threshold_metric,
+                text: `Repl. Level (${threshold_metric?.toFixed(2)})`,
                 showarrow: false,
                 yshift: 5,
                 font: {color: 'grey'}
              }
           ],
-          margin: { b: 100 }
+          margin: { b: 100 } // Bottom margin for labels
       };
 
       return { data: plotData, layout: plotLayout };
@@ -154,8 +165,8 @@ function Skaters() {
   // --- JSX Rendering (mostly unchanged) ---
   return (
     <Container>
-       {/* ... (Scatterplot rendering, Dropdown, Loading/Error checks remain the same) ... */}
-        <h1>Skaters</h1>
+      {/* ... (Scatterplot rendering, Dropdown, Loading/Error checks remain the same) ... */}
+       <h1>Skaters</h1>
         <h2 className="mt-3">Scatterplot of Max Speed vs Goals</h2>
         {loading && !imageData ? <div className="text-center"><Spinner animation="border" size="sm" /> Loading Image...</div> :
          imageData ? <Image src={`data:image/png;base64,${imageData}`} alt="Scatterplot" fluid /> :
@@ -196,7 +207,7 @@ function Skaters() {
                             data={forwardChartConfig.data}
                             layout={forwardChartConfig.layout}
                             useResizeHandler={true}
-                            style={{ width: '100%', height: '400px' }}
+                            style={{ width: '100%', height: '450px' }}
                             config={{ responsive: true }}
                         />
                     ) : (
@@ -209,7 +220,7 @@ function Skaters() {
                             data={defenderChartConfig.data}
                             layout={defenderChartConfig.layout}
                             useResizeHandler={true}
-                            style={{ width: '100%', height: '400px' }}
+                            style={{ width: '100%', height: '450px' }}
                             config={{ responsive: true }}
                         />
                     ) : (

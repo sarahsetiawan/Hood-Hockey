@@ -1,0 +1,62 @@
+:root, [data-bs-theme=light] {
+    --bs-blue: #007bff; /* Example - can be adjusted */
+    --bs-indigo: #6610f2;
+    --bs-purple: #6f42c1;
+    --bs-pink: #e83283; /* Keeping pink for primary for now as it's in theme, can be changed to navy accent later */
+    --bs-red: #dc3545; /* Can be removed or reassigned */
+    --bs-orange: #fd7e14; /* Can be removed or reassigned */
+    --bs-yellow: #ffc107; /* Can be removed or reassigned */
+    --bs-green: #28a745; /* Can be removed or reassigned */
+    --bs-teal: #20c997; /* Can be removed or reassigned */
+    --bs-cyan: #17a2b8; /* Can be removed or reassigned */
+    --bs-primary: #003366; /* Navy Blue as primary */
+    --bs-secondary: #adb5bd; /* Gray as secondary */
+    --bs-success: #41d7a7; /* Keeping success as is, or change to teal/green-gray */
+    --bs-info: #528fb3; /* Teal as info - using existing teal */
+    --bs-warning: #ffc107; /* Keeping warning as is for now, or change to muted gold */
+    --bs-danger: #fd7e14; /* Keeping danger as is for now, or change to reddish-gray */
+    --bs-light: #f8f9fa;
+    --bs-dark: #343a40;
+    --bs-body-bg: #e9e9e8; /* Light Gray for body background */
+    --bs-body-color: #212529; /* Dark Gray for body text */
+    --bs-link-color: #007bff; /* Example - can be adjusted to navy or accent */
+    --bs-link-hover-color: #0056b3; /* Darker shade for hover */
+    --bs-code-color: #e83283; /* Keeping code color as pink for contrast, can be changed to accent */
+    --bs-highlight-bg: #fff3cd; /* Keeping highlight as is for now, or change to light gray */
+    --bs-primary-text-emphasis: #001933;
+    --bs-primary-bg-subtle: #cce0ff;
+    --bs-primary-border-subtle: #99bbff;
+    --bs-secondary-text-emphasis: #495057;
+    --bs-secondary-bg-subtle: #f1f1f1;
+    --bs-secondary-border-subtle: #e3e3e3;
+    --bs-table-striped-bg: rgba(0, 51, 102, 0.05); /* Navy for table stripes */
+    --bs-table-hover-bg: rgba(0, 51, 102, 0.075); /* Navy for table hover */
+    --bs-table-active-bg: rgba(0, 51, 102, 0.1); /* Navy for table active */
+  }
+  
+  [data-bs-theme=dark] {
+    --bs-body-color: #e9e9e8; /* Light Gray for body text in dark mode */
+    --bs-body-bg: #212529; /* Dark Gray for body background in dark mode */
+    --bs-secondary-bg: #343a40; /* Darker Gray for secondary bg */
+    --bs-tertiary-bg: #2b3035; /* Even Darker Gray */
+    --bs-primary: #add8e6; /* Light Blue for primary in dark mode */
+    --bs-secondary: #6c757d; /* Medium Gray for secondary in dark mode */
+    --bs-primary-text-emphasis: #b3e0f2;
+    --bs-primary-bg-subtle: #000d1a;
+    --bs-primary-border-subtle: #002652;
+    --bs-secondary-text-emphasis: #adb5bd;
+    --bs-secondary-bg-subtle: #1a1d20;
+    --bs-secondary-border-subtle: #343a40;
+    --bs-table-striped-bg: rgba(173, 181, 189, 0.05); /* Light Gray for table stripes in dark mode */
+    --bs-table-hover-bg: rgba(173, 181, 189, 0.075); /* Light Gray for table hover in dark mode */
+    --bs-table-active-bg: rgba(173, 181, 189, 0.1); /* Light Gray for table active in dark mode */
+  }
+  
+  .table {
+      --bs-table-bg: #e9e9e8; /* Light Gray table background for readability */
+      --bs-table-color: #212529; /* Dark Gray table text */
+  }
+  [data-bs-theme=dark] .table {
+      --bs-table-bg: #343a40; /* Darker Gray table background for dark mode */
+      --bs-table-color: #e9e9e8; /* Light Gray table text in dark mode */
+  }
