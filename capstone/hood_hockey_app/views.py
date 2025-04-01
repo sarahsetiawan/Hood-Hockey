@@ -431,6 +431,20 @@ class LinesRankingsView(views.APIView):
 
 import io
 import base64
+import plotly.graph_objects as go # Import Plotly graph objects
+import plotly.io as pio # Import Plotly IO for JSON conversion
+
+# views.py
+
+import pandas as pd
+import numpy as np # Make sure numpy is imported
+from django.db import connection
+from rest_framework import views, status
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+import plotly.graph_objects as go
+import plotly.io as pio
+import traceback # Import traceback for better error logging
 
 # PER Rankings
 class PERView(views.APIView):
@@ -439,48 +453,107 @@ class PERView(views.APIView):
     def get(self, request):
         try:
             with connection.cursor() as cursor:
-                # Get skaters data
+                # Get skaters data - select only needed columns
                 cursor.execute("""
-                    SELECT *
+                    SELECT "Player", "Position", "Goals", "First assist", "Second assist", "Hits", "Blocked shots", "Time on ice (Minutes)", "Shirt number"
                     FROM hood_hockey_app_skaters
                 """)
                 results = cursor.fetchall()
                 columns = [col[0] for col in cursor.description]
                 skaters = pd.DataFrame(results, columns=columns)
 
-                # Seperate into forwards and defenders
-                forwards = skaters[skaters['Position'] == 'F']
-                defenders = skaters[skaters['Position'] == 'D']
+                # Avoid division by 0 with minutes
+                skaters = skaters[skaters['Time on ice (Minutes)'] > 0] 
 
-                # Calculate PER for forwards
-                offensive_value = 2 * forwards['Goals'] + 1.75 * forwards['First assist'] + 1.5 * forwards['Second assist']
-                defensive_value = 1.5 * forwards['Hits'] + 2 * forwards['Blocked shots']
-                per = (offensive_value / defensive_value) / forwards['Time on ice (Minutes)']
-                forwards['PER'] = per
+                # Separate into forwards and defenders using .copy()
+                forwards = skaters[skaters['Position'] == 'F'].copy()
+                defenders = skaters[skaters['Position'] == 'D'].copy()
 
-                # Calculate PER for defenders
-                offensive_value = 2 * defenders['Goals'] + 1.75 * defenders['First assist'] + 1.5 * defenders['Second assist']
-                defensive_value = 1.5 * defenders['Hits'] + 2 * defenders['Blocked shots']
-                per = (offensive_value / defensive_value) / defenders['Time on ice (Minutes)']
-                defenders['PER'] = per
+                # --- Calculate PER for forwards ---
+                if not forwards.empty:
+                    offensive_value_fwd = 2 * forwards['Goals'] + 1.75 * forwards['First assist'] + 1.5 * forwards['Second assist']
+                    defensive_value_fwd = 1.5 * forwards['Hits'] + 2 * forwards['Blocked shots']
+                    forwards['PER'] = (offensive_value_fwd + defensive_value_fwd) / forwards['Time on ice (Minutes)']
 
-                # Rank by PER
-                forwards = forwards.sort_values(by='PER', ascending=False)
-                defenders = defenders.sort_values(by='PER', ascending=False)
+                    # Rank by PER
+                    forwards = forwards.sort_values(by='PER', ascending=False)
+                else:
+                    # Ensure PER column exists even if empty
+                    forwards['PER'] = pd.Series(dtype='float64')
 
-                ### Remove inf values
-                forwards = forwards.replace([np.inf, -np.inf], np.nan).dropna()
+
+                # --- Calculate PER for defenders ---
+                if not forwards.empty:
+                    offensive_value_def = 2 * defenders['Goals'] + 1.75 * defenders['First assist'] + 1.5 * defenders['Second assist']
+                    defensive_value_def = 1.5 * defenders['Hits'] + 2 * defenders['Blocked shots']
+                    defenders['PER'] = (offensive_value_def + defensive_value_def) / defenders['Time on ice (Minutes)']
+
+                    # Rank by PER
+                    defenders = defenders.sort_values(by='PER', ascending=False)
+                else:
+                    # Ensure PER column exists even if empty
+                    defenders['PER'] = pd.Series(dtype='float64')
+
+
+
+
+                # --- Prepare Chart Data (Plotly JSON) ---
+                fwd_chart_json = None
+                # Check if DataFrame is not empty *after* cleaning NAs
+                if not forwards.empty:
+                    fig_fwd = go.Figure(data=[go.Bar(
+                        x=forwards['Player'],
+                        y=forwards['PER'],
+                        name='Forward PER',
+                        hovertemplate='<b>%{x}</b><br>PER: %{y:.3f}<extra></extra>'
+                        )])
+                    fig_fwd.update_layout(
+                        title="Forward Player Efficiency Rating (PER)",
+                        xaxis_title="Player",
+                        yaxis_title="PER",
+                        xaxis={'categoryorder':'array', 'categoryarray': forwards['Player'].tolist(), 'tickangle': -45},
+                        margin=dict(b=100) # Bottom margin for labels
+                    )
+                    fwd_chart_json = pio.to_json(fig_fwd)
+
+                def_chart_json = None
+                 # Check if DataFrame is not empty *after* cleaning NAs
+                if not defenders.empty:
+                    fig_def = go.Figure(data=[go.Bar(
+                        x=defenders['Player'],
+                        y=defenders['PER'],
+                        name='Defender PER',
+                        marker_color='orange',
+                        hovertemplate='<b>%{x}</b><br>PER: %{y:.3f}<extra></extra>'
+                        )])
+                    fig_def.update_layout(
+                        title="Defender Player Efficiency Rating (PER)",
+                        xaxis_title="Player",
+                        yaxis_title="PER",
+                         xaxis={'categoryorder':'array', 'categoryarray': defenders['Player'].tolist(), 'tickangle': -45},
+                        margin=dict(b=100) # Bottom margin for labels
+                    )
+                    def_chart_json = pio.to_json(fig_def)
+
+                # --- Prepare response ---
+                # Ensure dataframes are not empty before converting to dict
+                top_forwards_list = forwards.to_dict(orient='records') if not forwards.empty else []
+                top_defenders_list = defenders.to_dict(orient='records') if not defenders.empty else []
 
                 return Response(
                     {
-                        "top_forwards": forwards.to_dict(orient='records'),
-                        "top_defenders": defenders.to_dict(orient='records')
+                        "top_forwards": top_forwards_list,
+                        "top_defenders": top_defenders_list,
+                        "forward_chart_json": fwd_chart_json,
+                        "defender_chart_json": def_chart_json
                     },
                     status=status.HTTP_200_OK
                 )
         except Exception as e:
+            # Log the detailed error for debugging
             print(f"Error in PERView: {e}")
-            return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            print(traceback.format_exc()) # Print the full traceback
+            return Response({"error": f"An error occurred processing PER data: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 ## GAR - Modified to send raw data for frontend splitting
 class GARView(views.APIView):
