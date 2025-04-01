@@ -432,6 +432,56 @@ class LinesRankingsView(views.APIView):
 import io
 import base64
 
+# PER Rankings
+class PERView(views.APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        try:
+            with connection.cursor() as cursor:
+                # Get skaters data
+                cursor.execute("""
+                    SELECT *
+                    FROM hood_hockey_app_skaters
+                """)
+                results = cursor.fetchall()
+                columns = [col[0] for col in cursor.description]
+                skaters = pd.DataFrame(results, columns=columns)
+
+                # Seperate into forwards and defenders
+                forwards = skaters[skaters['Position'] == 'F']
+                defenders = skaters[skaters['Position'] == 'D']
+
+                # Calculate PER for forwards
+                offensive_value = 2 * forwards['Goals'] + 1.75 * forwards['First assist'] + 1.5 * forwards['Second assist']
+                defensive_value = 1.5 * forwards['Hits'] + 2 * forwards['Blocked shots']
+                per = (offensive_value / defensive_value) / forwards['Time on ice (Minutes)']
+                forwards['PER'] = per
+
+                # Calculate PER for defenders
+                offensive_value = 2 * defenders['Goals'] + 1.75 * defenders['First assist'] + 1.5 * defenders['Second assist']
+                defensive_value = 1.5 * defenders['Hits'] + 2 * defenders['Blocked shots']
+                per = (offensive_value / defensive_value) / defenders['Time on ice (Minutes)']
+                defenders['PER'] = per
+
+                # Rank by PER
+                forwards = forwards.sort_values(by='PER', ascending=False)
+                defenders = defenders.sort_values(by='PER', ascending=False)
+
+                ### Remove inf values
+                forwards = forwards.replace([np.inf, -np.inf], np.nan).dropna()
+
+                return Response(
+                    {
+                        "top_forwards": forwards.to_dict(orient='records'),
+                        "top_defenders": defenders.to_dict(orient='records')
+                    },
+                    status=status.HTTP_200_OK
+                )
+        except Exception as e:
+            print(f"Error in PERView: {e}")
+            return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 ## GAR - Modified to send raw data for frontend splitting
 class GARView(views.APIView):
     permission_classes = [AllowAny]

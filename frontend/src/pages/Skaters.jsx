@@ -1,3 +1,5 @@
+// --- START OF FILE SkatersPage.txt ---
+
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Image, Spinner, Alert, Table, Form } from 'react-bootstrap';
 import Plot from 'react-plotly.js';
@@ -6,73 +8,121 @@ import Plot from 'react-plotly.js';
 // import * as np from 'numjs'; // Example if using numjs: npm install numjs
 
 function Skaters() {
+  // --- Existing State (DO NOT CHANGE THESE) ---
   const [imageData, setImageData] = useState(null); // For scatterplot
-  const [topForwards, setTopForwards] = useState([]); // For table
-  const [topDefenders, setTopDefenders] = useState([]); // For table
+  const [topForwards, setTopForwards] = useState([]); // For GAR table
+  const [topDefenders, setTopDefenders] = useState([]); // For GAR table
   const [forwardChartData, setForwardChartData] = useState(null); // For forward chart data FROM BACKEND
   const [defenderChartData, setDefenderChartData] = useState(null); // For defender chart data FROM BACKEND
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedMetric, setSelectedMetric] = useState('Points');
+  // --- End Existing State ---
+
+  // --- NEW STATE for PER Rankings (Additions Only) ---
+  const [topPerForwards, setTopPerForwards] = useState([]); // For PER table
+  const [topPerDefenders, setTopPerDefenders] = useState([]); // For PER table
+  // --- END NEW STATE ---
+
 
   // Determine current AR column name based on selected metric
   const currentMetric = selectedMetric;
   const currentARColumn = `${selectedMetric}AR`;
 
   useEffect(() => {
-    // ... (fetchData logic remains the same - fetches raw chart data now) ...
+    // --- Existing fetchData function structure ---
      const fetchData = async () => {
       setLoading(true);
       setError(null);
+      // Reset existing states (unchanged)
       setForwardChartData(null);
       setDefenderChartData(null);
+      setTopForwards([]); // Reset original GAR state
+      setTopDefenders([]); // Reset original GAR state
+      setImageData(null); // Reset image data too on fetch
+
+      // --- ADD Reset for PER state ---
+      setTopPerForwards([]);
+      setTopPerDefenders([]);
+      // --- END ADD Reset ---
+
       try {
-        // Fetch scatterplot image (optional)
-        const imageResponse = await fetch('http://127.0.0.1:8000/hood_hockey_app/fitness-corr/');
-        if (imageResponse.ok) {
-           const imgData = await imageResponse.json();
-           setImageData(imgData.image);
-        } else {
-            console.warn(`Scatterplot image fetch failed: ${imageResponse.status}`);
-            setImageData(null);
+        // --- Fetch scatterplot image (Existing logic - minor optimization to not stop on failure) ---
+        try {
+            const imageResponse = await fetch('http://127.0.0.1:8000/hood_hockey_app/fitness-corr/');
+            if (imageResponse.ok) {
+               const imgData = await imageResponse.json();
+               setImageData(imgData.image);
+            } else {
+                console.warn(`Scatterplot image fetch failed: ${imageResponse.status}`);
+                // Do not throw error, allow other fetches to proceed
+            }
+        } catch (imgError) {
+             console.warn("Scatterplot fetch exception:", imgError);
+             // Do not throw error, allow other fetches to proceed
         }
 
-        // Fetch GAR data
+
+        // --- Fetch GAR data (Existing logic - unchanged) ---
         const garResponse = await fetch(`http://127.0.0.1:8000/hood_hockey_app/gar/?metric=${selectedMetric}`);
         if (!garResponse.ok) throw new Error(`GAR data fetch error! status: ${garResponse.status}`);
         const garData = await garResponse.json();
 
         if (!garData || !garData.top_forwards || !garData.top_defenders || !garData.chart_data_forwards || !garData.chart_data_defenders) {
-             // Check for chart data existence as well
-             console.error("Received data:", garData); // Log data if structure is wrong
+             console.error("Received GAR data structure invalid:", garData);
              throw new Error("Invalid data structure received from GAR API.");
         }
 
-        setTopForwards(garData.top_forwards);
-        setTopDefenders(garData.top_defenders);
+        // --- Set existing GAR states (Unchanged) ---
+        setTopForwards(garData.top_forwards); // Set original GAR state
+        setTopDefenders(garData.top_defenders); // Set original GAR state
         setForwardChartData(garData.chart_data_forwards);
         setDefenderChartData(garData.chart_data_defenders);
+        // --- End setting existing GAR states ---
+
+
+        // --- ADD Fetch PER Data ---
+        // Assuming the endpoint for your PERView is '/hood_hockey_app/per-rankings/'
+        const perResponse = await fetch(`http://127.0.0.1:8000/hood_hockey_app/per/`);
+        if (!perResponse.ok) throw new Error(`PER data fetch error! status: ${perResponse.status}`);
+        const perData = await perResponse.json();
+
+        if (!perData || !perData.top_forwards || !perData.top_defenders) {
+            console.error("Received PER data structure invalid:", perData);
+            throw new Error("Invalid data structure received from PER API.");
+        }
+
+        setTopPerForwards(perData.top_forwards); // Update NEW PER state
+        setTopPerDefenders(perData.top_defenders); // Update NEW PER state
+        // --- END ADD PER Fetch ---
+
 
       } catch (error) {
         console.error("Fetch error:", error);
         setError(error.message);
+        // Clear existing states on error (unchanged)
         setTopForwards([]);
         setTopDefenders([]);
         setForwardChartData(null);
         setDefenderChartData(null);
+        setImageData(null);
+        // --- ADD Clear PER state on error ---
+        setTopPerForwards([]);
+        setTopPerDefenders([]);
+        // --- END ADD Clear PER state ---
       } finally {
          setLoading(false);
       }
     };
 
     fetchData();
-  }, [selectedMetric]);
+  }, [selectedMetric]); // Dependency remains the same
 
-  const handleMetricChange = (event) => {
+  const handleMetricChange = (event) => { // Existing function - unchanged
     setSelectedMetric(event.target.value);
   };
 
-  // Helper function to create Plotly data and layout for SPLIT bars at THRESHOLD
+  // Helper function to create Plotly data and layout for SPLIT bars at THRESHOLD (Existing - unchanged)
   const createChartConfig = (chartData, positionTitle) => {
       if (!chartData) return null;
 
@@ -158,26 +208,27 @@ function Skaters() {
       return { data: plotData, layout: plotLayout };
   };
 
-  const forwardChartConfig = createChartConfig(forwardChartData, 'Forwards');
-  const defenderChartConfig = createChartConfig(defenderChartData, 'Defenders');
+  const forwardChartConfig = createChartConfig(forwardChartData, 'Forwards'); // Existing - unchanged
+  const defenderChartConfig = createChartConfig(defenderChartData, 'Defenders'); // Existing - unchanged
 
 
-  // --- JSX Rendering (mostly unchanged) ---
+  // --- JSX Rendering ---
   return (
     <Container>
-      {/* ... (Scatterplot rendering, Dropdown, Loading/Error checks remain the same) ... */}
+      {/* --- Existing Title --- */}
        <h1>Skaters</h1>
+
+        {/* --- Existing Scatterplot Section (Optimized loading/warning) --- */}
         <h2 className="mt-3">Scatterplot of Max Speed vs Goals</h2>
-        {loading && !imageData ? <div className="text-center"><Spinner animation="border" size="sm" /> Loading Image...</div> :
+        {loading && !imageData && !error ? <div className="text-center"><Spinner animation="border" size="sm" /> Loading Image...</div> : // Show spinner only if loading and no image yet and no error
          imageData ? <Image src={`data:image/png;base64,${imageData}`} alt="Scatterplot" fluid /> :
-         !error ? <Alert variant="warning">Scatterplot image data not available.</Alert> : null }
+         !loading && !error ? <Alert variant="warning">Scatterplot image data not available.</Alert> : null } {/* Show warning only if not loading and no error */}
 
-
+        {/* --- Existing GAR Section Title --- */}
         <h2 className="mt-5">Player Value Above Replacement</h2>
 
-        {/* Metric Selection Dropdown */}
+        {/* --- Existing Metric Selection Dropdown --- */}
         <Form className="my-3">
-            {/* ... Dropdown code ... */}
              <Form.Group as={Row} controlId="metricSelect">
                 <Form.Label column sm={2}> Select Metric: </Form.Label>
                 <Col sm={4}>
@@ -191,16 +242,17 @@ function Skaters() {
                 </Form.Group>
         </Form>
 
-        {/* Display Loading/Error for Tables/Charts */}
+        {/* --- Existing Display Loading/Error for Tables/Charts --- */}
         {loading ? (
             <div className="text-center mt-3"><Spinner animation="border" /> Loading data...</div>
         ) : error ? (
             <Alert variant="danger">Error loading data: {error}</Alert>
         ) : (
+            // --- Wrapper Fragment already exists implicitly if needed, or add explicitly if not ---
+            // Use a fragment if you didn't have one before wrapping the content after loading/error check
             <>
-            {/* Interactive Charts */}
+            {/* --- Existing Interactive GAR Charts --- */}
             <Row className="mt-4">
-                {/* ... Chart rendering code ... */}
                  <Col md={12} lg={6}>
                     {forwardChartConfig ? (
                         <Plot
@@ -229,11 +281,11 @@ function Skaters() {
                  </Col>
             </Row>
 
-            {/* Data Tables */}
+            {/* --- Existing GAR Data Tables --- */}
             <Row className="mt-4">
-                {/* ... Table rendering code ... */}
                  <Col md={6}>
-                    <h3>Top 5 Forwards ({currentMetric})</h3>
+                    {/* Using original state variables: topForwards, topDefenders */}
+                    <h3>Top 5 Forwards ({currentMetric} Above Replacement)</h3>
                     {topForwards.length > 0 ? (
                         <Table striped bordered hover responsive size="sm">
                             <thead><tr><th>#</th><th>Player</th><th>{currentMetric}</th><th>{currentARColumn}</th></tr></thead>
@@ -251,7 +303,7 @@ function Skaters() {
                     ) : ( <Alert variant="info">No forward table data available.</Alert> )}
                     </Col>
                     <Col md={6}>
-                    <h3>Top 5 Defenders ({currentMetric})</h3>
+                    <h3>Top 5 Defenders ({currentMetric} Above Replacement)</h3>
                     {topDefenders.length > 0 ? (
                         <Table striped bordered hover responsive size="sm">
                             <thead><tr><th>#</th><th>Player</th><th>{currentMetric}</th><th>{currentARColumn}</th></tr></thead>
@@ -269,10 +321,60 @@ function Skaters() {
                     ) : ( <Alert variant="info">No defender table data available.</Alert> )}
                     </Col>
             </Row>
-            </>
-        )}
+
+
+            {/* --- START: ADDED PER Rankings Section --- */}
+            <h2 className="mt-5">Player Efficiency Rating (PER) Rankings</h2>
+            <Row className="mt-4">
+                <Col md={6}>
+                    <h3>Top 10 Forwards (PER)</h3>
+                    {/* Use NEW PER state variables */}
+                    {topPerForwards.length > 0 ? (
+                        <Table striped bordered hover responsive size="sm">
+                            <thead><tr><th>#</th><th>Player</th><th>PER</th></tr></thead>
+                            <tbody>
+                                {/* Display top 10 PER Forwards */}
+                                {topPerForwards.slice(0, 10).map((player, index) => (
+                                <tr key={player['Shirt number'] || `per-fwd-${index}`}> {/* Ensure unique key */}
+                                    <td>{player['Shirt number']}</td>
+                                    <td>{player['Player']}</td>
+                                    {/* Format PER, check for existence */}
+                                    <td>{player.PER !== undefined && player.PER !== null ? player.PER.toFixed(3) : 'N/A'}</td>
+                                </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    ) : ( <Alert variant="info">No forward PER ranking data available.</Alert> )}
+                </Col>
+                <Col md={6}>
+                    <h3>Top 10 Defenders (PER)</h3>
+                     {/* Use NEW PER state variables */}
+                     {topPerDefenders.length > 0 ? (
+                        <Table striped bordered hover responsive size="sm">
+                            <thead><tr><th>#</th><th>Player</th><th>PER</th></tr></thead>
+                            <tbody>
+                                {/* Display top 10 PER Defenders */}
+                                {topPerDefenders.slice(0, 10).map((player, index) => (
+                                <tr key={player['Shirt number'] || `per-def-${index}`}> {/* Ensure unique key */}
+                                    <td>{player['Shirt number']}</td>
+                                    <td>{player['Player']}</td>
+                                     {/* Format PER, check for existence */}
+                                    <td>{player.PER !== undefined && player.PER !== null ? player.PER.toFixed(3) : 'N/A'}</td>
+                                </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    ) : ( <Alert variant="info">No defender PER ranking data available.</Alert> )}
+                </Col>
+            </Row>
+            {/* --- END: ADDED PER Rankings Section --- */}
+
+
+            </> // End fragment (ensure it exists if needed)
+        )} {/* End Loading/Error Check */}
     </Container>
   );
 }
 
 export default Skaters;
+// --- END OF FILE SkatersPage.txt ---

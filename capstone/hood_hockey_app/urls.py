@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import DriveBasicQueryView, FaceoffWinPercentView, GARView, GamesFileUploadView, GamesQueryView, GoaliesQueryView, GoaliesSavePercentBarChartView, SavesPerGameView, testListCreate, testFileUpload, SkatersFileUploadView, GoaliesFileUploadView, LinesFileUploadView, DriveFileUploadView, LinesRankingsView, FitnessCorrelationView
+from .views import DriveBasicQueryView, FaceoffWinPercentView, GARView, GamesFileUploadView, GamesQueryView, GoaliesQueryView, GoaliesSavePercentBarChartView, PERView, SavesPerGameView, testListCreate, testFileUpload, SkatersFileUploadView, GoaliesFileUploadView, LinesFileUploadView, DriveFileUploadView, LinesRankingsView, FitnessCorrelationView
 
 urlpatterns = [
     path("games/", views.GamesListCreate.as_view(), name="games-list"),
@@ -21,4 +21,5 @@ urlpatterns = [
     path('faceoff-wins-graph/', FaceoffWinPercentView.as_view(), name='faceoff-wins'),
     path('drive-query/', DriveBasicQueryView.as_view(), name='drive-query'),
     path('gar/', GARView.as_view(), name='gar'),
+    path('per/', PERView.as_view(), name='per'),
 ]
