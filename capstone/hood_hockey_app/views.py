@@ -445,117 +445,226 @@ from rest_framework.permissions import AllowAny
 import plotly.graph_objects as go
 import plotly.io as pio
 import traceback # Import traceback for better error logging
+from urllib.parse import unquote # To decode URL-encoded strings
 
-# PER Rankings
+# --- Define Available Metrics (Match your DB column names) ---
+# Ensure these columns actually exist in your table!
+AVAILABLE_METRICS = {
+    # Offensive candidates
+    "Goals": "numeric",
+    "First assist": "numeric",
+    "Second assist": "numeric",
+    "Shots": "numeric", # Example: Add more if available
+    "Faceoffs won": "numeric", # Example
+    # Defensive candidates
+    "Hits": "numeric",
+    "Blocked shots": "numeric",
+    "Takeaways": "numeric", # Example
+    "Faceoffs lost": "numeric", # Example (could be negative weight)
+    # Time - Always needed
+    "Time on ice (Minutes)": "numeric",
+    # Non-numeric / Identifiers - Always needed
+    "Player": "string",
+    "Position": "string",
+    "Shirt number": "string", # Ensure this is selected
+}
+
+# --- Default Configuration ---
+DEFAULT_OFFENSIVE_METRICS = ["Goals", "First assist", "Second assist"]
+DEFAULT_OFFENSIVE_WEIGHTS = [2.0, 1.75, 1.5]
+DEFAULT_DEFENSIVE_METRICS = ["Hits", "Blocked shots"]
+DEFAULT_DEFENSIVE_WEIGHTS = [1.5, 2.0]
+
 class PERView(views.APIView):
     permission_classes = [AllowAny]
 
+    def _parse_param(self, param_string, param_type=str):
+        """Helper to parse comma-separated query parameters."""
+        if not param_string:
+            return []
+        try:
+            # Decode URL encoding (e.g., '%20' for space) before splitting
+            decoded_string = unquote(param_string)
+            items = decoded_string.split(',')
+            if param_type == float:
+                return [float(item) for item in items]
+            elif param_type == int:
+                 return [int(item) for item in items]
+            else:
+                return [str(item).strip() for item in items] # Trim whitespace
+        except Exception as e:
+            print(f"Error parsing parameter string '{param_string}': {e}")
+            return [] # Return empty list on error
+
+    def _build_formula_string(self, metrics, weights, category_name):
+        """Helper to create a human-readable formula string."""
+        if not metrics or not weights or len(metrics) != len(weights):
+            return f"{category_name} Value = Not configured correctly"
+        terms = []
+        for metric, weight in zip(metrics, weights):
+             terms.append(f"({weight:.2f} * [{metric}])") # Use [] to denote column name
+        return f"{category_name} Value = " + " + ".join(terms)
+
     def get(self, request):
         try:
+            # --- Get Metrics & Weights from Query Params (with defaults) ---
+            offensive_metrics = self._parse_param(request.query_params.get('offensive_metrics'), str) or DEFAULT_OFFENSIVE_METRICS
+            offensive_weights = self._parse_param(request.query_params.get('offensive_weights'), float) or DEFAULT_OFFENSIVE_WEIGHTS
+            defensive_metrics = self._parse_param(request.query_params.get('defensive_metrics'), str) or DEFAULT_DEFENSIVE_METRICS
+            defensive_weights = self._parse_param(request.query_params.get('defensive_weights'), float) or DEFAULT_DEFENSIVE_WEIGHTS
+
+            # Basic validation
+            if len(offensive_metrics) != len(offensive_weights):
+                raise ValueError("Mismatch between offensive metrics and weights count.")
+            if len(defensive_metrics) != len(defensive_weights):
+                 raise ValueError("Mismatch between defensive metrics and weights count.")
+
+            # --- Determine ALL columns needed for calculation and identification ---
+            required_numeric_metrics = list(set(
+                offensive_metrics + defensive_metrics + ["Time on ice (Minutes)"]
+            ))
+            # Ensure all requested metrics are valid and available
+            for metric in required_numeric_metrics:
+                if metric not in AVAILABLE_METRICS or AVAILABLE_METRICS[metric] != 'numeric':
+                    raise ValueError(f"Invalid or non-numeric metric requested: {metric}")
+
+            # Columns needed for identification/display
+            required_id_cols = ["Player", "Position", "Shirt number"] # Add any others needed for tables/charts
+
+            all_required_cols = list(set(required_numeric_metrics + required_id_cols))
+            # Format for SQL query (ensure correct quoting if needed)
+            sql_select_cols = ", ".join([f'"{col}"' for col in all_required_cols])
+
+
+            # --- Fetch Data ---
             with connection.cursor() as cursor:
-                # Get skaters data - select only needed columns
-                cursor.execute("""
-                    SELECT "Player", "Position", "Goals", "First assist", "Second assist", "Hits", "Blocked shots", "Time on ice (Minutes)", "Shirt number"
-                    FROM hood_hockey_app_skaters
-                """)
+                query = f"SELECT {sql_select_cols} FROM hood_hockey_app_skaters"
+                print(f"Executing Query: {query}") # For debugging
+                cursor.execute(query)
                 results = cursor.fetchall()
                 columns = [col[0] for col in cursor.description]
                 skaters = pd.DataFrame(results, columns=columns)
 
-                # Avoid division by 0 with minutes
-                skaters = skaters[skaters['Time on ice (Minutes)'] > 0] 
+            # --- Data Cleaning & Preparation ---
+            # Convert numeric cols, coerce errors, drop NAs in *required* numeric cols
+            for col in required_numeric_metrics:
+                 skaters[col] = pd.to_numeric(skaters[col], errors='coerce')
 
-                # Separate into forwards and defenders using .copy()
-                forwards = skaters[skaters['Position'] == 'F'].copy()
-                defenders = skaters[skaters['Position'] == 'D'].copy()
-
-                # --- Calculate PER for forwards ---
-                if not forwards.empty:
-                    offensive_value_fwd = 2 * forwards['Goals'] + 1.75 * forwards['First assist'] + 1.5 * forwards['Second assist']
-                    defensive_value_fwd = 1.5 * forwards['Hits'] + 2 * forwards['Blocked shots']
-                    forwards['PER'] = (offensive_value_fwd + defensive_value_fwd) / forwards['Time on ice (Minutes)']
-
-                    # Rank by PER
-                    forwards = forwards.sort_values(by='PER', ascending=False)
-                else:
-                    # Ensure PER column exists even if empty
-                    forwards['PER'] = pd.Series(dtype='float64')
+            skaters = skaters.dropna(subset=required_numeric_metrics)
+             # Ensure time on ice > 0 AFTER converting to numeric and dropping NA
+            if "Time on ice (Minutes)" in skaters.columns:
+                skaters = skaters[skaters["Time on ice (Minutes)"] > 0]
+            else:
+                # Should not happen if validation is correct, but handle defensively
+                print("Warning: 'Time on ice (Minutes)' column missing after data load.")
+                skaters = pd.DataFrame(columns=skaters.columns) # Make empty if time is missing
 
 
-                # --- Calculate PER for defenders ---
-                if not forwards.empty:
-                    offensive_value_def = 2 * defenders['Goals'] + 1.75 * defenders['First assist'] + 1.5 * defenders['Second assist']
-                    defensive_value_def = 1.5 * defenders['Hits'] + 2 * defenders['Blocked shots']
-                    defenders['PER'] = (offensive_value_def + defensive_value_def) / defenders['Time on ice (Minutes)']
+            # Separate into forwards and defenders
+            forwards = skaters[skaters['Position'] == 'F'].copy()
+            defenders = skaters[skaters['Position'] == 'D'].copy()
 
-                    # Rank by PER
-                    defenders = defenders.sort_values(by='PER', ascending=False)
-                else:
-                    # Ensure PER column exists even if empty
-                    defenders['PER'] = pd.Series(dtype='float64')
+            # --- DYNAMIC PER Calculation ---
+            def calculate_dynamic_per(df, off_metrics, off_weights, def_metrics, def_weights):
+                if df.empty:
+                    df['OffensiveValue'] = 0.0
+                    df['DefensiveValue'] = 0.0
+                    df['PER'] = pd.Series(dtype='float64')
+                    return df
+
+                # Calculate weighted sum for offense
+                offensive_value = pd.Series(0.0, index=df.index)
+                if off_metrics: # Check if list is not empty
+                    for metric, weight in zip(off_metrics, off_weights):
+                        if metric in df.columns:
+                            offensive_value += df[metric] * weight
+                        else:
+                            print(f"Warning: Offensive metric '{metric}' not found in DataFrame columns for calculation.")
 
 
+                # Calculate weighted sum for defense
+                defensive_value = pd.Series(0.0, index=df.index)
+                if def_metrics: # Check if list is not empty
+                    for metric, weight in zip(def_metrics, def_weights):
+                         if metric in df.columns:
+                            defensive_value += df[metric] * weight
+                         else:
+                             print(f"Warning: Defensive metric '{metric}' not found in DataFrame columns for calculation.")
 
 
-                # --- Prepare Chart Data (Plotly JSON) ---
-                fwd_chart_json = None
-                # Check if DataFrame is not empty *after* cleaning NAs
-                if not forwards.empty:
-                    fig_fwd = go.Figure(data=[go.Bar(
-                        x=forwards['Player'],
-                        y=forwards['PER'],
-                        name='Forward PER',
-                        hovertemplate='<b>%{x}</b><br>PER: %{y:.3f}<extra></extra>'
-                        )])
-                    fig_fwd.update_layout(
-                        title="Forward Player Efficiency Rating (PER)",
-                        xaxis_title="Player",
-                        yaxis_title="PER",
-                        xaxis={'categoryorder':'array', 'categoryarray': forwards['Player'].tolist(), 'tickangle': -45},
-                        margin=dict(b=100) # Bottom margin for labels
+                df['OffensiveValue'] = offensive_value # Store for potential display
+                df['DefensiveValue'] = defensive_value # Store for potential display
+
+                # Calculate PER with division handling (same logic as before)
+                time_col = "Time on ice (Minutes)" # Assuming this is always required
+                df['PER'] = np.where(
+                    (defensive_value > 0) & (df[time_col] > 0), # Check both defense and time > 0
+                    (offensive_value / defensive_value) / df[time_col],
+                    np.where(
+                        offensive_value > 0,
+                        np.inf,
+                        0.0
                     )
-                    fwd_chart_json = pio.to_json(fig_fwd)
-
-                def_chart_json = None
-                 # Check if DataFrame is not empty *after* cleaning NAs
-                if not defenders.empty:
-                    fig_def = go.Figure(data=[go.Bar(
-                        x=defenders['Player'],
-                        y=defenders['PER'],
-                        name='Defender PER',
-                        marker_color='orange',
-                        hovertemplate='<b>%{x}</b><br>PER: %{y:.3f}<extra></extra>'
-                        )])
-                    fig_def.update_layout(
-                        title="Defender Player Efficiency Rating (PER)",
-                        xaxis_title="Player",
-                        yaxis_title="PER",
-                         xaxis={'categoryorder':'array', 'categoryarray': defenders['Player'].tolist(), 'tickangle': -45},
-                        margin=dict(b=100) # Bottom margin for labels
-                    )
-                    def_chart_json = pio.to_json(fig_def)
-
-                # --- Prepare response ---
-                # Ensure dataframes are not empty before converting to dict
-                top_forwards_list = forwards.to_dict(orient='records') if not forwards.empty else []
-                top_defenders_list = defenders.to_dict(orient='records') if not defenders.empty else []
-
-                return Response(
-                    {
-                        "top_forwards": top_forwards_list,
-                        "top_defenders": top_defenders_list,
-                        "forward_chart_json": fwd_chart_json,
-                        "defender_chart_json": def_chart_json
-                    },
-                    status=status.HTTP_200_OK
                 )
+                df.replace([np.inf, -np.inf], np.nan, inplace=True)
+                df.dropna(subset=['PER'], inplace=True)
+                return df.sort_values(by='PER', ascending=False)
+
+            forwards = calculate_dynamic_per(forwards, offensive_metrics, offensive_weights, defensive_metrics, defensive_weights)
+            defenders = calculate_dynamic_per(defenders, offensive_metrics, offensive_weights, defensive_metrics, defensive_weights)
+
+            # --- Build Formula Strings ---
+            fwd_formula_off = self._build_formula_string(offensive_metrics, offensive_weights, "Offensive")
+            fwd_formula_def = self._build_formula_string(defensive_metrics, defensive_weights, "Defensive")
+            fwd_formula_per = "PER = (Offensive Value / Defensive Value) / [Time on ice (Minutes)]"
+            # Same formulas apply to defenders based on the input config
+            def_formula_off = fwd_formula_off
+            def_formula_def = fwd_formula_def
+            def_formula_per = fwd_formula_per
+
+            # --- Prepare Chart Data (Plotly JSON) ---
+            # (Chart generation logic remains the same, using the calculated 'PER' column)
+            fwd_chart_json = None
+            if not forwards.empty:
+                fig_fwd = go.Figure(data=[go.Bar(x=forwards['Player'], y=forwards['PER'], name='Forward PER', hovertemplate='<b>%{x}</b><br>PER: %{y:.3f}<extra></extra>')])
+                fig_fwd.update_layout(title="Forward Player Efficiency Rating (PER)", xaxis_title="Player", yaxis_title="PER", xaxis={'categoryorder':'array', 'categoryarray': forwards['Player'].tolist(), 'tickangle': -45}, margin=dict(b=100))
+                fwd_chart_json = pio.to_json(fig_fwd)
+
+            def_chart_json = None
+            if not defenders.empty:
+                fig_def = go.Figure(data=[go.Bar(x=defenders['Player'], y=defenders['PER'], name='Defender PER', marker_color='orange', hovertemplate='<b>%{x}</b><br>PER: %{y:.3f}<extra></extra>')])
+                fig_def.update_layout(title="Defender Player Efficiency Rating (PER)", xaxis_title="Player", yaxis_title="PER", xaxis={'categoryorder':'array', 'categoryarray': defenders['Player'].tolist(), 'tickangle': -45}, margin=dict(b=100))
+                def_chart_json = pio.to_json(fig_def)
+
+            # --- Prepare response ---
+            top_forwards_list = forwards.to_dict(orient='records') if not forwards.empty else []
+            top_defenders_list = defenders.to_dict(orient='records') if not defenders.empty else []
+
+            return Response(
+                {
+                    "top_forwards": top_forwards_list,
+                    "top_defenders": top_defenders_list,
+                    "forward_chart_json": fwd_chart_json,
+                    "defender_chart_json": def_chart_json,
+                    # --- Add Formula Strings ---
+                    "formula": {
+                         "offensive": fwd_formula_off, # Same formula used for both based on input
+                         "defensive": fwd_formula_def, # Same formula used for both based on input
+                         "per": fwd_formula_per
+                    }
+                },
+                status=status.HTTP_200_OK
+            )
+        except ValueError as ve: # Catch specific validation errors
+             print(f"Validation Error in PERView: {ve}")
+             print(traceback.format_exc())
+             return Response({"error": f"Configuration error: {str(ve)}"}, status=status.HTTP_400_BAD_REQUEST) # Bad Request
         except Exception as e:
-            # Log the detailed error for debugging
             print(f"Error in PERView: {e}")
-            print(traceback.format_exc()) # Print the full traceback
+            print(traceback.format_exc())
             return Response({"error": f"An error occurred processing PER data: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-## GAR - Modified to send raw data for frontend splitting
+# GAR - Modified to send raw data for frontend splitting
 class GARView(views.APIView):
     permission_classes = [AllowAny]
 
