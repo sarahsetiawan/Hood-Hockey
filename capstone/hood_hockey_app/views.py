@@ -447,20 +447,20 @@ import plotly.io as pio
 import traceback # Import traceback for better error logging
 from urllib.parse import unquote # To decode URL-encoded strings
 
-# --- Define Available Metrics (Match your DB column names) ---
-# Ensure these columns actually exist in your table!
+# --- Define Available Metrics ---
 AVAILABLE_METRICS = {
     # Offensive candidates
     "Goals": "numeric",
+    "Assists": "numeric",
+    "Points": "numeric",
     "First assist": "numeric",
     "Second assist": "numeric",
-    "Shots": "numeric", # Example: Add more if available
-    "Faceoffs won": "numeric", # Example
+    "Shots": "numeric", 
+    "Shots on goal": "numeric",
+    "Faceoffs won": "numeric", 
     # Defensive candidates
     "Hits": "numeric",
     "Blocked shots": "numeric",
-    "Takeaways": "numeric", # Example
-    "Faceoffs lost": "numeric", # Example (could be negative weight)
     # Time - Always needed
     "Time on ice (Minutes)": "numeric",
     # Non-numeric / Identifiers - Always needed
