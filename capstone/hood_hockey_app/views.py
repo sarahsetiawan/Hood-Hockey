@@ -616,7 +616,7 @@ class PERView(views.APIView):
             # --- Build Formula Strings ---
             fwd_formula_off = self._build_formula_string(offensive_metrics, offensive_weights, "Offensive")
             fwd_formula_def = self._build_formula_string(defensive_metrics, defensive_weights, "Defensive")
-            fwd_formula_per = "PER = (Offensive Value / Defensive Value) / [Time on ice (Minutes)]"
+            fwd_formula_per = "PER = (Offensive Value + Defensive Value) / [Time on ice (Minutes)]"
             # Same formulas apply to defenders based on the input config
             def_formula_off = fwd_formula_off
             def_formula_def = fwd_formula_def
