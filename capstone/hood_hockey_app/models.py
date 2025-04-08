@@ -16,7 +16,7 @@ class test2(models.Model):
 
 # Combined games data
 class Games(models.Model):
-    Date = models.DateField(null=True, blank=True)
+    Date = models.DateField(null=False, blank=False)
     Opponent = models.CharField(max_length=255)
     # break score column into 2 seperate score columns
     Score_HC = models.IntegerField()
@@ -137,7 +137,6 @@ class Games(models.Model):
     Breakouts_Via_Pass = models.IntegerField()
     Breakouts_Via_Dump_Out = models.IntegerField()
     Breakouts_Via_Stickhandling = models.IntegerField()
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="games")
 
     def __str__(self):
         return self.Opponent

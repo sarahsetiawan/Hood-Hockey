@@ -189,12 +189,15 @@ def clean_games(games):
     games_cleaned[['Penalty time (Minutes)', 'Penalty time (Seconds)']] = games_cleaned['Penalty time'].str.split(':', expand=True)
     games_cleaned['Penalty time (Minutes)'] = games_cleaned['Penalty time (Minutes)'].astype(int)
     games_cleaned['Penalty time (Seconds)'] = games_cleaned['Penalty time (Seconds)'].astype(int)
+
     # Convert date column to datetime 
     games_cleaned['Date'] = pd.to_datetime(games_cleaned['Date'], format='%m/%d/%Y')
     # Drop the Score and Goal column 
     games_cleaned = games_cleaned.drop(columns=['Score', 'Goals', 'Penalty time'])
     # Replace NaN values with 0
     games_cleaned = games_cleaned.fillna(0)
+    # Order columns to match table 
+
     return games_cleaned
 
 
@@ -433,9 +436,6 @@ import io
 import base64
 import plotly.graph_objects as go # Import Plotly graph objects
 import plotly.io as pio # Import Plotly IO for JSON conversion
-
-# views.py
-
 import pandas as pd
 import numpy as np # Make sure numpy is imported
 from django.db import connection
@@ -446,6 +446,120 @@ import plotly.graph_objects as go
 import plotly.io as pio
 import traceback # Import traceback for better error logging
 from urllib.parse import unquote # To decode URL-encoded strings
+import plotly.express as px
+
+# Skater CF%
+class SkaterCFView(views.APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        try:
+            with connection.cursor() as cursor:
+                # Skaters query - Fetch only required columns
+                cursor.execute("""
+                    SELECT "Player"
+                    FROM hood_hockey_app_skaters
+                """)
+                columns_skaters = [col[0] for col in cursor.description]
+                results_skaters = cursor.fetchall() # Fetch all rows
+
+                # Lines query - Fetch required columns
+                cursor.execute("""
+                    SELECT "Line", "CORSI+", "CORSI-"
+                    FROM hood_hockey_app_lines
+                """)
+                columns_lines = [col[0] for col in cursor.description]
+                results_lines = cursor.fetchall() # Fetch all rows
+
+            # --- Create DataFrames ---
+            # Use fetched results directly
+            skaters = pd.DataFrame(results_skaters, columns=columns_skaters)
+            print("-------------------------------------------")
+            print("Skaters DataFrame")
+            print(skaters.head()) 
+
+            lines = pd.DataFrame(results_lines, columns=columns_lines)
+            print("-------------------------------------------")
+            print("Lines DataFrame")
+            print(lines.head()) 
+
+
+            skaters[['First Name', 'Last Name']] = skaters['Player'].str.split(' ', expand=True)
+            last_names = skaters['Last Name'].to_list()
+            # Avoid division by zero: (CF + CA) might be 0 if TOI is very low or no events occurred
+            lines['CF_Percent'] = np.where(
+                (lines['CORSI+'] + lines['CORSI-']) > 0,
+                (lines['CORSI+'] / (lines['CORSI+'] + lines['CORSI-'])) * 100,
+                50.0 # Assign 50% for zero-event lines (common practice)
+            )
+
+            # --- Robust Player Matching ---
+            # Create a list of players for each line for easier matching
+            # Adjust the split character ('-') if your delimiter is different
+            lines['PlayerList'] = lines['Line'].str.split('-')
+
+            # --- Simple Average Calculation ---
+            player_simple_avg_cf_percent = {} # Dictionary to store results
+
+            for name in last_names:
+                # Filter lines where the player *exactly* matches one in the list
+                # Use the stored _list_type for isinstance check
+                matching_lines = lines[lines['Line'].str.contains(name, na=False)]
+
+                if not matching_lines.empty:
+                    # Calculate the simple arithmetic mean of the 'CF_Percent' for the matching lines
+                    # The .mean() method directly calculates the simple average
+                    average_cf_percent = matching_lines['CF_Percent'].mean()
+                    player_simple_avg_cf_percent[name] = average_cf_percent
+                else:
+                    # Handle cases where the player was not found on any line
+                    player_simple_avg_cf_percent[name] = np.nan # Assign NaN (Not a Number)
+
+            player_simple_avg_cf_percent_df = pd.DataFrame(list(player_simple_avg_cf_percent.items()), columns=['Player Name', 'Simple Avg CF%'])
+            player_simple_avg_cf_percent_df = pd.DataFrame(list(player_simple_avg_cf_percent.items()), columns=['Player Name', 'Simple Avg CF%'])
+            player_simple_avg_cf_percent_df['Player Name'] = skaters['First Name'] + ' ' + skaters['Last Name']
+            # --- Create Plotly Bar Chart (if data exists) ---
+            fig = None
+            chart_json = None
+            if not player_simple_avg_cf_percent_df.empty:
+                fig = px.bar(
+                    player_simple_avg_cf_percent_df,
+                    x='Player Name',
+                    y='Simple Avg CF%',
+                    title='Average CORSI+ Percentage by Player',
+                    labels={'Simple Avg CF%': 'Avg CF%'}, # Shorter label
+                    # Consider removing text on bars if many players, becomes cluttered
+                    # text='Simple Avg CF%'
+                )
+
+                # Update layout for better readability
+                # fig.update_traces(texttemplate='%{text:.1f}%', textposition='outside') # Add % sign if desired
+                fig.update_layout(
+                    xaxis_title='Player', # Shorter title
+                    yaxis_title='Avgerage CORSI+%',
+                    xaxis_tickangle=-45,
+                    yaxis=dict(range=[0, 100]), # Set Y-axis range 0-100 for percentage
+                    margin=dict(b=100), # Add bottom margin if needed for labels
+                    xaxis={'categoryorder':'array', 'categoryarray': player_simple_avg_cf_percent_df['Player Name'].tolist()} # Keep sorted order
+                )
+                # Convert figure to JSON string
+                chart_json = pio.to_json(fig)
+
+
+            # --- Prepare Data for Response ---
+            # Convert DataFrame to list of dictionaries for JSON compatibility
+            player_data_list = player_simple_avg_cf_percent_df.to_dict(orient='records')
+
+            # --- Return Combined JSON Response ---
+            return Response(
+                {
+                    "player_data": player_data_list, # List of player stats
+                    "chart_json": chart_json         # Plotly chart JSON string (or null)
+                },
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            return Response({"error": f"An error occurred processing skater CF%: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # --- Define Available Metrics ---
 AVAILABLE_METRICS = {
