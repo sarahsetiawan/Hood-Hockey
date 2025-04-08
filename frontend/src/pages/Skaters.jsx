@@ -222,7 +222,7 @@ function Skaters() {
 
 
        {/* --- ADDED CF% Section --- */}
-        <h2 className="mt-5">Player Estimated Simple Average CF%</h2>
+        <h2 className="mt-5">Estimated Player CORSI+ Percentages</h2>
          {isFetchingCfPercentage ? ( // Show spinner while fetching CF%
             <div className="text-center mt-3"><Spinner animation="border" /> Loading CF% Chart...</div>
          ) : cfPercentageChartData ? ( // Render chart if data exists and not loading

@@ -517,6 +517,7 @@ class SkaterCFView(views.APIView):
 
             player_simple_avg_cf_percent_df = pd.DataFrame(list(player_simple_avg_cf_percent.items()), columns=['Player Name', 'Simple Avg CF%'])
             player_simple_avg_cf_percent_df = pd.DataFrame(list(player_simple_avg_cf_percent.items()), columns=['Player Name', 'Simple Avg CF%'])
+            player_simple_avg_cf_percent_df['Player Name'] = skaters['First Name'] + ' ' + skaters['Last Name']
             # --- Create Plotly Bar Chart (if data exists) ---
             fig = None
             chart_json = None
@@ -525,7 +526,7 @@ class SkaterCFView(views.APIView):
                     player_simple_avg_cf_percent_df,
                     x='Player Name',
                     y='Simple Avg CF%',
-                    title='Player Estimated Simple Average CF%',
+                    title='Average CORSI+ Percentage by Player',
                     labels={'Simple Avg CF%': 'Avg CF%'}, # Shorter label
                     # Consider removing text on bars if many players, becomes cluttered
                     # text='Simple Avg CF%'
@@ -535,7 +536,7 @@ class SkaterCFView(views.APIView):
                 # fig.update_traces(texttemplate='%{text:.1f}%', textposition='outside') # Add % sign if desired
                 fig.update_layout(
                     xaxis_title='Player', # Shorter title
-                    yaxis_title='Estimated Avg CF%',
+                    yaxis_title='Avgerage CORSI+%',
                     xaxis_tickangle=-45,
                     yaxis=dict(range=[0, 100]), # Set Y-axis range 0-100 for percentage
                     margin=dict(b=100), # Add bottom margin if needed for labels
