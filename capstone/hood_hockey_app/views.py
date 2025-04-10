@@ -507,7 +507,7 @@ class SynScoreView(views.APIView):
                     synergies_rate[(player1, player2)] = synergy_score_rate
                 
                 synergy_rate_def = pd.DataFrame(synergies_rate.items(), columns=['Pair', 'Rate Synergy Score (G60)'])
-                synergy_rate_def = synergy_rate_fwd.sort_values('Rate Synergy Score (G60)', ascending=False)
+                synergy_rate_def = synergy_rate_def.sort_values('Rate Synergy Score (G60)', ascending=False)
 
                 # prepare response
                 fwds = synergy_rate_fwd.to_dict(orient='records')
