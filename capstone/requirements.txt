@@ -13,3 +13,5 @@ pandas
 sqlalchemy
 plotly
 numpy
+io
+base64
