@@ -428,40 +428,46 @@ class SynScoreView(views.APIView):
                 last_names = forwards['Last Name'].to_list()
 
                 # Generate combinations
-                last_name_combinations = list(combinations(last_names, 2)) # Use actual list constructor
+                last_name_combinations = list(combinations(last_names, 3)) 
 
                 synergies_rate = {}
 
                 print(f"Calculating synergy for {len(last_name_combinations)} pairs (Rate Based)...")
 
-                for i, (player1, player2) in enumerate(last_name_combinations):
+                for i, (player1, player2, player3) in enumerate(last_name_combinations):
                 
-                    # --- Data for Both ---
-                    lines_with_both = lines[lines['Line'].str.contains(player1) & lines['Line'].str.contains(player2)]
+                    # --- Data for all 3 ---
+                    lines_with_both = lines[lines['Line'].str.contains(player1) & lines['Line'].str.contains(player2) & lines['Line'].str.contains(player3)]
 
                     goals_both_val = lines_with_both['Goals'].sum()
                     toi_both_val = lines_with_both['total_toi_minutes'].sum()
                     rate_both = (goals_both_val / toi_both_val) * 60 if toi_both_val > 0 else 0
 
-                    # --- Data for Player 1 without Player 2 ---
-                    lines_p1_only = lines[lines['Line'].str.contains(player1) & ~lines['Line'].str.contains(player2)]
+                    # --- Data for Player 1 without Player 2 and Player 3 ---
+                    lines_p1_only = lines[lines['Line'].str.contains(player1) & ~lines['Line'].str.contains(player2) & ~lines['Line'].str.contains(player3)]
 
                     goals_p1_val = lines_p1_only['Goals'].sum()
                     toi_p1_val = lines_p1_only['total_toi_minutes'].sum()
                     rate_p1_only = (goals_p1_val / toi_p1_val) * 60 if toi_p1_val > 0 else 0
 
-                    # --- Data for Player 2 without Player 1 ---
-                    lines_p2_only = lines[~lines['Line'].str.contains(player1) & lines['Line'].str.contains(player2)]
+                    # --- Data for Player 2 without Player 1 and Player 3 ---
+                    lines_p2_only = lines[~lines['Line'].str.contains(player1) & lines['Line'].str.contains(player2) & ~lines['Line'].str.contains(player3)]
                     goals_p2_val = lines_p2_only['Goals'].sum()
                     toi_p2_val = lines_p2_only['total_toi_minutes'].sum()
                     rate_p2_only = (goals_p2_val / toi_p2_val) * 60 if toi_p2_val > 0 else 0
 
+                    # --- Data for Player 3 without Player 1 and Player 2 ---
+                    lines_p3_only = lines[~lines['Line'].str.contains(player1) & ~lines['Line'].str.contains(player2) & lines['Line'].str.contains(player3)]
+                    goals_p3_val = lines_p3_only['Goals'].sum()
+                    toi_p3_val = lines_p3_only['total_toi_minutes'].sum()
+                    rate_p3_only = (goals_p3_val / toi_p3_val) * 60 if toi_p3_val > 0 else 0
+
                     # --- Average Individual Rate and Synergy Rate---
-                    rate_individual_avg = (rate_p1_only + rate_p2_only) / 2
+                    rate_individual_avg = (rate_p1_only + rate_p2_only + rate_p3_only) / 3
 
                     # Synergy Score based on rates
                     synergy_score_rate = rate_both - rate_individual_avg
-                    synergies_rate[(player1, player2)] = synergy_score_rate
+                    synergies_rate[(player1, player2, player3)] = synergy_score_rate
                 
                 synergy_rate_fwd = pd.DataFrame(synergies_rate.items(), columns=['Pair', 'Rate Synergy Score (G60)'])
                 synergy_rate_fwd = synergy_rate_fwd.sort_values('Rate Synergy Score (G60)', ascending=False)
