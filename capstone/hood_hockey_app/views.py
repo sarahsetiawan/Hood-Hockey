@@ -865,6 +865,15 @@ class PERView(views.APIView):
             forwards = calculate_dynamic_per(forwards, offensive_metrics, offensive_weights, defensive_metrics, defensive_weights)
             defenders = calculate_dynamic_per(defenders, offensive_metrics, offensive_weights, defensive_metrics, defensive_weights)
 
+            # Push to database to access outside of this class
+            # Connect to PostgreSQL
+            db_url = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+            engine = create_engine(db_url)
+            forwards_df = pd.DataFrame(forwards, columns=all_required_cols + ['OffensiveValue', 'DefensiveValue', 'PER'])
+            defenders_df = pd.DataFrame(defenders, columns=all_required_cols + ['OffensiveValue', 'DefensiveValue', 'PER'])
+            forwards_df.to_sql("hood_hockey_app_per_forwards", engine, if_exists='replace', index=False)
+            defenders_df.to_sql("hood_hockey_app_per_defenders", engine, if_exists='replace', index=False)
+
             # --- Build Formula Strings ---
             fwd_formula_off = self._build_formula_string(offensive_metrics, offensive_weights, "Offensive")
             fwd_formula_def = self._build_formula_string(defensive_metrics, defensive_weights, "Defensive")
