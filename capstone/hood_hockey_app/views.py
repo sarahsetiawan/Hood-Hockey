@@ -393,6 +393,67 @@ class DriveFileUploadView(views.APIView):
 
 from itertools import combinations
 
+# Optimal line combinations by PER
+class OptimalLinesPERView(views.APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        try:
+            with connection.cursor() as cursor:
+                # Fetch PER data (forwards)
+                cursor.execute("""
+                    SELECT "Player", "PER"
+                    FROM hood_hockey_app_per_forwards
+                """)
+                columns_per = [col[0] for col in cursor.description]
+                results_per = cursor.fetchall()
+                per_fwd = pd.DataFrame(results_per, columns=columns_per)
+                # Fetch PER data (defenders)
+                cursor.execute("""
+                    SELECT "Player", "PER"
+                    FROM hood_hockey_app_per_defenders
+                """)
+                columns_per = [col[0] for col in cursor.description]
+                results_per = cursor.fetchall()
+                per_def = pd.DataFrame(results_per, columns=columns_per)
+                # Fetch skaters data
+                cursor.execute("""
+                    SELECT * 
+                    FROM hood_hockey_app_skaters
+                """)
+                columns_skaters = [col[0] for col in cursor.description]
+                results_skaters = cursor.fetchall()
+                skaters = pd.DataFrame(results_skaters, columns=columns_skaters)
+
+                # Seperate forwards and defenders
+                forwards = skaters[skaters['Position'] == 'F'].copy()
+                defenders = skaters[skaters['Position'] == 'D'].copy()
+
+                # Add PER column to forwards and defenders
+                forwards = pd.merge(forwards, per_fwd, on='Player', how='left')
+                defenders = pd.merge(defenders, per_def, on='Player', how='left')
+
+                # Debugging
+                print("--------------------------------------------------")
+                print("fwds DataFrame")
+                print(forwards)
+
+                # prepare response
+                fwds = forwards.to_dict(orient='records')
+                defs = defenders.to_dict(orient='records')
+
+                # Return a combined JSON response
+                return Response(
+                    {
+                        "forwards": fwds,
+                        "defenders": defs
+                    }
+                )
+        except Exception as e:
+            return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                
+
+
 # Synergy scores
 class SynScoreView(views.APIView):
     permission_classes = [AllowAny]
