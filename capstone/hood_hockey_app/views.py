@@ -1270,172 +1270,201 @@ import plotly.io as pio # Import Plotly IO for JSON conversion
 import traceback # For error logging
 
 
-# Logistic Regression
+# views.py
+
+import pandas as pd
+import numpy as np
+from django.db import connection
+from rest_framework import views, status
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+
+# --- Scikit-learn Imports ---
+try:
+    from sklearn.model_selection import KFold, cross_val_score
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.metrics import accuracy_score, confusion_matrix
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.pipeline import Pipeline
+    from sklearn.exceptions import ConvergenceWarning
+    import warnings
+    warnings.filterwarnings("ignore", category=ConvergenceWarning)
+    SKLEARN_INSTALLED = True
+except ImportError:
+    SKLEARN_INSTALLED = False
+    print("CRITICAL WARNING: scikit-learn is not installed.")
+
+# --- Plotly Imports ---
+import plotly.express as px
+import plotly.graph_objects as go # Import graph_objects for combined plots
+import plotly.io as pio
+import traceback
+
+
 class LogRegView(views.APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        # Check if scikit-learn was imported successfully
         if not SKLEARN_INSTALLED:
-             return Response(
-                 {"error": "Server configuration error: scikit-learn library is missing."},
-                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
-             )
+             return Response({"error": "Server configuration error: scikit-learn missing."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         try:
             with connection.cursor() as cursor:
-                # Query for games data
-                cursor.execute("""
-                    SELECT *
-                    FROM hood_hockey_app_games
-                """)
+                cursor.execute("SELECT * FROM hood_hockey_app_games")
                 results = cursor.fetchall()
                 columns = [col[0] for col in cursor.description]
 
-            if not results:
-                 return Response({"error": "No game data found."}, status=status.HTTP_404_NOT_FOUND)
+            if not results: return Response({"error": "No game data found."}, status=status.HTTP_404_NOT_FOUND)
 
             # --- Data Processing ---
             data = pd.DataFrame(results, columns=columns)
-            # Basic cleaning - Keep only 'Total' rows for the primary team
-            data = data[(data['Type'] == 'Total') & (data['isOpponent'] == False)].copy() # Use explicit False, ensure copy
+            data = data[(data['Type'] == 'Total') & (data['isOpponent'] == False)].copy()
+            if data.empty: return Response({"error": "No 'Total' primary team data."}, status=status.HTTP_404_NOT_FOUND)
 
-            if data.empty:
-                 return Response({"error": "No 'Total' game data found for the primary team."}, status=status.HTTP_404_NOT_FOUND)
-
-            # Convert Outcome to numeric (1 for Win, 0 for Loss)
             data['Outcome'] = data['Outcome'].replace({'Win': 1, 'Loss': 0})
-            # Ensure Outcome is numeric, drop rows where conversion failed (e.g., if 'Tie' exists and wasn't handled)
             data['Outcome'] = pd.to_numeric(data['Outcome'], errors='coerce')
             data.dropna(subset=['Outcome'], inplace=True)
-            data['Outcome'] = data['Outcome'].astype(int) # Ensure integer type
+            data['Outcome'] = data['Outcome'].astype(int)
 
-            # Drop potentially irrelevant or problematic columns BEFORE selecting features
-            cols_to_drop = ['GameID', 'Type', 'Team', 'Date', 'isOpponent', 'OpponentTeam', 'OpponentScore', 'Outcome'] # Add GameID, Type, Team etc.
-             # Drop only columns that actually exist to avoid errors
+            cols_to_drop = ['GameID', 'Type', 'Team', 'Date', 'isOpponent', 'OpponentTeam', 'OpponentScore', 'Outcome']
             data_cleaned = data.drop(columns=[col for col in cols_to_drop if col in data.columns], errors='ignore')
-
-            # Prepare features (X) and target (y)
-            X = data_cleaned.select_dtypes(include=np.number) # Select only numeric features
+            X = data_cleaned.select_dtypes(include=np.number)
             y = data['Outcome']
 
-            # Ensure features and target are not empty after cleaning
             if X.empty or y.empty or X.shape[0] != y.shape[0]:
-                 return Response({"error": "Not enough valid data to train model after cleaning."}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"error": "Not enough valid data after cleaning."}, status=status.HTTP_400_BAD_REQUEST)
 
-             # Handle potential NaN values in features (e.g., fill with mean or median)
             if X.isnull().values.any():
-                 print("Warning: NaN values found in features (X). Filling with column means.")
-                 X = X.fillna(X.mean()) # Example: fill with mean
+                 print("Warning: Filling NaN values in features with column means.")
+                 X = X.fillna(X.mean())
 
-
-            # --- Model Training and Evaluation (Using Pipeline for scaling) ---
-            # Pipeline: Scale data -> Logistic Regression
+            # --- Model Training and Evaluation ---
             pipeline = Pipeline([
-                ('scaler', StandardScaler()), # Scale features
-                ('logreg', LogisticRegression(max_iter=1000, random_state=42, solver='liblinear')) # Use liblinear for smaller datasets
+                ('scaler', StandardScaler()),
+                ('logreg', LogisticRegression(max_iter=1000, random_state=42, solver='liblinear'))
             ])
-
-            # Set up cross-validation
+            # ... (cross-validation logic - keep as before) ...
             n_splits = 5
-            if min(y.value_counts()) < n_splits: # Ensure enough samples in each class for stratified split
-                n_splits = max(2, min(y.value_counts()))
-            kf = KFold(n_splits=n_splits, shuffle=True, random_state=42) # Use regular KFold or StratifiedKFold if needed
-
-            # Evaluate with cross-validation
+            if min(y.value_counts()) < n_splits: n_splits = max(2, min(y.value_counts()))
+            kf = KFold(n_splits=n_splits, shuffle=True, random_state=42)
+            mean_cv_accuracy = None
             try:
                  scores = cross_val_score(pipeline, X, y, cv=kf, scoring='accuracy')
-                 print("CV accuracy scores:", scores)
                  mean_cv_accuracy = scores.mean()
-                 print("Mean CV accuracy:", mean_cv_accuracy)
-            except ValueError as cv_error:
-                 print(f"Cross-validation failed: {cv_error}")
-                 # Could happen if a fold has only one class, even with checks above
-                 # Proceed without CV scores, but log the issue
-                 mean_cv_accuracy = None
+                 print(f"Mean CV accuracy: {mean_cv_accuracy}")
+            except ValueError as cv_error: print(f"Cross-validation failed: {cv_error}")
 
-
-            # --- Train Final Model on Full Data ---
             pipeline.fit(X, y)
-            model = pipeline.named_steps['logreg'] # Get the fitted logistic regression model from pipeline
-            scaler = pipeline.named_steps['scaler'] # Get the scaler if needed later
+            model = pipeline.named_steps['logreg']
+            scaler = pipeline.named_steps['scaler'] # Get the fitted scaler
 
             # --- Feature Importance ---
-            # Coefficients are from the scaled data
+            coef_chart_json = None
+            violin_chart_json = None
+            probability_curve_json = None # Initialize new chart JSON
+            primary_predictor_name = None # Store the name of the plotted predictor
+
             if hasattr(model, 'coef_'):
                 coef_series = pd.Series(model.coef_[0], index=X.columns)
-                # Rank by absolute value and get top 10
                 top_feats = coef_series.abs().sort_values(ascending=False).head(10)
-            else:
-                 # Handle cases where model fitting might fail or not produce coefficients
-                 print("Warning: Model coefficients not available.")
-                 top_feats = pd.Series(dtype='float64') # Empty series
 
-            # --- Create Coefficient Bar Chart ---
-            coef_chart_json = None
-            if not top_feats.empty:
-                signed_coefs = coef_series[top_feats.index] # Get signed coefficients for top features
-                coef_df = signed_coefs.reset_index()
-                coef_df.columns = ['Feature', 'Coefficient (on Scaled Data)'] # Clarify coefficient meaning
+                # --- Coefficient Bar Chart (Existing - unchanged generation logic) ---
+                if not top_feats.empty:
+                    signed_coefs = coef_series[top_feats.index]
+                    coef_df = signed_coefs.reset_index(); coef_df.columns = ['Feature', 'Coefficient (on Scaled Data)']
+                    fig_coefs = px.bar(coef_df.sort_values(by='Coefficient (on Scaled Data)', ascending=True), x='Coefficient (on Scaled Data)', y='Feature', orientation='h', title='Top 10 Feature Importances', labels={'Coefficient (on Scaled Data)':'Coefficient (Impact on Log-Odds)'})
+                    fig_coefs.update_layout(yaxis={'categoryorder':'total ascending'})
+                    coef_chart_json = pio.to_json(fig_coefs)
 
-                fig_coefs = px.bar(
-                    coef_df.sort_values(by='Coefficient (on Scaled Data)', ascending=True), # Sort for better viz
-                    x='Coefficient (on Scaled Data)', # Put coef on x-axis for horizontal bars
-                    y='Feature', # Put feature name on y-axis
-                    orientation='h', # Horizontal bar chart
-                    title='Top 10 Feature Importances (Logistic Regression Coefficients)',
-                    labels={'Feature':'Feature', 'Coefficient (on Scaled Data)':'Coefficient (Impact on Log-Odds)'}
-                )
-                fig_coefs.update_layout(yaxis={'categoryorder':'total ascending'}) # Keep sorted order
-                # REMOVED: fig_coefs.show()
-                coef_chart_json = pio.to_json(fig_coefs) # Convert to JSON
+                # --- Violin Plot (Existing - unchanged generation logic) ---
+                if not top_feats.empty:
+                    violin_data_cols = top_feats.index.tolist() + ['Outcome']; valid_violin_cols = [col for col in violin_data_cols if col in data.columns]
+                    if len(valid_violin_cols) > 1:
+                        melt_df = data[valid_violin_cols].melt(id_vars='Outcome', var_name='Feature', value_name='Value')
+                        melt_df['Outcome'] = melt_df['Outcome'].map({1: 'Win', 0: 'Loss'})
+                        fig_violin = px.violin(melt_df, x='Feature', y='Value', color='Outcome', box=True, points=False, title='Distribution of Top Features by Game Outcome', category_orders={"Feature": top_feats.index.tolist()})
+                        fig_violin.update_xaxes(tickangle=45)
+                        violin_chart_json = pio.to_json(fig_violin)
 
-            # --- Create Violin Plot ---
-            violin_chart_json = None
-            if not top_feats.empty:
-                # Select original data for top features + Outcome
-                violin_data_cols = top_feats.index.tolist() + ['Outcome']
-                # Ensure columns exist in the original 'data' DataFrame before melting
-                valid_violin_cols = [col for col in violin_data_cols if col in data.columns]
-                if len(valid_violin_cols) > 1: # Need at least Outcome and one feature
-                    melt_df = data[valid_violin_cols].melt(
-                         id_vars='Outcome',
-                         var_name='Feature',
-                         value_name='Value'
+                # --- ADDED: Probability Curve Plot ---
+                if not top_feats.empty:
+                    primary_predictor_name = top_feats.index[0] # Use the most important feature
+                    print(f"Generating probability curve for: {primary_predictor_name}")
+
+                    # 1. Generate a range of values for the primary predictor (using original data range)
+                    x_range_orig = np.linspace(data[primary_predictor_name].min(),
+                                               data[primary_predictor_name].max(),
+                                               100) # 100 points for a smooth curve
+
+                    # 2. Scale this range *using the same fitted scaler*
+                    # Create a temporary DataFrame matching the structure of X
+                    temp_df = pd.DataFrame(0, index=range(len(x_range_orig)), columns=X.columns)
+                    temp_df[primary_predictor_name] = x_range_orig
+                    # Scale the temporary DataFrame
+                    x_range_scaled = scaler.transform(temp_df)
+
+                    # 3. Predict probabilities using the fitted model on the scaled range
+                    # predict_proba gives [[P(class 0), P(class 1)], ...]
+                    probabilities = model.predict_proba(x_range_scaled)[:, 1] # Get probability of class 1 (Win)
+
+                    # 4. Create the Plotly figure using graph_objects
+                    fig_prob = go.Figure()
+
+                    # Add scatter plot for actual data points (Win/Loss) vs original feature value
+                    # Add slight jitter to y-axis to avoid overlap
+                    jitter_amount = 0.02
+                    fig_prob.add_trace(go.Scatter(
+                        x=data[primary_predictor_name],
+                        y=data['Outcome'] + np.random.uniform(-jitter_amount, jitter_amount, size=len(data)), # Add jitter
+                        mode='markers',
+                        name='Actual Outcome (0=Loss, 1=Win)',
+                        marker=dict(
+                            color=data['Outcome'], # Color by outcome
+                            colorscale=[[0, 'red'], [1, 'blue']], # Specify colors
+                            opacity=0.6,
+                            size=5
+                        )
+                    ))
+
+                    # Add the predicted probability curve (using original x range for plotting)
+                    fig_prob.add_trace(go.Scatter(
+                        x=x_range_orig, # Plot against original values
+                        y=probabilities,
+                        mode='lines',
+                        name='Predicted Win Probability',
+                        line=dict(color='green', width=2)
+                    ))
+
+                    # Update layout
+                    fig_prob.update_layout(
+                        title=f'Predicted Win Probability vs {primary_predictor_name}',
+                        xaxis_title=primary_predictor_name,
+                        yaxis_title='Probability of Winning',
+                        yaxis_range=[-0.1, 1.1], # Set Y-axis range slightly outside 0-1
+                        legend_title_text='Legend'
                     )
-                    # Map Outcome back to Win/Loss for plot legend clarity
-                    melt_df['Outcome'] = melt_df['Outcome'].map({1: 'Win', 0: 'Loss'})
 
-                    fig_violin = px.violin(
-                        melt_df,
-                        x='Feature',
-                        y='Value',
-                        color='Outcome', # Color by Win/Loss
-                        box=True, # Show box plot inside violin
-                        points=False, # 'all' can be too slow/dense, False or 'outliers' often better
-                        title='Distribution of Top Features by Game Outcome',
-                        category_orders={"Feature": top_feats.index.tolist()} # Keep feature order consistent if desired
-                    )
-                    fig_violin.update_xaxes(tickangle=45)
-                    # REMOVED: fig_violin.show()
-                    violin_chart_json = pio.to_json(fig_violin) # Convert to JSON
-                else:
-                    print("Warning: Not enough valid columns found for violin plot.")
+                    # 5. Convert to JSON
+                    probability_curve_json = pio.to_json(fig_prob)
 
+            else: # Handle case where model had no coefficients
+                 print("Warning: Model coefficients not available, cannot generate plots.")
 
             # --- Prepare and Return JSON Response ---
             response_data = {
                 "message": "Logistic regression analysis complete.",
                 "mean_cv_accuracy": mean_cv_accuracy if mean_cv_accuracy is not None else "N/A",
-                "coefficients_chart_json": coef_chart_json, # Include JSON string (or null)
-                "violin_chart_json": violin_chart_json     # Include JSON string (or null)
+                "coefficients_chart_json": coef_chart_json,
+                "violin_chart_json": violin_chart_json,
+                "probability_curve_json": probability_curve_json, # ADDED
+                "probability_curve_feature": primary_predictor_name # ADDED name of feature used
             }
 
             return Response(response_data, status=status.HTTP_200_OK)
 
         except Exception as e:
             print(f"Error in LogRegView: {e}")
-            print(traceback.format_exc()) # Print full traceback for debugging
+            print(traceback.format_exc())
             return Response({"error": f"An error occurred during logistic regression analysis: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
