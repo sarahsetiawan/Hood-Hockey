@@ -19,6 +19,25 @@ with a user-friendly interface tailored to the needs of coaches, analysts, and o
 - Frontend: React
 - Database: PostgreSQL
 
+## Devoloper Documentation
+To start the app, create a virtual environment 
+```
+python -m venv env
+```
+Activate the virtual environment
+```
+env\scripts\activate
+```
+To run the backend, run
+```
+python manage.py runserver
+```
+To run the frontend, split your terminal and run
+```
+npm run dev
+```
+Click on the link that comes up in the terminal running the frontend 
+
 ## User Documentation
 
 **1. Introduction**
@@ -100,25 +119,3 @@ with a user-friendly interface tailored to the needs of coaches, analysts, and o
 *   **Login Required:** Access to HWIHVA is strictly controlled via unique user accounts and passwords.
 *   **Confidentiality:** The data contained within HWIHVA is considered sensitive and proprietary to the Hood Women's Ice Hockey program. Do not share data or screenshots outside of authorized personnel.
 *   **Secure Platform:** The application is built with security considerations in mind to protect data integrity and prevent unauthorized access.
-
-## Devoloper Documentation
-To start the app, create a virtual environment 
-```
-python -m venv env
-```
-Activate the virtual environment
-```
-env\scripts\activate
-```
-To run the backend, run
-```
-python manage.py runserver
-```
-To run the frontend, split your terminal and run
-```
-npm run dev
-```
-Click on the link that comes up in the terminal running the frontend 
-## Code Documentation
-
-
