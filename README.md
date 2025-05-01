@@ -4,14 +4,16 @@ frameworks. The platform will integrate with the Hood Ice Hockey dataset to prov
 tailored visualizations and predictive analytics for Hood Hockey analytics. By
 addressing the unique needs of this domain, HWIHVA bridges the gap between raw data
 and actionable insights.</p>
-<p>HWIHVA will offer several key features, including interactive visualizations of Hood Ice
-Hockey data such as player performance trends and heatmaps. Users will be able to
-filter and compare data subsets to gain deeper insights. The application will also include
-predictive analytics tools to forecast player and team performance, and it will be built
+
+<p>HWIHVA will offer several key features, including dynamic visualizations of Hood Ice
+Hockey data such as player performance trends and heatmaps. Users will be able to interact with visualizations and 
+filter/compare data subsets to gain deeper insights. The application will also include
+predictive analytics tools to forecast player and team performance. The application will keep the data secure, requiring a login. Lastly, be built
 with a user-friendly interface tailored to the needs of coaches, analysts, and organizations.</p>
 
 ## Tech Stack
-- Python: Pandas, SK Learn, Matplotlip
+- Python: Pandas, SK Learn, Plotly
 - Backend: Django
 - Frontend: React
 - Database: PostgreSQL
+
