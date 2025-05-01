@@ -401,57 +401,95 @@ class OptimalLinesPERView(views.APIView):
     def get(self, request):
         try:
             with connection.cursor() as cursor:
-                # Fetch PER data (forwards)
+                # --- Fetch Necessary Data ---
+                # Fetch PER data (forwards) - Assuming tables exist
+                # Use explicit column selection
                 cursor.execute("""
                     SELECT "Player", "PER"
                     FROM hood_hockey_app_per_forwards
                 """)
-                columns_per = [col[0] for col in cursor.description]
-                results_per = cursor.fetchall()
-                per_fwd = pd.DataFrame(results_per, columns=columns_per)
+                columns_per_fwd = [col[0] for col in cursor.description]
+                results_per_fwd = cursor.fetchall()
+                per_fwd_df = pd.DataFrame(results_per_fwd, columns=columns_per_fwd)
+
                 # Fetch PER data (defenders)
                 cursor.execute("""
                     SELECT "Player", "PER"
                     FROM hood_hockey_app_per_defenders
                 """)
-                columns_per = [col[0] for col in cursor.description]
-                results_per = cursor.fetchall()
-                per_def = pd.DataFrame(results_per, columns=columns_per)
-                # Fetch skaters data
+                columns_per_def = [col[0] for col in cursor.description]
+                results_per_def = cursor.fetchall()
+                per_def_df = pd.DataFrame(results_per_def, columns=columns_per_def)
+
+                # Fetch skaters data - Only Player and Position needed for filtering
                 cursor.execute("""
-                    SELECT * 
+                    SELECT "Player", "Position", "Shirt number"
                     FROM hood_hockey_app_skaters
                 """)
                 columns_skaters = [col[0] for col in cursor.description]
                 results_skaters = cursor.fetchall()
-                skaters = pd.DataFrame(results_skaters, columns=columns_skaters)
+                skaters_df = pd.DataFrame(results_skaters, columns=columns_skaters)
 
-                # Seperate forwards and defenders
-                forwards = skaters[skaters['Position'] == 'F'].copy()
-                defenders = skaters[skaters['Position'] == 'D'].copy()
 
-                # Add PER column to forwards and defenders
-                forwards = pd.merge(forwards, per_fwd, on='Player', how='left')
-                defenders = pd.merge(defenders, per_def, on='Player', how='left')
+            # --- Data Processing and Merging ---
+            # Ensure PER columns are numeric, coerce errors to NaN
+            per_fwd_df['PER'] = pd.to_numeric(per_fwd_df['PER'], errors='coerce')
+            per_def_df['PER'] = pd.to_numeric(per_def_df['PER'], errors='coerce')
 
-                # Debugging
-                print("--------------------------------------------------")
-                print("fwds DataFrame")
-                print(forwards)
 
-                # prepare response
-                fwds = forwards.to_dict(orient='records')
-                defs = defenders.to_dict(orient='records')
+            # Separate forwards and defenders from the main skaters list
+            forwards_base = skaters_df[skaters_df['Position'] == 'F'].copy()
+            defenders_base = skaters_df[skaters_df['Position'] == 'D'].copy()
 
-                # Return a combined JSON response
-                return Response(
-                    {
-                        "forwards": fwds,
-                        "defenders": defs
-                    }
-                )
+            # Merge PER data onto the filtered skaters data
+            # Use 'left' merge to keep all skaters even if PER data is missing
+            forwards = pd.merge(forwards_base, per_fwd_df, on='Player', how='left')
+            defenders = pd.merge(defenders_base, per_def_df, on='Player', how='left')
+
+            # --- Handle NaN/Inf values before sending to frontend ---
+            # JSON standard doesn't support NaN, Infinity, -Infinity directly.
+            # We need to replace them with something JSON compliant, like None (which becomes null).
+            # Or potentially a string like "N/A" if preferred for display.
+
+            # Replace infinite values with NaN first
+            forwards.replace([np.inf, -np.inf], np.nan, inplace=True)
+            defenders.replace([np.inf, -np.inf], np.nan, inplace=True)
+
+            # Convert DataFrames to list of dictionaries
+            # Important: Use fillna(None) to replace NaN -> None *before* to_dict
+            fwds_list = forwards.fillna(np.nan).replace([np.nan], [None]).to_dict(orient='records')
+            defs_list = defenders.fillna(np.nan).replace([np.nan], [None]).to_dict(orient='records')
+
+            # Alternative using custom JSON encoder (more complex, less common for this case)
+            # class CustomEncoder(json.JSONEncoder):
+            #     def default(self, obj):
+            #         if isinstance(obj, np.integer): return int(obj)
+            #         if isinstance(obj, np.floating): return float(obj) if np.isfinite(obj) else None # Convert NaN/Inf to None
+            #         if isinstance(obj, np.ndarray): return obj.tolist()
+            #         if pd.isna(obj): return None # Handle pandas NaT etc.
+            #         return json.JSONEncoder.default(self, obj)
+            # fwds_list = forwards.to_dict(orient='records')
+            # defs_list = defenders.to_dict(orient='records')
+            # response_data = {"forwards": fwds_list, "defenders": defs_list}
+            # return Response(json.dumps(response_data, cls=CustomEncoder), content_type='application/json', status=status.HTTP_200_OK)
+
+
+            # --- Return Response ---
+            # DRF's Response handler *should* handle None correctly (converting to null)
+            return Response(
+                {
+                    "forwards": fwds_list,
+                    "defenders": defs_list
+                },
+                status=status.HTTP_200_OK
+            )
+
         except Exception as e:
-            return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            print(f"Error in OptimalLinesPERView: {e}")
+            print(traceback.format_exc())
+            # Ensure the error message itself doesn't contain non-JSON compliant values
+            error_message = f"An error occurred: {str(e)}"
+            return Response({"error": error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
                 
 
 

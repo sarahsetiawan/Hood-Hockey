@@ -17,10 +17,10 @@ function LinesQuery() {
     const [defenderSynergyData, setDefenderSynergyData] = useState([]);
     // --- End Existing State ---
 
-    // --- ADDED State for PER Data ---
+    // --- State for PER Data (Keep state definition) ---
     const [perForwardsData, setPerForwardsData] = useState([]);
     const [perDefendersData, setPerDefendersData] = useState([]);
-    // --- END ADDED State ---
+    // --- END State for PER Data ---
 
 
     useEffect(() => {
@@ -31,15 +31,15 @@ function LinesQuery() {
             // Reset existing state
             setForwardSynergyData([]); setDefenderSynergyData([]);
             setCorsiData([]); setGoalsData([]);
-            // --- ADDED: Reset PER data state ---
+            // Reset PER data state
             setPerForwardsData([]); setPerDefendersData([]);
-            // --- END ADDED Reset ---
             try {
-                // --- Fetch all endpoints concurrently ---
-                const [linesResponse, synergyResponse, perResponse] = await Promise.all([ // Added perResponse
+                // Fetch all endpoints concurrently
+                // IMPORTANT: Ensure the PER endpoint path here is correct!
+                const [linesResponse, synergyResponse, perResponse] = await Promise.all([
                     axios.get(`${API_BASE_URL}/lines-rankings/`),
                     axios.get(`${API_BASE_URL}/syn-scores/`),
-                    axios.get(`${API_BASE_URL}/linesPER/`) // ADDED: Fetch PER data endpoint (Adjust path if needed)
+                    axios.get(`${API_BASE_URL}/linesPER/`) // Fetch PER data endpoint
                 ]);
 
                 // --- Process Lines Rankings (Existing) ---
@@ -55,29 +55,24 @@ function LinesQuery() {
                     setForwardSynergyData(synergyData.forwards); setDefenderSynergyData(synergyData.defenders);
                 } else { console.warn("Synergy scores data structure unexpected:", synergyData); setForwardSynergyData([]); setDefenderSynergyData([]); }
 
-                // --- ADDED: Process PER Data ---
+                // --- Process PER Data (Keep processing logic) ---
                 console.log("Optimal Lines PER API response:", perResponse.data);
                 const perData = perResponse.data;
                 if (perData && Array.isArray(perData.forwards) && Array.isArray(perData.defenders)) {
-                     // The view seems to return full skater data with PER merged
-                     // We might want to sort by PER here if the backend doesn't
-                     // Example: Sort descending by PER, handling potential nulls
                      const sortFn = (a, b) => (b.PER ?? -Infinity) - (a.PER ?? -Infinity);
-                    setPerForwardsData([...perData.forwards].sort(sortFn)); // Sort a copy
-                    setPerDefendersData([...perData.defenders].sort(sortFn)); // Sort a copy
+                    setPerForwardsData([...perData.forwards].sort(sortFn));
+                    setPerDefendersData([...perData.defenders].sort(sortFn));
                 } else {
                     console.warn("PER data structure unexpected:", perData);
                     setPerForwardsData([]); setPerDefendersData([]);
                 }
-                // --- END ADDED PER Processing ---
+                // --- END PER Processing ---
 
             } catch (err) { // --- Existing Catch Block ---
                 console.error("API error:", err); let errorMsg = err.message; if (err.response?.data?.error) { errorMsg = err.response.data.error; } setError(errorMsg);
                 // Clear all state on error
                 setCorsiData([]); setGoalsData([]); setForwardSynergyData([]); setDefenderSynergyData([]);
-                // --- ADDED: Clear PER state on error ---
                 setPerForwardsData([]); setPerDefendersData([]);
-                // --- END ADDED Clear ---
             } finally { // --- Existing Finally Block ---
                 setLoading(false);
             }
@@ -91,62 +86,20 @@ function LinesQuery() {
     const renderSynergyTable = (title, data) => { const tableData = data; return ( <Col md={6} className="mb-4"> <h4>{title}</h4> {tableData && tableData.length > 0 ? ( <div style={{ maxHeight: '600px', overflowY: 'auto', border: '1px solid #dee2e6' }}> <Table striped bordered hover responsive size="sm" className="mb-0"> <thead style={{ position: 'sticky', top: 0, zIndex: 1, background: 'white' }}> <tr> <th>Rank</th> <th>Player Pair</th> <th>Synergy Score (G/60)</th> </tr> </thead> <tbody> {tableData.map((item, index) => { let pairDisplay = 'N/A'; if (Array.isArray(item.Pair) && item.Pair.length === 2) { pairDisplay = item.Pair.join(' - '); } else { pairDisplay = JSON.stringify(item.Pair); } const score = item['Rate Synergy Score (G60)']; const scoreDisplay = (score !== null && score !== undefined) ? score.toFixed(2) : 'N/A'; const rank = index + 1; return ( <tr key={`${pairDisplay}-${rank}`}> <td>{rank}</td> <td>{pairDisplay}</td> <td>{scoreDisplay}</td> </tr> ); })} </tbody> </Table> </div> ) : ( <Alert variant="info" size="sm">No synergy data available to display.</Alert> )} </Col> ); };
     // --- END Synergy Table Helper ---
 
-    // --- ADDED Helper function to render PER table ---
+    // --- Helper function to render PER table (Keep definition) ---
     const renderPerTable = (title, data) => {
         const tableData = data;
-        // Define which columns to show (adjust as needed based on backend response)
-        // Let's assume we want Player and PER, maybe Shirt Number if available
-        const columnsToShow = ['Player', 'PER', 'Shirt number']; // Example columns
-
-        if (!tableData || tableData.length === 0) {
-             return (
-                <Col md={6} className="mb-4">
-                    <h4>{title}</h4>
-                    <Alert variant="info" size="sm">No PER data available to display.</Alert>
-                </Col>
-            );
-        }
-
-        // Filter available keys based on columnsToShow and what's in the first data row
+        const columnsToShow = ['Player', 'PER', 'Shirt number'];
+        if (!tableData || tableData.length === 0) { return ( <Col md={6} className="mb-4"> <h4>{title}</h4> <Alert variant="info" size="sm">No PER data available to display.</Alert> </Col> ); }
         const availableKeys = Object.keys(tableData[0]);
         const displayKeys = columnsToShow.filter(key => availableKeys.includes(key));
-
-        return (
-            <Col md={6} className="mb-4">
-                <h4>{title}</h4>
-                 <div style={{ maxHeight: '600px', overflowY: 'auto', border: '1px solid #dee2e6' }}>
-                    <Table striped bordered hover responsive size="sm" className="mb-0">
-                        <thead style={{ position: 'sticky', top: 0, zIndex: 1, background: 'white' }}>
-                            <tr>
-                                {/* Render specific headers */}
-                                {displayKeys.map(key => <th key={`per-th-${title}-${key}`}>{key}</th>)}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {tableData.map((player, index) => (
-                                <tr key={`per-tr-${title}-${player.Player || index}`}>
-                                    {/* Render specific values based on displayKeys */}
-                                    {displayKeys.map(key => {
-                                        const value = player[key];
-                                        // Format PER specifically
-                                        const displayValue = key === 'PER' && typeof value === 'number'
-                                            ? value.toFixed(3) // Adjust formatting as needed
-                                            : (value !== null && value !== undefined ? String(value) : '');
-                                        return <td key={`per-td-${title}-${player.Player || index}-${key}`}>{displayValue}</td>;
-                                    })}
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
-                </div>
-            </Col>
-        );
+        return ( <Col md={6} className="mb-4"> <h4>{title}</h4> <div style={{ maxHeight: '600px', overflowY: 'auto', border: '1px solid #dee2e6' }}> <Table striped bordered hover responsive size="sm" className="mb-0"> <thead style={{ position: 'sticky', top: 0, zIndex: 1, background: 'white' }}> <tr> {displayKeys.map(key => <th key={`per-th-${title}-${key}`}>{key}</th>)} </tr> </thead> <tbody> {tableData.map((player, index) => ( <tr key={`per-tr-${title}-${player.Player || index}`}> {displayKeys.map(key => { const value = player[key]; const displayValue = key === 'PER' && typeof value === 'number' ? value.toFixed(3) : (value !== null && value !== undefined ? String(value) : ''); return <td key={`per-td-${title}-${player.Player || index}-${key}`}>{displayValue}</td>; })} </tr> ))} </tbody> </Table> </div> </Col> );
     };
-    // --- END ADDED Helper ---
+    // --- END PER Helper ---
 
 
     // --- Loading / Error Render (Existing - Unchanged) ---
-    if (loading) { return ( <Container className="text-center mt-5"> <Spinner animation="border" role="status" /> <p>Loading Lineup, Synergy, and PER Data...</p> </Container> ); } // Updated text
+    if (loading) { return ( <Container className="text-center mt-5"> <Spinner animation="border" role="status" /> <p>Loading Lineup, Synergy, and PER Data...</p> </Container> ); }
     if (error) { return ( <Container className="mt-5"> <Alert variant="danger">Error loading data: {error}</Alert> </Container> ); }
 
     // --- Combined Render ---
@@ -175,8 +128,9 @@ function LinesQuery() {
              {/* --- END Synergy Scores Section --- */}
 
 
-             {/* --- ADDED Player PER Section --- */}
-            {!loading && !error && ( // Render only when data fetch is complete and successful
+             {/* --- Player PER Section --- */}
+             {/* Render this section only if loading is complete and no error occurred */}
+             {!loading && !error && (
                 <>
                     <h2 className="mt-5">Player PER Data</h2>
                      <Row className="mt-3">
@@ -186,7 +140,7 @@ function LinesQuery() {
                     </Row>
                 </>
             )}
-             {/* --- END ADDED Player PER Section --- */}
+             {/* --- END Player PER Section --- */}
 
 
         </Container>
