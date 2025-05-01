@@ -294,19 +294,19 @@ def upload(table, request, replace=True, json=False):
             db_url = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
             engine = create_engine(db_url)
 
-            ### # Data cleaning/transformation
-            ### if table == "hood_hockey_app_skaters":
-            ###     df = clean_skaters(df)
-            ### elif table == "hood_hockey_app_goalies":
-            ###     df = clean_goalies(df)
-            ### elif table == "hood_hockey_app_games":
-            ###     df = clean_games(df)
-            ### elif table == "hood_hockey_app_lines":
-            ###     df = clean_lines(df)
-            ### elif table == "hood_hockey_app_drive":
-            ###     df = clean_drive(df)
-            ### else:
-            ###     print("No cleaning function found for this table")
+            # Data cleaning/transformation
+            if table == "hood_hockey_app_skaters":
+                df = clean_skaters(df)
+            elif table == "hood_hockey_app_goalies":
+                df = clean_goalies(df)
+            elif table == "hood_hockey_app_games":
+                df = clean_games(df)
+            elif table == "hood_hockey_app_lines":
+                df = clean_lines(df)
+            elif table == "hood_hockey_app_drive":
+                df = clean_drive(df)
+            else:
+                print("No cleaning function found for this table")
 
             # Push data to SQL -- replace or append 
             table_name = table  
@@ -689,6 +689,8 @@ import plotly.io as pio
 import traceback # Import traceback for better error logging
 from urllib.parse import unquote # To decode URL-encoded strings
 import plotly.express as px
+
+# DRIVE data visualizations
 
 # Skater CF%
 class SkaterCFView(views.APIView):
@@ -1122,86 +1124,24 @@ class GARView(views.APIView):
         except Exception as e:
             print(f"!!! ERROR in GARView for metric '{metric}' !!!")
             return Response({"error": f"An error occurred processing metric '{metric}': {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-# GAR
-# class GARView(views.APIView):
-#     permission_classes = [AllowAny]
-# 
-#     def get(self, request, metric="Points"):
-#         try:
-#             with connection.cursor() as cursor:
-#                     # Get skaters data
-#                     cursor.execute("""
-#                         SELECT "Shirt number", "Player", "Position", "Points", "Goals", "Assists"
-#                         FROM hood_hockey_app_skaters
-#                     """)
-#                     results = cursor.fetchall()
-#                     columns = [col[0] for col in cursor.description]
-# 
-#                     # All skaters
-#                     skaters = pd.DataFrame(results, columns=columns)
-#                     # Forwards
-#                     forwards = skaters[skaters['Position'] == 'F']
-#                     # Defenders
-#                     defenders = skaters[skaters['Position'] == 'D']
-# 
-#                     # Calculate replacement level (30th percentile -- may need adjustment) for each position
-#                     replacement_fwd = forwards[metric].quantile(0.30)
-#                     replacement_def = defenders[metric].quantile(0.30)
-#                     # Add PAR/GAR/AAR to data frames and rank
-#                     if metric == "Points":
-#                         forwards['PointsAR'] = forwards['Points'] - replacement_fwd
-#                         forwards = forwards.sort_values(by='PointsAR', ascending=False)
-#                         defenders['PointsAR'] = defenders['Points'] - replacement_def
-#                         defenders = defenders.sort_values(by='PointsAR', ascending=False)
-#                         # Top 5 forwards and defenders
-#                         top_forwards = forwards[['Shirt number', 'Player', metric, 'PointsAR']].head(5)
-#                         top_defenders = defenders[['Shirt number', 'Player', metric, 'PointsAR']].head(5)
-#                     elif metric == "Goals":
-#                         forwards['GoalsAR'] = forwards['Goals'] - replacement_fwd
-#                         forwards = forwards.sort_values(by='GoalsAR', ascending=False)
-#                         defenders['GoalsAR'] = defenders['Goals'] - replacement_def
-#                         defenders = defenders.sort_values(by='GoalsAR', ascending=False)
-#                         # Top 5 forwards and defenders
-#                         top_forwards = forwards[['Shirt number', 'Player', metric, 'GoalsAR']].head(5)
-#                         top_defenders = defenders[['Shirt number', 'Player', metric, 'GoalsAR']].head(5)
-#                     elif metric == "Assists":
-#                         forwards['AssistsAR'] = forwards['Assists'] - replacement_fwd
-#                         forwards = forwards.sort_values(by='AssistsAR', ascending=False)
-#                         defenders['AssistsAR'] = defenders['Assists'] - replacement_def
-#                         defenders = defenders.sort_values(by='AssistsAR', ascending=False)
-#                         # Top 5 forwards and defenders
-#                         top_forwards = forwards[['Shirt number', 'Player', metric, 'AssistsAR']].head(5)
-#                         top_defenders = defenders[['Shirt number', 'Player', metric, 'AssistsAR']].head(5)
-#                     else:
-#                         return Response({"error": "Invalid metric. Please choose 'Points', 'Goals', or 'Assists'."}, status=status.HTTP_400_BAD_REQUEST)
-# 
-#                     return Response(
-#                         {
-#                             "top_forwards": top_forwards.to_dict(orient='records'),
-#                             "top_defenders": top_defenders.to_dict(orient='records')
-#                         },
-#                         status=status.HTTP_200_OK
-#                     )
-#         except Exception as e:
-#             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
-# Goals Vs. Max Speed
+# Fitness correlation graphs
 class FitnessCorrelationView(views.APIView):
     permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
         try:
             with connection.cursor() as cursor:
-                # Get skaters data
+                # Get skaters data - SELECT NEEDED COLUMNS
                 cursor.execute("""
-                    SELECT "Shirt number", "Goals"
+                    SELECT "Player", "Shirt number", "Position", "Goals"
                     FROM hood_hockey_app_skaters
                 """)
                 skater_results = cursor.fetchall()
                 skater_columns = [col[0] for col in cursor.description]
+                skaters_df = pd.DataFrame(skater_results, columns=skater_columns)
 
-                # Get DRIVE data
+                # Get DRIVE data - Aggregate Max Speed
                 cursor.execute("""
                     SELECT "playerId", MAX("speed") AS max_speed
                     FROM hood_hockey_app_drive
@@ -1209,66 +1149,91 @@ class FitnessCorrelationView(views.APIView):
                 """)
                 drive_results = cursor.fetchall()
                 drive_columns = [col[0] for col in cursor.description]
+                drive_df = pd.DataFrame(drive_results, columns=drive_columns)
 
-            # Initial data frames
-            skaters_df = pd.DataFrame(skater_results, columns=skater_columns)
-            drive_df = pd.DataFrame(drive_results, columns=drive_columns)
-            print("----------------------------------------------------------")
-            print("Inititial DFs")
-            print("----------------------------------------------------------")
-            print("skaters")
-            print(skaters_df)
-            print("drive")
-            print(drive_df)
+            if skaters_df.empty or drive_df.empty:
+                 return Response({"error": "Missing skater or drive data."}, status=status.HTTP_404_NOT_FOUND)
 
             # --- Data Cleaning and Processing ---
+            # DRIVE processing: Convert playerId to integer (matching Shirt number type)
+            # Ensure 'playerId' column exists and handle potential errors
+            if 'playerId' in drive_df.columns:
+                # Attempt to remove 'h' and convert, coercing errors to NaN
+                drive_df['player_id_num'] = pd.to_numeric(drive_df['playerId'].astype(str).str.lstrip('h'), errors='coerce')
+                drive_df.dropna(subset=['player_id_num'], inplace=True) # Drop rows where conversion failed
+                drive_df['player_id'] = drive_df['player_id_num'].astype(int)
+                drive_df = drive_df.rename(columns={'max_speed': 'Max Speed'}) # Match case for axis label later
+            else:
+                 return Response({"error": "'playerId' column not found in drive data."}, status=status.HTTP_400_BAD_REQUEST)
 
-            # DRIVE processing: Convert playerId to integer
-            drive_df['playerId'] = drive_df['playerId'].str.lstrip('h').astype(int)
-            drive_df = drive_df.rename(columns={'playerId': 'player_id', 'max_speed': 'max_speed'})
 
-            # Skaters processing:  Rename, Replace, *then* assign player_id
-            skaters_df = skaters_df.rename(columns={'Shirt number': 'shirt_number', 'Goals': 'goals'})
-            skaters_df['shirt_number'] = skaters_df['shirt_number'].astype(int)
-            skaters_df['player_id'] = skaters_df['shirt_number']  # Assign player_id *after* cleaning goals
+            # Skaters processing: Convert Shirt number to int, Goals to numeric
+            if 'Shirt number' in skaters_df.columns and 'Goals' in skaters_df.columns:
+                 skaters_df['player_id'] = pd.to_numeric(skaters_df['Shirt number'], errors='coerce')
+                 skaters_df['Goals'] = pd.to_numeric(skaters_df['Goals'], errors='coerce')
+                 skaters_df.dropna(subset=['player_id', 'Goals'], inplace=True) # Drop rows where conversion failed
+                 skaters_df['player_id'] = skaters_df['player_id'].astype(int)
+            else:
+                 return Response({"error": "'Shirt number' or 'Goals' column not found in skater data."}, status=status.HTTP_400_BAD_REQUEST)
 
-            print("----------------------------------------------------------")
-            print("After processing")
-            print("----------------------------------------------------------")
-            print("skaters")
-            print(skaters_df)
-            print("drive")
-            print(drive_df)
 
             # --- Data Merging ---
-            merged_df = pd.merge(drive_df, skaters_df, on='player_id', how='inner')
-
-            print("----------------------------------------------------------")
-            print("Merged df")
-            print("----------------------------------------------------------")
-            print(merged_df)
+            # Select only necessary columns before merge
+            drive_subset = drive_df[['player_id', 'Max Speed']]
+            skater_subset = skaters_df[['player_id', 'Player', 'Position', 'Goals']] # Added 'Player'
+            # Use inner merge to keep only players present in both datasets with valid IDs
+            merged_df = pd.merge(drive_subset, skater_subset, on='player_id', how='inner')
 
             if merged_df.empty:
-                return Response({"message": "No matching data found for players and their speeds/goals."}, status=status.HTTP_204_NO_CONTENT)
+                print("Merged DataFrame is empty after inner join.")
+                return Response({"message": "No players found matching between skater and drive data."}, status=status.HTTP_204_NO_CONTENT)
 
-            # --- Scatterplot Data Prep and Plotting ---
-            plt.figure(figsize=(8, 6))
-            plt.scatter(merged_df['max_speed'], merged_df['goals'])
-            plt.xlabel('Max Speed')
-            plt.ylabel('Goals')
-            plt.title('Scatterplot of Max Speed vs Goals')
-            plt.grid(True)
+            # Ensure data types after merge
+            merged_df['Max Speed'] = pd.to_numeric(merged_df['Max Speed'], errors='coerce')
+            merged_df['Goals'] = pd.to_numeric(merged_df['Goals'], errors='coerce')
+            merged_df.dropna(subset=['Max Speed', 'Goals'], inplace=True)
 
-            # --- Save and Return Image ---
-            buf = io.BytesIO()
-            plt.savefig(buf, format='png')
-            plt.close()
-            buf.seek(0)
-            image_base64 = base64.b64encode(buf.read()).decode('utf-8')
-            return Response({'image': image_base64}, status=status.HTTP_200_OK)
+
+            # Separate forwards and defenders *after* successful merge
+            forwards_df = merged_df[merged_df['Position'] == 'F'].copy()
+            defenders_df = merged_df[merged_df['Position'] == 'D'].copy()
+
+            # --- Create Plotly Scatterplots ---
+            fwd_chart_json = None
+            if not forwards_df.empty:
+                fig_fwd = px.scatter(
+                    forwards_df,
+                    x='Max Speed',
+                    y='Goals',
+                    title='Forwards: Max Speed vs Goals',
+                    labels={'Max Speed': 'Max Speed (Units)', 'Goals': 'Goals Scored'},
+                    hover_data=['Player'] # Show player name on hover
+                )
+                fig_fwd.update_traces(marker=dict(size=8, opacity=0.7))
+                fwd_chart_json = pio.to_json(fig_fwd)
+
+            def_chart_json = None
+            if not defenders_df.empty:
+                fig_def = px.scatter(
+                    defenders_df,
+                    x='Max Speed',
+                    y='Goals',
+                    title='Defenders: Max Speed vs Goals',
+                    labels={'Max Speed': 'Max Speed (Units)', 'Goals': 'Goals Scored'},
+                    hover_data=['Player'] # Show player name on hover
+                )
+                fig_def.update_traces(marker=dict(size=8, opacity=0.7, color='orange')) # Different color
+                def_chart_json = pio.to_json(fig_def)
+
+            # --- Return JSON Response ---
+            return Response({
+                    'forward_scatter_json': fwd_chart_json,
+                    'defender_scatter_json': def_chart_json
+                }, status=status.HTTP_200_OK)
 
         except Exception as e:
             print(f"Error in FitnessCorrelationView: {e}")
+            print(traceback.format_exc())
             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 # --------------------
