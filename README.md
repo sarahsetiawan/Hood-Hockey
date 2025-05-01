@@ -102,7 +102,23 @@ with a user-friendly interface tailored to the needs of coaches, analysts, and o
 *   **Secure Platform:** The application is built with security considerations in mind to protect data integrity and prevent unauthorized access.
 
 ## Devoloper Documentation
-
+To start the app, create a virtual environment 
+```
+python -m venv env
+```
+Activate the virtual environment
+```
+env\scripts\activate
+```
+To run the backend, run
+```
+python manage.py runserver
+```
+To run the frontend, split your terminal and run
+```
+npm run dev
+```
+Click on the link that comes up in the terminal running the frontend 
 ## Code Documentation
 
 
