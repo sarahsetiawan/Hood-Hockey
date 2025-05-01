@@ -17,6 +17,9 @@ import matplotlib
 matplotlib.use('Agg') # Fix threading issue
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import KFold, cross_val_score
+from sklearn.metrics import accuracy_score, confusion_matrix
 
 # ------------------------------------------------------
 # PostgreSQL database connection settings 
@@ -291,19 +294,19 @@ def upload(table, request, replace=True, json=False):
             db_url = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
             engine = create_engine(db_url)
 
-           ### # Data cleaning/transformation
-           ### if table == "hood_hockey_app_skaters":
-           ###     df = clean_skaters(df)
-           ### elif table == "hood_hockey_app_goalies":
-           ###     df = clean_goalies(df)
-           ### elif table == "hood_hockey_app_games":
-           ###     df = clean_games(df)
-           ### elif table == "hood_hockey_app_lines":
-           ###     df = clean_lines(df)
-           ### elif table == "hood_hockey_app_drive":
-           ###     df = clean_drive(df)
-           ### else:
-           ###     print("No cleaning function found for this table")
+            ### # Data cleaning/transformation
+            ### if table == "hood_hockey_app_skaters":
+            ###     df = clean_skaters(df)
+            ### elif table == "hood_hockey_app_goalies":
+            ###     df = clean_goalies(df)
+            ### elif table == "hood_hockey_app_games":
+            ###     df = clean_games(df)
+            ### elif table == "hood_hockey_app_lines":
+            ###     df = clean_lines(df)
+            ### elif table == "hood_hockey_app_drive":
+            ###     df = clean_drive(df)
+            ### else:
+            ###     print("No cleaning function found for this table")
 
             # Push data to SQL -- replace or append 
             table_name = table  
@@ -486,6 +489,10 @@ class SynScoreView(views.APIView):
                 forwards = skaters[skaters['Position'] == 'F'].copy()
                 last_names = forwards['Last Name'].to_list()
 
+                print("--------------------------------------------------")
+                print("FWDS shape")
+                print(forwards.shape)
+
                 # Generate combinations
                 last_name_combinations = list(combinations(last_names, 3)) 
 
@@ -521,7 +528,7 @@ class SynScoreView(views.APIView):
                     toi_p3_val = lines_p3_only['total_toi_minutes'].sum()
                     rate_p3_only = (goals_p3_val / toi_p3_val) * 60 if toi_p3_val > 0 else 0
 
-                    # --- Average Individual Rate and Synergy Rate---
+                    # --- Average Individual Rate and Synergy Rate ---
                     rate_individual_avg = (rate_p1_only + rate_p2_only + rate_p3_only) / 3
 
                     # Synergy Score based on rates
@@ -1229,6 +1236,209 @@ class FitnessCorrelationView(views.APIView):
 # --------------------
 # Games
 # --------------------
+
+# views.py
+
+import pandas as pd
+import numpy as np
+from django.db import connection
+from rest_framework import views, status
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+
+# --- Scikit-learn Imports ---
+# Make sure scikit-learn is installed: pip install scikit-learn
+try:
+    from sklearn.model_selection import KFold, cross_val_score
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.metrics import accuracy_score, confusion_matrix
+    from sklearn.preprocessing import StandardScaler # Good practice for Logistic Regression
+    from sklearn.pipeline import Pipeline # Useful for combining steps
+    from sklearn.exceptions import ConvergenceWarning
+    import warnings
+    warnings.filterwarnings("ignore", category=ConvergenceWarning) # Suppress convergence warnings if desired
+    SKLEARN_INSTALLED = True
+except ImportError:
+    # Handle case where sklearn might not be installed
+    SKLEARN_INSTALLED = False
+    print("CRITICAL WARNING: scikit-learn is not installed. Logistic Regression functionality will be unavailable.")
+    # Define dummy classes/functions if needed elsewhere, or just rely on the check below
+
+# --- Plotly Imports ---
+import plotly.express as px
+import plotly.io as pio # Import Plotly IO for JSON conversion
+import traceback # For error logging
+
+
+# Logistic Regression
+class LogRegView(views.APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        # Check if scikit-learn was imported successfully
+        if not SKLEARN_INSTALLED:
+             return Response(
+                 {"error": "Server configuration error: scikit-learn library is missing."},
+                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
+             )
+
+        try:
+            with connection.cursor() as cursor:
+                # Query for games data
+                cursor.execute("""
+                    SELECT *
+                    FROM hood_hockey_app_games
+                """)
+                results = cursor.fetchall()
+                columns = [col[0] for col in cursor.description]
+
+            if not results:
+                 return Response({"error": "No game data found."}, status=status.HTTP_404_NOT_FOUND)
+
+            # --- Data Processing ---
+            data = pd.DataFrame(results, columns=columns)
+            # Basic cleaning - Keep only 'Total' rows for the primary team
+            data = data[(data['Type'] == 'Total') & (data['isOpponent'] == False)].copy() # Use explicit False, ensure copy
+
+            if data.empty:
+                 return Response({"error": "No 'Total' game data found for the primary team."}, status=status.HTTP_404_NOT_FOUND)
+
+            # Convert Outcome to numeric (1 for Win, 0 for Loss)
+            data['Outcome'] = data['Outcome'].replace({'Win': 1, 'Loss': 0})
+            # Ensure Outcome is numeric, drop rows where conversion failed (e.g., if 'Tie' exists and wasn't handled)
+            data['Outcome'] = pd.to_numeric(data['Outcome'], errors='coerce')
+            data.dropna(subset=['Outcome'], inplace=True)
+            data['Outcome'] = data['Outcome'].astype(int) # Ensure integer type
+
+            # Drop potentially irrelevant or problematic columns BEFORE selecting features
+            cols_to_drop = ['GameID', 'Type', 'Team', 'Date', 'isOpponent', 'OpponentTeam', 'OpponentScore', 'Outcome'] # Add GameID, Type, Team etc.
+             # Drop only columns that actually exist to avoid errors
+            data_cleaned = data.drop(columns=[col for col in cols_to_drop if col in data.columns], errors='ignore')
+
+            # Prepare features (X) and target (y)
+            X = data_cleaned.select_dtypes(include=np.number) # Select only numeric features
+            y = data['Outcome']
+
+            # Ensure features and target are not empty after cleaning
+            if X.empty or y.empty or X.shape[0] != y.shape[0]:
+                 return Response({"error": "Not enough valid data to train model after cleaning."}, status=status.HTTP_400_BAD_REQUEST)
+
+             # Handle potential NaN values in features (e.g., fill with mean or median)
+            if X.isnull().values.any():
+                 print("Warning: NaN values found in features (X). Filling with column means.")
+                 X = X.fillna(X.mean()) # Example: fill with mean
+
+
+            # --- Model Training and Evaluation (Using Pipeline for scaling) ---
+            # Pipeline: Scale data -> Logistic Regression
+            pipeline = Pipeline([
+                ('scaler', StandardScaler()), # Scale features
+                ('logreg', LogisticRegression(max_iter=1000, random_state=42, solver='liblinear')) # Use liblinear for smaller datasets
+            ])
+
+            # Set up cross-validation
+            n_splits = 5
+            if min(y.value_counts()) < n_splits: # Ensure enough samples in each class for stratified split
+                n_splits = max(2, min(y.value_counts()))
+            kf = KFold(n_splits=n_splits, shuffle=True, random_state=42) # Use regular KFold or StratifiedKFold if needed
+
+            # Evaluate with cross-validation
+            try:
+                 scores = cross_val_score(pipeline, X, y, cv=kf, scoring='accuracy')
+                 print("CV accuracy scores:", scores)
+                 mean_cv_accuracy = scores.mean()
+                 print("Mean CV accuracy:", mean_cv_accuracy)
+            except ValueError as cv_error:
+                 print(f"Cross-validation failed: {cv_error}")
+                 # Could happen if a fold has only one class, even with checks above
+                 # Proceed without CV scores, but log the issue
+                 mean_cv_accuracy = None
+
+
+            # --- Train Final Model on Full Data ---
+            pipeline.fit(X, y)
+            model = pipeline.named_steps['logreg'] # Get the fitted logistic regression model from pipeline
+            scaler = pipeline.named_steps['scaler'] # Get the scaler if needed later
+
+            # --- Feature Importance ---
+            # Coefficients are from the scaled data
+            if hasattr(model, 'coef_'):
+                coef_series = pd.Series(model.coef_[0], index=X.columns)
+                # Rank by absolute value and get top 10
+                top_feats = coef_series.abs().sort_values(ascending=False).head(10)
+            else:
+                 # Handle cases where model fitting might fail or not produce coefficients
+                 print("Warning: Model coefficients not available.")
+                 top_feats = pd.Series(dtype='float64') # Empty series
+
+            # --- Create Coefficient Bar Chart ---
+            coef_chart_json = None
+            if not top_feats.empty:
+                signed_coefs = coef_series[top_feats.index] # Get signed coefficients for top features
+                coef_df = signed_coefs.reset_index()
+                coef_df.columns = ['Feature', 'Coefficient (on Scaled Data)'] # Clarify coefficient meaning
+
+                fig_coefs = px.bar(
+                    coef_df.sort_values(by='Coefficient (on Scaled Data)', ascending=True), # Sort for better viz
+                    x='Coefficient (on Scaled Data)', # Put coef on x-axis for horizontal bars
+                    y='Feature', # Put feature name on y-axis
+                    orientation='h', # Horizontal bar chart
+                    title='Top 10 Feature Importances (Logistic Regression Coefficients)',
+                    labels={'Feature':'Feature', 'Coefficient (on Scaled Data)':'Coefficient (Impact on Log-Odds)'}
+                )
+                fig_coefs.update_layout(yaxis={'categoryorder':'total ascending'}) # Keep sorted order
+                # REMOVED: fig_coefs.show()
+                coef_chart_json = pio.to_json(fig_coefs) # Convert to JSON
+
+            # --- Create Violin Plot ---
+            violin_chart_json = None
+            if not top_feats.empty:
+                # Select original data for top features + Outcome
+                violin_data_cols = top_feats.index.tolist() + ['Outcome']
+                # Ensure columns exist in the original 'data' DataFrame before melting
+                valid_violin_cols = [col for col in violin_data_cols if col in data.columns]
+                if len(valid_violin_cols) > 1: # Need at least Outcome and one feature
+                    melt_df = data[valid_violin_cols].melt(
+                         id_vars='Outcome',
+                         var_name='Feature',
+                         value_name='Value'
+                    )
+                    # Map Outcome back to Win/Loss for plot legend clarity
+                    melt_df['Outcome'] = melt_df['Outcome'].map({1: 'Win', 0: 'Loss'})
+
+                    fig_violin = px.violin(
+                        melt_df,
+                        x='Feature',
+                        y='Value',
+                        color='Outcome', # Color by Win/Loss
+                        box=True, # Show box plot inside violin
+                        points=False, # 'all' can be too slow/dense, False or 'outliers' often better
+                        title='Distribution of Top Features by Game Outcome',
+                        category_orders={"Feature": top_feats.index.tolist()} # Keep feature order consistent if desired
+                    )
+                    fig_violin.update_xaxes(tickangle=45)
+                    # REMOVED: fig_violin.show()
+                    violin_chart_json = pio.to_json(fig_violin) # Convert to JSON
+                else:
+                    print("Warning: Not enough valid columns found for violin plot.")
+
+
+            # --- Prepare and Return JSON Response ---
+            response_data = {
+                "message": "Logistic regression analysis complete.",
+                "mean_cv_accuracy": mean_cv_accuracy if mean_cv_accuracy is not None else "N/A",
+                "coefficients_chart_json": coef_chart_json, # Include JSON string (or null)
+                "violin_chart_json": violin_chart_json     # Include JSON string (or null)
+            }
+
+            return Response(response_data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print(f"Error in LogRegView: {e}")
+            print(traceback.format_exc()) # Print full traceback for debugging
+            return Response({"error": f"An error occurred during logistic regression analysis: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 # Basic query 
 class GamesQueryView(views.APIView):
