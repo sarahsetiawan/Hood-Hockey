@@ -1,4 +1,6 @@
-# HoodHockeyVisualizationAnalysis
+# Hood Womens Ice Hockey Visualization & Analysis 
+
+## Description
 <p>Hood Women's Ice Hockey Visualization & Analysis (HWIHVA) will be built as a standalone web application using modern web development
 frameworks. The platform will integrate with the Hood Ice Hockey dataset to provide
 tailored visualizations and predictive analytics for Hood Hockey analytics. By
@@ -16,4 +18,5 @@ with a user-friendly interface tailored to the needs of coaches, analysts, and o
 - Backend: Django
 - Frontend: React
 - Database: PostgreSQL
+
 
