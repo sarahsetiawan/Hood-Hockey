@@ -8,61 +8,58 @@ import Plot from 'react-plotly.js';
 const API_BASE_URL = 'http://127.0.0.1:8000/hood_hockey_app';
 
 function Games() {
-  // --- State ---
-  // REMOVED games state and related loading/error
-
-  // LogReg State
+  // --- LogReg State ---
   const [logRegAccuracy, setLogRegAccuracy] = useState(null);
   const [logRegCoefChartData, setLogRegCoefChartData] = useState(null);
   const [logRegViolinChartData, setLogRegViolinChartData] = useState(null);
   const [loadingLogReg, setLoadingLogReg] = useState(true);
   const [errorLogReg, setErrorLogReg] = useState(null);
 
-  // Trend Chart State (Combined Faceoff & CORSI)
+  // --- Trend Chart State ---
   const [faceoffChartData, setFaceoffChartData] = useState(null);
-  const [corsiChartData, setCorsiChartData] = useState(null); // ADDED Corsi Chart state
-  const [loadingTrendCharts, setLoadingTrendCharts] = useState(true); // Combined loading state
-  const [errorTrendCharts, setErrorTrendCharts] = useState(null); // Combined error state
+  const [corsiChartData, setCorsiChartData] = useState(null);
+  const [xgChartData, setXgChartData] = useState(null); // ADDED xG Chart state
+  const [loadingTrendCharts, setLoadingTrendCharts] = useState(true);
+  const [errorTrendCharts, setErrorTrendCharts] = useState(null);
 
 
   useEffect(() => {
-    // --- Fetch Trend Charts Data (Faceoff & CORSI) ---
-    // Renamed function for clarity
+    // --- Fetch Trend Charts Data (Faceoff, CORSI, xG) ---
     const fetchTrendChartsData = async () => {
       setLoadingTrendCharts(true);
       setErrorTrendCharts(null);
       setFaceoffChartData(null);
-      setCorsiChartData(null); // Reset CORSI chart state
+      setCorsiChartData(null);
+      setXgChartData(null); // Reset xG chart state
       try {
-        // Endpoint points to the view returning both charts
-        const response = await fetch(`${API_BASE_URL}/faceoff-wins-graph/`); // Or rename endpoint if appropriate
-        if (!response.ok) {
-          let errorMsg = `Trend Charts fetch failed: ${response.status}`;
-           try { const errData = await response.json(); errorMsg = errData.error || errorMsg; } catch(e){}
-          throw new Error(errorMsg);
-        }
+        // Endpoint should return all three chart JSONs now
+        const response = await fetch(`${API_BASE_URL}/faceoff-wins-graph/`); // Or appropriate URL
+        if (!response.ok) { let errorMsg = `Trend Charts fetch failed: ${response.status}`; try { const errData = await response.json(); errorMsg = errData.error || errorMsg; } catch(e){} throw new Error(errorMsg); }
         const data = await response.json();
-        console.log("Trend Chart Data Received:", data); // Log response
+        console.log("Trend Chart Data Received:", data);
 
         // Parse Faceoff Chart
-        if (data && data.faceoff_chart_json) {
-           try { setFaceoffChartData(JSON.parse(data.faceoff_chart_json)); }
-           catch (e) { console.error("Error parsing faceoff chart JSON:", e); throw new Error("Failed to parse faceoff chart data.");}
-        } else { console.warn("Faceoff chart JSON missing."); setFaceoffChartData(null); }
+        if (data?.faceoff_chart_json) { try { setFaceoffChartData(JSON.parse(data.faceoff_chart_json)); } catch (e) { console.error("Error parsing faceoff chart JSON:", e); throw new Error("Failed to parse faceoff chart data.");} }
+        else { console.warn("Faceoff chart JSON missing."); setFaceoffChartData(null); }
 
         // Parse CORSI Chart
-        if (data && data.corsi_chart_json) { // Check for the NEW key
-            try { setCorsiChartData(JSON.parse(data.corsi_chart_json)); } // Set the NEW state
-            catch (e) { console.error("Error parsing CORSI chart JSON:", e); throw new Error("Failed to parse CORSI chart data."); }
-        } else { console.warn("CORSI chart JSON missing."); setCorsiChartData(null); } // Set NEW state to null if missing
+        if (data?.corsi_chart_json) { try { setCorsiChartData(JSON.parse(data.corsi_chart_json)); } catch (e) { console.error("Error parsing CORSI chart JSON:", e); throw new Error("Failed to parse CORSI chart data."); } }
+        else { console.warn("CORSI chart JSON missing."); setCorsiChartData(null); }
+
+        // --- ADDED: Parse xG Chart ---
+        if (data?.xg_chart_json) { // Check for the NEW key
+            try { setXgChartData(JSON.parse(data.xg_chart_json)); } // Set the NEW state
+            catch (e) { console.error("Error parsing xG chart JSON:", e); throw new Error("Failed to parse xG chart data."); }
+        } else { console.warn("xG chart JSON missing."); setXgChartData(null); } // Set NEW state to null if missing
+        // --- END ADDED xG Parse ---
 
       } catch (error) {
         console.error("Error fetching/parsing trend charts:", error);
-        setErrorTrendCharts(error.message); // Set combined trend chart error
-        setFaceoffChartData(null); // Ensure reset on error
-        setCorsiChartData(null); // Ensure reset on error
+        setErrorTrendCharts(error.message);
+        setFaceoffChartData(null); setCorsiChartData(null);
+        setXgChartData(null); // Ensure reset on error
       } finally {
-        setLoadingTrendCharts(false); // Set combined loading state
+        setLoadingTrendCharts(false);
       }
     };
     // --- END Fetch Trend Charts ---
@@ -71,66 +68,70 @@ function Games() {
     const fetchLogRegData = async () => { setLoadingLogReg(true); setErrorLogReg(null); setLogRegAccuracy(null); setLogRegCoefChartData(null); setLogRegViolinChartData(null); try { const response = await fetch(`${API_BASE_URL}/LogReg/`); if (!response.ok) { let errorMsg = `LogReg fetch failed: ${response.status}`; try { const errData = await response.json(); errorMsg = errData.error || errorMsg; } catch(e){} throw new Error(errorMsg); } const data = await response.json(); console.log("LogReg Data Received:", data); setLogRegAccuracy(data.mean_cv_accuracy ?? 'N/A'); if (data.coefficients_chart_json) { try { setLogRegCoefChartData(JSON.parse(data.coefficients_chart_json)); } catch (e) { console.error("Error parsing coefficient chart JSON:", e); setErrorLogReg("Failed to parse coefficient chart data."); setLogRegCoefChartData(null); } } else { console.warn("Coefficient chart JSON missing."); setLogRegCoefChartData(null); } if (data.violin_chart_json) { try { setLogRegViolinChartData(JSON.parse(data.violin_chart_json)); } catch (e) { console.error("Error parsing violin chart JSON:", e); setErrorLogReg(prev => prev ? `${prev} & violin` : "Failed to parse violin chart data."); setLogRegViolinChartData(null); } } else { console.warn("Violin chart JSON missing."); setLogRegViolinChartData(null); } } catch (error) { console.error("Error fetching LogReg data:", error); setErrorLogReg(error.message); setLogRegAccuracy(null); setLogRegCoefChartData(null); setLogRegViolinChartData(null); } finally { setLoadingLogReg(false); } };
 
     // Call fetch functions
-    fetchTrendChartsData(); // Call updated fetch function
+    fetchTrendChartsData();
     fetchLogRegData();
 
   }, []);
 
-    // --- Modified Loading Check ---
-    if (loadingTrendCharts || loadingLogReg) { // Use combined trend loading state
-        return ( <Container className="text-center mt-5"> <Spinner animation="border" role="status" /> <p>Loading Hockey Data...</p> </Container> );
-    }
-
-    // --- Modified Error Check ---
-    const anyError = errorTrendCharts || errorLogReg; // Use combined trend error state
-    if (anyError) {
-        return ( <Container className="mt-5"> <Alert variant="danger"> <Alert.Heading>Error Loading Data</Alert.Heading> {errorTrendCharts && <p>Trend Chart Error: {errorTrendCharts}</p>} {errorLogReg && <p>Regression Analysis Error: {errorLogReg}</p>} </Alert> </Container> );
-    }
+    // --- Loading Check ---
+    if (loadingTrendCharts || loadingLogReg) { return ( <Container className="text-center mt-5"> <Spinner animation="border" role="status" /> <p>Loading Hockey Data...</p> </Container> ); }
+    // --- Error Check ---
+    const anyError = errorTrendCharts || errorLogReg; if (anyError) { return ( <Container className="mt-5"> <Alert variant="danger"> <Alert.Heading>Error Loading Data</Alert.Heading> {errorTrendCharts && <p>Trend Chart Error: {errorTrendCharts}</p>} {errorLogReg && <p>Regression Analysis Error: {errorLogReg}</p>} </Alert> </Container> ); }
 
   // --- Combined Render ---
   return (
     <Container>
-      {/* --- REMOVED Games Table Section --- */}
+      {/* REMOVED Games Table Section */}
 
       {/* --- Trend Charts Section (Modified) --- */}
       <h2 className="mt-4">Team Performance Trends</h2>
       {loadingTrendCharts ? (
             <div className="text-center"><Spinner animation="border" size="sm"/> Loading charts...</div>
+      ) : errorTrendCharts ? ( // Show specific error for this section if it occurred
+            <Alert variant="danger" className="mt-2">Error loading trend charts: {errorTrendCharts}</Alert>
       ) : (
-        <Row className="mt-3">
-            {/* Faceoff Chart Column */}
-            <Col md={6} className="mb-3"> {/* Add margin bottom */}
-                {faceoffChartData ? (
-                    <Plot
-                        data={faceoffChartData.data}
-                        layout={faceoffChartData.layout} // Layout comes from backend JSON
-                        useResizeHandler={true}
-                        style={{ width: '100%', height: '400px' }} // Slightly smaller height?
-                        config={{ responsive: true }}
-                    />
-                ) : (
-                    !errorTrendCharts && <Alert variant="warning" size="sm">Faceoff chart data unavailable.</Alert>
-                )}
-            </Col>
+        <> {/* Use fragment to group rows */}
+            {/* Row for Faceoff and CORSI */}
+            <Row className="mt-3">
+                {/* Faceoff Chart Column */}
+                <Col md={6} className="mb-3">
+                    {faceoffChartData ? (
+                        <Plot data={faceoffChartData.data} layout={faceoffChartData.layout} useResizeHandler={true} style={{ width: '100%', height: '400px' }} config={{ responsive: true }} />
+                    ) : (
+                         <Alert variant="warning" size="sm">Faceoff chart data unavailable.</Alert>
+                    )}
+                </Col>
 
-            {/* CORSI Chart Column */}
-            <Col md={6} className="mb-3"> {/* Add Col for Corsi chart */}
-                {corsiChartData ? ( // Use corsiChartData state
-                    <Plot
-                        data={corsiChartData.data} // Use corsiChartData
-                        layout={corsiChartData.layout} // Use corsiChartData
-                        useResizeHandler={true}
-                        style={{ width: '100%', height: '400px' }}
-                        config={{ responsive: true }}
-                    />
-                ) : (
-                    !errorTrendCharts && <Alert variant="warning" size="sm">CORSI chart data unavailable.</Alert>
-                )}
-            </Col>
-        </Row>
+                {/* CORSI Chart Column */}
+                <Col md={6} className="mb-3">
+                    {corsiChartData ? (
+                        <Plot data={corsiChartData.data} layout={corsiChartData.layout} useResizeHandler={true} style={{ width: '100%', height: '400px' }} config={{ responsive: true }} />
+                    ) : (
+                        <Alert variant="warning" size="sm">CORSI chart data unavailable.</Alert>
+                    )}
+                </Col>
+            </Row>
+
+            {/* ADDED Row for xG Chart */}
+            <Row className="mt-3">
+                 {/* xG Chart Column */}
+                <Col md={12} lg={6} className="mb-3 mx-auto"> {/* Center if desired on large screens */}
+                    {xgChartData ? ( // Use xgChartData state
+                        <Plot
+                            data={xgChartData.data} // Use xgChartData
+                            layout={xgChartData.layout} // Use xgChartData
+                            useResizeHandler={true}
+                            style={{ width: '100%', height: '400px' }}
+                            config={{ responsive: true }}
+                        />
+                    ) : (
+                         <Alert variant="warning" size="sm">Net xG chart data unavailable.</Alert>
+                    )}
+                </Col>
+            </Row>
+            {/* END ADDED Row */}
+        </>
       )}
-      {/* Show combined error below charts if it occurred */}
-      {errorTrendCharts && <Alert variant="danger" className="mt-2">Error loading trend charts: {errorTrendCharts}</Alert>}
       {/* --- END Trend Charts Section --- */}
 
 

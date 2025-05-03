@@ -1551,6 +1551,16 @@ class FaceoffWinPercentView(views.APIView):
             # Plotly graphs
             # ---------------------
 
+            # --- Net xG graph ---
+            fig_xg = px.line(
+                games,
+                x='Date',
+                y="Net xG (xG - Opponent's xG)",
+                title='Net xG Over Time',
+                markers=True, # Add markers to data points
+                labels={'Net xG': 'Net xG'} # Cleaner axis label
+            )
+
             games['CORSI%'] = games['CORSI%'] * 100
             # --- CORSI% graph ---
             fig_corsi = px.line(
@@ -1588,14 +1598,23 @@ class FaceoffWinPercentView(views.APIView):
             )
             fig_corsi.update_xaxes(tickangle=45)
 
+            fig_xg.update_layout(
+                xaxis_title='Date',
+                yaxis_title='Net xG',
+                yaxis_range=[-10, 5] 
+            )
+            fig_corsi.update_xaxes(tickangle=45)
+
 
             # --- Convert to JSON ---
             faceoff_chart_json = pio.to_json(fig_faceoff)
             corsi_chart_json = pio.to_json(fig_corsi)
+            xg_chart_json = pio.to_json(fig_xg)
 
             # Return JSON response
             return Response({'faceoff_chart_json': faceoff_chart_json,
-                             'corsi_chart_json': corsi_chart_json}, status=status.HTTP_200_OK)
+                             'corsi_chart_json': corsi_chart_json,
+                             'xg_chart_json': xg_chart_json}, status=status.HTTP_200_OK)
 
         except Exception as e:
             print(f"Error in FaceoffWinPercentView: {e}")
