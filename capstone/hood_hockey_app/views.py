@@ -1493,7 +1493,6 @@ class GamesQueryView(views.APIView):
             print(f"Error in GamesQueryView: {e}")
             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-# Faceoff win %
 class FaceoffWinPercentView(views.APIView):
     permission_classes = [AllowAny]
 
@@ -1551,6 +1550,17 @@ class FaceoffWinPercentView(views.APIView):
             # Plotly graphs
             # ---------------------
 
+            games['Puck battles won, %'] = games['Puck battles won, %'] * 100
+            # --- Puck battles graph ---
+            fig_puck_battles = px.line(
+                games,
+                x='Date',
+                y='Puck battles won, %',
+                title='Puck Battle Win Percentage Over Time',
+                markers=True, # Add markers to data points
+                labels={'Puck battles won, %': 'Puck battles won, %'} # Cleaner axis label
+            )
+
             # --- Net xG graph ---
             fig_xg = px.line(
                 games,
@@ -1605,16 +1615,25 @@ class FaceoffWinPercentView(views.APIView):
             )
             fig_corsi.update_xaxes(tickangle=45)
 
+            fig_puck_battles.update_layout(
+                xaxis_title='Date',
+                yaxis_title='Puck Battle Win Percentage (%)',
+                yaxis_range=[0, 100] 
+            )
+            fig_corsi.update_xaxes(tickangle=45)
+
 
             # --- Convert to JSON ---
             faceoff_chart_json = pio.to_json(fig_faceoff)
             corsi_chart_json = pio.to_json(fig_corsi)
             xg_chart_json = pio.to_json(fig_xg)
+            puck_battles_chart_json = pio.to_json(fig_puck_battles)
 
             # Return JSON response
             return Response({'faceoff_chart_json': faceoff_chart_json,
                              'corsi_chart_json': corsi_chart_json,
-                             'xg_chart_json': xg_chart_json}, status=status.HTTP_200_OK)
+                             'xg_chart_json': xg_chart_json,
+                             'puck_battles_chart_json': puck_battles_chart_json}, status=status.HTTP_200_OK)
 
         except Exception as e:
             print(f"Error in FaceoffWinPercentView: {e}")

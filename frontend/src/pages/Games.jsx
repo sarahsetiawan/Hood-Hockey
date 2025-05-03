@@ -18,46 +18,52 @@ function Games() {
   // --- Trend Chart State ---
   const [faceoffChartData, setFaceoffChartData] = useState(null);
   const [corsiChartData, setCorsiChartData] = useState(null);
-  const [xgChartData, setXgChartData] = useState(null); // ADDED xG Chart state
+  const [xgChartData, setXgChartData] = useState(null);
+  const [puckBattleChartData, setPuckBattleChartData] = useState(null); // State for the new chart
   const [loadingTrendCharts, setLoadingTrendCharts] = useState(true);
   const [errorTrendCharts, setErrorTrendCharts] = useState(null);
 
 
   useEffect(() => {
-    // --- Fetch Trend Charts Data (Faceoff, CORSI, xG) ---
+    // --- Fetch Trend Charts Data (ALL FOUR) ---
     const fetchTrendChartsData = async () => {
       setLoadingTrendCharts(true);
       setErrorTrendCharts(null);
       setFaceoffChartData(null);
       setCorsiChartData(null);
-      setXgChartData(null); // Reset xG chart state
+      setXgChartData(null);
+      setPuckBattleChartData(null); // Reset new state
       try {
-        // Endpoint should return all three chart JSONs now
+        // Endpoint should return all four chart JSONs now
         const response = await fetch(`${API_BASE_URL}/faceoff-wins-graph/`); // Or appropriate URL
         if (!response.ok) { let errorMsg = `Trend Charts fetch failed: ${response.status}`; try { const errData = await response.json(); errorMsg = errData.error || errorMsg; } catch(e){} throw new Error(errorMsg); }
         const data = await response.json();
         console.log("Trend Chart Data Received:", data);
 
         // Parse Faceoff Chart
-        if (data?.faceoff_chart_json) { try { setFaceoffChartData(JSON.parse(data.faceoff_chart_json)); } catch (e) { console.error("Error parsing faceoff chart JSON:", e); throw new Error("Failed to parse faceoff chart data.");} }
+        if (data?.faceoff_chart_json) { try { setFaceoffChartData(JSON.parse(data.faceoff_chart_json)); } catch (e) { console.error("Error parsing faceoff chart JSON:", e); /* Consider setting specific error */ throw new Error("Parse Faceoff failed");} }
         else { console.warn("Faceoff chart JSON missing."); setFaceoffChartData(null); }
 
         // Parse CORSI Chart
-        if (data?.corsi_chart_json) { try { setCorsiChartData(JSON.parse(data.corsi_chart_json)); } catch (e) { console.error("Error parsing CORSI chart JSON:", e); throw new Error("Failed to parse CORSI chart data."); } }
+        if (data?.corsi_chart_json) { try { setCorsiChartData(JSON.parse(data.corsi_chart_json)); } catch (e) { console.error("Error parsing CORSI chart JSON:", e); throw new Error("Parse CORSI failed");} }
         else { console.warn("CORSI chart JSON missing."); setCorsiChartData(null); }
 
-        // --- ADDED: Parse xG Chart ---
-        if (data?.xg_chart_json) { // Check for the NEW key
-            try { setXgChartData(JSON.parse(data.xg_chart_json)); } // Set the NEW state
-            catch (e) { console.error("Error parsing xG chart JSON:", e); throw new Error("Failed to parse xG chart data."); }
-        } else { console.warn("xG chart JSON missing."); setXgChartData(null); } // Set NEW state to null if missing
-        // --- END ADDED xG Parse ---
+        // Parse xG Chart
+        if (data?.xg_chart_json) { try { setXgChartData(JSON.parse(data.xg_chart_json)); } catch (e) { console.error("Error parsing xG chart JSON:", e); throw new Error("Parse xG failed");} }
+        else { console.warn("xG chart JSON missing."); setXgChartData(null); }
+
+        // Parse Puck Battles Chart
+        if (data?.puck_battles_chart_json) { // Check for the correct key from backend
+            try { setPuckBattleChartData(JSON.parse(data.puck_battles_chart_json)); } // Set the correct state
+            catch (e) { console.error("Error parsing Puck Battle chart JSON:", e); throw new Error("Parse Puck Battle failed");}
+        } else { console.warn("Puck Battle chart JSON missing."); setPuckBattleChartData(null); } // Set correct state to null
 
       } catch (error) {
         console.error("Error fetching/parsing trend charts:", error);
-        setErrorTrendCharts(error.message);
+        setErrorTrendCharts(error.message); // Set combined error
+        // Ensure all are reset if *any* part fails
         setFaceoffChartData(null); setCorsiChartData(null);
-        setXgChartData(null); // Ensure reset on error
+        setXgChartData(null); setPuckBattleChartData(null); // Reset new state on error
       } finally {
         setLoadingTrendCharts(false);
       }
@@ -73,69 +79,62 @@ function Games() {
 
   }, []);
 
-    // --- Loading Check ---
+    // --- Loading / Error Checks (Unchanged) ---
     if (loadingTrendCharts || loadingLogReg) { return ( <Container className="text-center mt-5"> <Spinner animation="border" role="status" /> <p>Loading Hockey Data...</p> </Container> ); }
-    // --- Error Check ---
     const anyError = errorTrendCharts || errorLogReg; if (anyError) { return ( <Container className="mt-5"> <Alert variant="danger"> <Alert.Heading>Error Loading Data</Alert.Heading> {errorTrendCharts && <p>Trend Chart Error: {errorTrendCharts}</p>} {errorLogReg && <p>Regression Analysis Error: {errorLogReg}</p>} </Alert> </Container> ); }
 
   // --- Combined Render ---
   return (
     <Container>
-      {/* REMOVED Games Table Section */}
-
-      {/* --- Trend Charts Section (Modified) --- */}
+      {/* --- Trend Charts Section (Modified Layout) --- */}
       <h2 className="mt-4">Team Performance Trends</h2>
       {loadingTrendCharts ? (
             <div className="text-center"><Spinner animation="border" size="sm"/> Loading charts...</div>
-      ) : errorTrendCharts ? ( // Show specific error for this section if it occurred
+      ) : errorTrendCharts ? (
             <Alert variant="danger" className="mt-2">Error loading trend charts: {errorTrendCharts}</Alert>
       ) : (
-        <> {/* Use fragment to group rows */}
-            {/* Row for Faceoff and CORSI */}
+        <> {/* Fragment for multiple rows */}
+            {/* Row 1: Faceoff and CORSI */}
             <Row className="mt-3">
-                {/* Faceoff Chart Column */}
                 <Col md={6} className="mb-3">
                     {faceoffChartData ? (
                         <Plot data={faceoffChartData.data} layout={faceoffChartData.layout} useResizeHandler={true} style={{ width: '100%', height: '400px' }} config={{ responsive: true }} />
-                    ) : (
-                         <Alert variant="warning" size="sm">Faceoff chart data unavailable.</Alert>
-                    )}
+                    ) : ( <Alert variant="warning" size="sm">Faceoff chart data unavailable.</Alert> )}
                 </Col>
-
-                {/* CORSI Chart Column */}
                 <Col md={6} className="mb-3">
                     {corsiChartData ? (
                         <Plot data={corsiChartData.data} layout={corsiChartData.layout} useResizeHandler={true} style={{ width: '100%', height: '400px' }} config={{ responsive: true }} />
-                    ) : (
-                        <Alert variant="warning" size="sm">CORSI chart data unavailable.</Alert>
-                    )}
+                    ) : ( <Alert variant="warning" size="sm">CORSI chart data unavailable.</Alert> )}
                 </Col>
             </Row>
 
-            {/* ADDED Row for xG Chart */}
+            {/* Row 2: xG and Puck Battles */}
             <Row className="mt-3">
                  {/* xG Chart Column */}
-                <Col md={12} lg={6} className="mb-3 mx-auto"> {/* Center if desired on large screens */}
-                    {xgChartData ? ( // Use xgChartData state
+                <Col md={6} className="mb-3">
+                    {xgChartData ? (
+                        <Plot data={xgChartData.data} layout={xgChartData.layout} useResizeHandler={true} style={{ width: '100%', height: '400px' }} config={{ responsive: true }} />
+                    ) : ( <Alert variant="warning" size="sm">Net xG chart data unavailable.</Alert> )}
+                </Col>
+                {/* Puck Battle Chart Column */}
+                <Col md={6} className="mb-3"> {/* Add new column */}
+                    {puckBattleChartData ? ( // Use puckBattleChartData state
                         <Plot
-                            data={xgChartData.data} // Use xgChartData
-                            layout={xgChartData.layout} // Use xgChartData
+                            data={puckBattleChartData.data} // Use puckBattleChartData
+                            layout={puckBattleChartData.layout} // Use puckBattleChartData
                             useResizeHandler={true}
                             style={{ width: '100%', height: '400px' }}
                             config={{ responsive: true }}
                         />
-                    ) : (
-                         <Alert variant="warning" size="sm">Net xG chart data unavailable.</Alert>
-                    )}
-                </Col>
+                    ) : ( <Alert variant="warning" size="sm">Puck Battle chart data unavailable.</Alert> )}
+                 </Col>
             </Row>
-            {/* END ADDED Row */}
         </>
       )}
       {/* --- END Trend Charts Section --- */}
 
 
-      {/* --- Logistic Regression Section (Unchanged structure) --- */}
+      {/* --- Logistic Regression Section (Unchanged) --- */}
       <Row className="mt-5"> <Col> <h2>Game Outcome Prediction Analysis (Logistic Regression)</h2> {logRegAccuracy !== null && ( <Alert variant="secondary"> Mean Cross-Validation Accuracy: {typeof logRegAccuracy === 'number' ? logRegAccuracy.toFixed(4) : logRegAccuracy} </Alert> )} <h4 className="mt-4">Top Feature Importances</h4> {logRegCoefChartData ? ( <Plot data={logRegCoefChartData.data} layout={logRegCoefChartData.layout} useResizeHandler={true} style={{ width: '100%', minHeight: '450px' }} config={{ responsive: true }}/> ) : ( !loadingLogReg && !errorLogReg && <Alert variant="info" size="sm">Coefficient chart data unavailable.</Alert> )} <h4 className="mt-4">Feature Distributions by Outcome</h4> {logRegViolinChartData ? ( <Plot data={logRegViolinChartData.data} layout={logRegViolinChartData.layout} useResizeHandler={true} style={{ width: '100%', minHeight: '500px' }} config={{ responsive: true }}/> ) : ( !loadingLogReg && !errorLogReg && <Alert variant="info" size="sm">Violin chart data unavailable.</Alert> )} </Col> </Row>
 
     </Container>
