@@ -1502,7 +1502,7 @@ class FaceoffWinPercentView(views.APIView):
             with connection.cursor() as cursor:
                 # Select only necessary columns
                 cursor.execute("""
-                    SELECT "Date", "Faceoffs won, %", "Type", "isOpponent"
+                    SELECT *
                     FROM hood_hockey_app_games
                 """)
                 results = cursor.fetchall()
@@ -1547,7 +1547,23 @@ class FaceoffWinPercentView(views.APIView):
             # Sort by Date for the line plot
             games = games.sort_values(by='Date')
 
-            # --- Create Plotly Line Chart ---
+            # ---------------------
+            # Plotly graphs
+            # ---------------------
+
+            games['CORSI%'] = games['CORSI%'] * 100
+            # --- CORSI% graph ---
+            fig_corsi = px.line(
+                games,
+                x='Date',
+                y='CORSI%',
+                title='CORSI Percentage Over Time',
+                markers=True, # Add markers to data points
+                labels={'CORSI, %': 'CORSI %'} # Cleaner axis label
+            )
+
+            games['Faceoffs won, %'] = games['Faceoffs won, %'] * 100
+            # --- faceoff win % graph ---
             fig_faceoff = px.line(
                 games,
                 x='Date',
@@ -1557,20 +1573,29 @@ class FaceoffWinPercentView(views.APIView):
                 labels={'Faceoffs won, %': 'Faceoff Win %'} # Cleaner axis label
             )
 
-            # Customize layout (optional)
+            # Customize layouts
             fig_faceoff.update_layout(
                 xaxis_title='Date',
                 yaxis_title='Faceoff Win Percentage (%)',
-                yaxis_range=[0, 1] 
+                yaxis_range=[0, 100] 
             )
             fig_faceoff.update_xaxes(tickangle=45)
 
+            fig_corsi.update_layout(
+                xaxis_title='Date',
+                yaxis_title='CORSI Percentage (%)',
+                yaxis_range=[0, 100] 
+            )
+            fig_corsi.update_xaxes(tickangle=45)
+
 
             # --- Convert to JSON ---
-            chart_json = pio.to_json(fig_faceoff)
+            faceoff_chart_json = pio.to_json(fig_faceoff)
+            corsi_chart_json = pio.to_json(fig_corsi)
 
             # Return JSON response
-            return Response({'chart_json': chart_json}, status=status.HTTP_200_OK)
+            return Response({'faceoff_chart_json': faceoff_chart_json,
+                             'corsi_chart_json': corsi_chart_json}, status=status.HTTP_200_OK)
 
         except Exception as e:
             print(f"Error in FaceoffWinPercentView: {e}")
