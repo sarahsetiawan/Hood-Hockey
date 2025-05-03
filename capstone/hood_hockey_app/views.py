@@ -1500,31 +1500,81 @@ class FaceoffWinPercentView(views.APIView):
     def get(self, request):
         try:
             with connection.cursor() as cursor:
-                # Get skaters data
+                # Select only necessary columns
                 cursor.execute("""
-                    SELECT "Date", "Faceoffs won, %"
+                    SELECT "Date", "Faceoffs won, %", "Type", "isOpponent"
                     FROM hood_hockey_app_games
                 """)
                 results = cursor.fetchall()
                 columns = [col[0] for col in cursor.description]
-                games = pd.DataFrame(results, columns=columns)
-                games = games.sort_values(by='Date')
-                # Line graph
-                plt.plot(games['Date'], games['Faceoffs won, %'], marker='o', linestyle='-', color='b')
-                plt.xlabel('Date')
-                plt.ylabel('Faceoffs won (%)')
-                plt.title('Faceoff Win Percentage Over Time')
-                plt.xticks(rotation=45)
-                plt.grid(True)
-                # Save and Return Image
-                buf = io.BytesIO()
-                plt.savefig(buf, format='png')
-                plt.close()
-                buf.seek(0)
-                image_base64 = base64.b64encode(buf.read()).decode('utf-8')
-                return Response({'image': image_base64}, status=status.HTTP_200_OK)
+
+            if not results:
+                 return Response({"error": "No game data found."}, status=status.HTTP_404_NOT_FOUND)
+
+            # --- Data Processing ---
+            games = pd.DataFrame(results, columns=columns)
+
+            # Convert Date to datetime objects (crucial for plotting time series)
+            # Try multiple formats if necessary, or specify the exact format if known
+            try:
+                 games['Date'] = pd.to_datetime(games['Date']) # Common format
+            except ValueError:
+                 try:
+                      games['Date'] = pd.to_datetime(games['Date'], format='%m/%d/%Y') # Example format
+                 except Exception as date_err:
+                      print(f"Warning: Could not parse Date column automatically: {date_err}. Ensure format is consistent.")
+                      # Optionally drop rows with unparseable dates or return error
+                      games.dropna(subset=['Date'], inplace=True)
+
+
+            # Filter for primary team totals
+            games = games[(games['Type'] == 'Total') & (games['isOpponent'] == False)].copy()
+
+            if games.empty:
+                return Response({"error": "No 'Total' game data found for the primary team."}, status=status.HTTP_404_NOT_FOUND)
+
+            # Ensure Faceoff % column is numeric, handle errors (e.g., '%' signs)
+            # If it already includes '%', remove it before converting
+            if games['Faceoffs won, %'].dtype == 'object': # Check if it's a string type
+                 games['Faceoffs won, %'] = games['Faceoffs won, %'].astype(str).str.replace('%', '', regex=False)
+            games['Faceoffs won, %'] = pd.to_numeric(games['Faceoffs won, %'], errors='coerce')
+            games.dropna(subset=['Faceoffs won, %'], inplace=True) # Drop rows where conversion failed
+
+            if games.empty:
+                return Response({"error": "No valid faceoff percentage data found after cleaning."}, status=status.HTTP_404_NOT_FOUND)
+
+
+            # Sort by Date for the line plot
+            games = games.sort_values(by='Date')
+
+            # --- Create Plotly Line Chart ---
+            fig_faceoff = px.line(
+                games,
+                x='Date',
+                y='Faceoffs won, %',
+                title='Faceoff Win Percentage Over Time',
+                markers=True, # Add markers to data points
+                labels={'Faceoffs won, %': 'Faceoff Win %'} # Cleaner axis label
+            )
+
+            # Customize layout (optional)
+            fig_faceoff.update_layout(
+                xaxis_title='Date',
+                yaxis_title='Faceoff Win Percentage (%)',
+                yaxis_range=[0, 1] 
+            )
+            fig_faceoff.update_xaxes(tickangle=45)
+
+
+            # --- Convert to JSON ---
+            chart_json = pio.to_json(fig_faceoff)
+
+            # Return JSON response
+            return Response({'chart_json': chart_json}, status=status.HTTP_200_OK)
+
         except Exception as e:
-            print(f"Error in FitnessCorrelationView: {e}")
+            print(f"Error in FaceoffWinPercentView: {e}")
+            print(traceback.format_exc())
             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
