@@ -1052,12 +1052,13 @@ class GARView(views.APIView):
         try:
             with connection.cursor() as cursor:
                 cursor.execute(f"""
-                    SELECT "Shirt number", "Player", "Position", "Points", "Goals", "Assists"
+                    SELECT "Shirt number", "Player", "Position", "Points", "Goals", "Assists", "Type"
                     FROM hood_hockey_app_skaters
                 """)
                 results = cursor.fetchall()
                 columns = [col[0] for col in cursor.description]
                 skaters = pd.DataFrame(results, columns=columns)
+                skaters = skaters[skaters['Type'] == "Total"]
 
                 for col in allowed_metrics:
                     skaters[col] = pd.to_numeric(skaters[col], errors='coerce')
@@ -1076,6 +1077,7 @@ class GARView(views.APIView):
                 # --- Process Forwards ---
                 if not forwards.empty:
                     replacement_fwd = float(forwards[metric].quantile(0.30))
+                    print("Replacement Forward Value:", replacement_fwd) # Debugging line
                     forwards.loc[:, ar_column_name] = forwards[metric] - replacement_fwd
                     forwards = forwards.sort_values(by=ar_column_name, ascending=False)
                     top_forwards_df = forwards[['Shirt number', 'Player', metric, ar_column_name]].head(5)
@@ -1134,12 +1136,13 @@ class FitnessCorrelationView(views.APIView):
             with connection.cursor() as cursor:
                 # Get skaters data - SELECT NEEDED COLUMNS
                 cursor.execute("""
-                    SELECT "Player", "Shirt number", "Position", "Goals"
+                    SELECT "Player", "Shirt number", "Position", "Goals", "Type"
                     FROM hood_hockey_app_skaters
                 """)
                 skater_results = cursor.fetchall()
                 skater_columns = [col[0] for col in cursor.description]
                 skaters_df = pd.DataFrame(skater_results, columns=skater_columns)
+                skaters_df = skaters_df[skaters_df['Type'] == "Total"] # Filter for Total type
 
                 # Get DRIVE data - Aggregate Max Speed
                 cursor.execute("""
