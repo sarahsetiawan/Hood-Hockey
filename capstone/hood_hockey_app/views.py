@@ -394,105 +394,143 @@ class DriveFileUploadView(views.APIView):
 
 from itertools import combinations
 
-# Optimal line combinations by PER
 class OptimalLinesPERView(views.APIView):
     permission_classes = [AllowAny]
 
+    def _get_base_per_data(self):
+        """Helper function to fetch and process base PER data."""
+        with connection.cursor() as cursor:
+            # Fetch PER data (forwards)
+            cursor.execute('SELECT "Player", "PER" FROM hood_hockey_app_per_forwards')
+            columns_per_fwd = [col[0] for col in cursor.description]
+            results_per_fwd = cursor.fetchall()
+            per_fwd_df = pd.DataFrame(results_per_fwd, columns=columns_per_fwd)
+
+            # Fetch PER data (defenders)
+            cursor.execute('SELECT "Player", "PER" FROM hood_hockey_app_per_defenders')
+            columns_per_def = [col[0] for col in cursor.description]
+            results_per_def = cursor.fetchall()
+            per_def_df = pd.DataFrame(results_per_def, columns=columns_per_def)
+
+            # Fetch skaters data (Player, Position needed)
+            cursor.execute('SELECT "Player", "Position", "Shirt number", "Type" FROM hood_hockey_app_skaters')
+            columns_skaters = [col[0] for col in cursor.description]
+            results_skaters = cursor.fetchall()
+            skaters_df = pd.DataFrame(results_skaters, columns=columns_skaters)
+            skaters_df = skaters_df[skaters_df['Type'] == "Total"] # Apply filter early
+
+        # Data Processing
+        per_fwd_df['PER'] = pd.to_numeric(per_fwd_df['PER'], errors='coerce')
+        per_def_df['PER'] = pd.to_numeric(per_def_df['PER'], errors='coerce')
+        # Combine PER data for easier lookup
+        per_data = pd.concat([per_fwd_df, per_def_df], ignore_index=True)
+        # Drop rows where PER is NaN after conversion
+        per_data.dropna(subset=['PER'], inplace=True)
+
+        # Merge with base skater info (keep only players with valid PER)
+        skaters_with_per = pd.merge(skaters_df[['Player', 'Position']], per_data, on='Player', how='inner')
+
+        forwards = skaters_with_per[skaters_with_per['Position'] == 'F'].copy()
+        defenders = skaters_with_per[skaters_with_per['Position'] == 'D'].copy()
+
+        return forwards, defenders, per_data.set_index('Player')['PER'].to_dict()
+
     def get(self, request):
+        """GET request: Returns the individual player PER data (like before)."""
         try:
-            with connection.cursor() as cursor:
-                # --- Fetch Necessary Data ---
-                # Fetch PER data (forwards) - Assuming tables exist
-                # Use explicit column selection
-                cursor.execute("""
-                    SELECT "Player", "PER"
-                    FROM hood_hockey_app_per_forwards
-                """)
-                columns_per_fwd = [col[0] for col in cursor.description]
-                results_per_fwd = cursor.fetchall()
-                per_fwd_df = pd.DataFrame(results_per_fwd, columns=columns_per_fwd)
+            forwards, defenders, _ = self._get_base_per_data() # Fetch base data
 
-                # Fetch PER data (defenders)
-                cursor.execute("""
-                    SELECT "Player", "PER"
-                    FROM hood_hockey_app_per_defenders
-                """)
-                columns_per_def = [col[0] for col in cursor.description]
-                results_per_def = cursor.fetchall()
-                per_def_df = pd.DataFrame(results_per_def, columns=columns_per_def)
-
-                # Fetch skaters data - Only Player and Position needed for filtering
-                cursor.execute("""
-                    SELECT "Player", "Position", "Shirt number", "Type"
-                    FROM hood_hockey_app_skaters
-                """)
-                columns_skaters = [col[0] for col in cursor.description]
-                results_skaters = cursor.fetchall()
-                skaters_df = pd.DataFrame(results_skaters, columns=columns_skaters)
-                skaters_df = skaters_df[skaters_df['Type'] == "Total"]
-
-
-            # --- Data Processing and Merging ---
-            # Ensure PER columns are numeric, coerce errors to NaN
-            per_fwd_df['PER'] = pd.to_numeric(per_fwd_df['PER'], errors='coerce')
-            per_def_df['PER'] = pd.to_numeric(per_def_df['PER'], errors='coerce')
-
-
-            # Separate forwards and defenders from the main skaters list
-            forwards_base = skaters_df[skaters_df['Position'] == 'F'].copy()
-            defenders_base = skaters_df[skaters_df['Position'] == 'D'].copy()
-
-            # Merge PER data onto the filtered skaters data
-            # Use 'left' merge to keep all skaters even if PER data is missing
-            forwards = pd.merge(forwards_base, per_fwd_df, on='Player', how='left')
-            defenders = pd.merge(defenders_base, per_def_df, on='Player', how='left')
-
-            # --- Handle NaN/Inf values before sending to frontend ---
-            # JSON standard doesn't support NaN, Infinity, -Infinity directly.
-            # We need to replace them with something JSON compliant, like None (which becomes null).
-            # Or potentially a string like "N/A" if preferred for display.
-
-            # Replace infinite values with NaN first
+            # Handle NaN/Inf before sending (replace with None for JSON)
             forwards.replace([np.inf, -np.inf], np.nan, inplace=True)
             defenders.replace([np.inf, -np.inf], np.nan, inplace=True)
-
-            # Convert DataFrames to list of dictionaries
-            # Important: Use fillna(None) to replace NaN -> None *before* to_dict
             fwds_list = forwards.fillna(np.nan).replace([np.nan], [None]).to_dict(orient='records')
             defs_list = defenders.fillna(np.nan).replace([np.nan], [None]).to_dict(orient='records')
 
-            # Alternative using custom JSON encoder (more complex, less common for this case)
-            # class CustomEncoder(json.JSONEncoder):
-            #     def default(self, obj):
-            #         if isinstance(obj, np.integer): return int(obj)
-            #         if isinstance(obj, np.floating): return float(obj) if np.isfinite(obj) else None # Convert NaN/Inf to None
-            #         if isinstance(obj, np.ndarray): return obj.tolist()
-            #         if pd.isna(obj): return None # Handle pandas NaT etc.
-            #         return json.JSONEncoder.default(self, obj)
-            # fwds_list = forwards.to_dict(orient='records')
-            # defs_list = defenders.to_dict(orient='records')
-            # response_data = {"forwards": fwds_list, "defenders": defs_list}
-            # return Response(json.dumps(response_data, cls=CustomEncoder), content_type='application/json', status=status.HTTP_200_OK)
-
-
-            # --- Return Response ---
-            # DRF's Response handler *should* handle None correctly (converting to null)
             return Response(
-                {
-                    "forwards": fwds_list,
-                    "defenders": defs_list
-                },
+                {"forwards": fwds_list, "defenders": defs_list},
                 status=status.HTTP_200_OK
             )
+        except Exception as e:
+            print(f"Error in OptimalLinesPERView GET: {e}")
+            print(traceback.format_exc())
+            return Response({"error": f"An error occurred fetching PER data: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+    def post(self, request):
+        """POST request: Generates and returns optimal lineups based on sum of player PER."""
+        print("--- OptimalLinesPERView POST request received ---")
+        try:
+            # Fetch base data needed for combinations
+            forwards, defenders, per_lookup = self._get_base_per_data()
+
+            # Ensure we have enough players to form lines
+            if len(forwards) < 3 or len(defenders) < 2:
+                return Response({"error": "Not enough forwards (<3) or defenders (<2) with PER data to generate lineups."}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Get lists of players with valid PER
+            forward_players = forwards['Player'].tolist()
+            defender_players = defenders['Player'].tolist()
+
+            # --- Generate Combinations ---
+            print(f"Generating combinations for {len(forward_players)}F / {len(defender_players)}D...")
+            forward_trios = list(combinations(forward_players, 3))
+            defender_pairs = list(combinations(defender_players, 2))
+            print(f"Total potential lineups: {len(forward_trios) * len(defender_pairs)}")
+
+            lineup_scores = []
+            calculation_count = 0
+
+            # --- Iterate and Calculate Scores ---
+            for f_trio in forward_trios:
+                for d_pair in defender_pairs:
+                    current_lineup_score = 0
+                    lineup_players = list(f_trio) + list(d_pair)
+
+                    # Sum PER for all 5 players in the lineup
+                    valid_lineup = True
+                    for player in lineup_players:
+                        player_per = per_lookup.get(player)
+                        if player_per is None or pd.isna(player_per): # Should have been dropped, but double check
+                             print(f"Warning: Missing PER for player {player} in lineup {lineup_players}. Skipping.")
+                             valid_lineup = False
+                             break
+                        current_lineup_score += player_per
+
+                    if valid_lineup:
+                        lineup_scores.append({
+                            "Forwards": list(f_trio), # Convert tuple to list for JSON
+                            "Defenders": list(d_pair), # Convert tuple to list for JSON
+                            "Total_PER_Score": round(current_lineup_score, 3) # Round score
+                        })
+                        calculation_count += 1
+
+            print(f"Calculated scores for {calculation_count} valid lineups.")
+
+            # --- Rank Lineups ---
+            if not lineup_scores:
+                 return Response({"message": "No valid lineups could be scored.", "top_lineups": []}, status=status.HTTP_200_OK)
+
+            optimal_lineups_df = pd.DataFrame(lineup_scores)
+            optimal_lineups_df = optimal_lineups_df.sort_values("Total_PER_Score", ascending=False)
+
+            # Return top N lineups (e.g., top 100 or configurable)
+            N = request.data.get('top_n', 100) # Allow frontend to specify how many, default 100
+            try:
+                 top_n = int(N)
+            except (ValueError, TypeError):
+                 top_n = 100
+
+            top_lineups_list = optimal_lineups_df.head(top_n).to_dict(orient='records')
+
+            print(f"Returning top {len(top_lineups_list)} lineups.")
+            return Response({"top_lineups": top_lineups_list}, status=status.HTTP_200_OK)
+
 
         except Exception as e:
-            print(f"Error in OptimalLinesPERView: {e}")
+            print(f"Error in OptimalLinesPERView POST: {e}")
             print(traceback.format_exc())
-            # Ensure the error message itself doesn't contain non-JSON compliant values
-            error_message = f"An error occurred: {str(e)}"
-            return Response({"error": error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": f"An error occurred generating optimal lineups: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
                 
-
 
 # Synergy scores
 class SynScoreView(views.APIView):
