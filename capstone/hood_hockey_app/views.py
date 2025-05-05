@@ -399,108 +399,104 @@ class OptimalLinesPERView(views.APIView):
 
     def _get_base_per_data(self):
         """Helper function to fetch and process base PER data."""
+        # --- Fetch Data --- (Same as before)
         with connection.cursor() as cursor:
-            # Fetch PER data (forwards)
             cursor.execute('SELECT "Player", "PER" FROM hood_hockey_app_per_forwards')
-            columns_per_fwd = [col[0] for col in cursor.description]
-            results_per_fwd = cursor.fetchall()
-            per_fwd_df = pd.DataFrame(results_per_fwd, columns=columns_per_fwd)
-
-            # Fetch PER data (defenders)
+            per_fwd_df = pd.DataFrame(cursor.fetchall(), columns=[col[0] for col in cursor.description])
             cursor.execute('SELECT "Player", "PER" FROM hood_hockey_app_per_defenders')
-            columns_per_def = [col[0] for col in cursor.description]
-            results_per_def = cursor.fetchall()
-            per_def_df = pd.DataFrame(results_per_def, columns=columns_per_def)
-
-            # Fetch skaters data (Player, Position needed)
+            per_def_df = pd.DataFrame(cursor.fetchall(), columns=[col[0] for col in cursor.description])
             cursor.execute('SELECT "Player", "Position", "Shirt number", "Type" FROM hood_hockey_app_skaters')
-            columns_skaters = [col[0] for col in cursor.description]
-            results_skaters = cursor.fetchall()
-            skaters_df = pd.DataFrame(results_skaters, columns=columns_skaters)
-            skaters_df = skaters_df[skaters_df['Type'] == "Total"] # Apply filter early
+            skaters_df = pd.DataFrame(cursor.fetchall(), columns=[col[0] for col in cursor.description])
+            skaters_df = skaters_df[skaters_df['Type'] == "Total"]
 
-        # Data Processing
+        # --- Processing --- (Same as before)
         per_fwd_df['PER'] = pd.to_numeric(per_fwd_df['PER'], errors='coerce')
         per_def_df['PER'] = pd.to_numeric(per_def_df['PER'], errors='coerce')
-        # Combine PER data for easier lookup
         per_data = pd.concat([per_fwd_df, per_def_df], ignore_index=True)
-        # Drop rows where PER is NaN after conversion
         per_data.dropna(subset=['PER'], inplace=True)
-
-        # Merge with base skater info (keep only players with valid PER)
         skaters_with_per = pd.merge(skaters_df[['Player', 'Position']], per_data, on='Player', how='inner')
-
         forwards = skaters_with_per[skaters_with_per['Position'] == 'F'].copy()
         defenders = skaters_with_per[skaters_with_per['Position'] == 'D'].copy()
 
         return forwards, defenders, per_data.set_index('Player')['PER'].to_dict()
 
     def get(self, request):
-        """GET request: Returns the individual player PER data (like before)."""
+        """GET request: Returns the individual player PER data."""
+        # --- GET Logic remains the same ---
         try:
-            forwards, defenders, _ = self._get_base_per_data() # Fetch base data
-
-            # Handle NaN/Inf before sending (replace with None for JSON)
+            forwards, defenders, _ = self._get_base_per_data()
             forwards.replace([np.inf, -np.inf], np.nan, inplace=True)
             defenders.replace([np.inf, -np.inf], np.nan, inplace=True)
             fwds_list = forwards.fillna(np.nan).replace([np.nan], [None]).to_dict(orient='records')
             defs_list = defenders.fillna(np.nan).replace([np.nan], [None]).to_dict(orient='records')
-
-            return Response(
-                {"forwards": fwds_list, "defenders": defs_list},
-                status=status.HTTP_200_OK
-            )
+            return Response({"forwards": fwds_list, "defenders": defs_list}, status=status.HTTP_200_OK)
         except Exception as e:
+            # ... (error handling) ...
             print(f"Error in OptimalLinesPERView GET: {e}")
             print(traceback.format_exc())
             return Response({"error": f"An error occurred fetching PER data: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
     def post(self, request):
-        """POST request: Generates and returns optimal lineups based on sum of player PER."""
+        """POST request: Generates and returns optimal lineups based on sum of player PER for a given situation."""
         print("--- OptimalLinesPERView POST request received ---")
         try:
-            # Fetch base data needed for combinations
+            # --- Get Situation from Request ---
+            game_situation = request.data.get('game_situation', 'even_strength').lower() # Default to even strength
+            allowed_situations = ['even_strength', 'power_play', 'penalty_kill']
+            if game_situation not in allowed_situations:
+                 return Response({"error": f"Invalid game_situation. Allowed values: {', '.join(allowed_situations)}"}, status=status.HTTP_400_BAD_REQUEST)
+
+            print(f"Calculating optimal lines for situation: {game_situation}")
+
+            # --- Fetch base data ---
             forwards, defenders, per_lookup = self._get_base_per_data()
-
-            # Ensure we have enough players to form lines
-            if len(forwards) < 3 or len(defenders) < 2:
-                return Response({"error": "Not enough forwards (<3) or defenders (<2) with PER data to generate lineups."}, status=status.HTTP_400_BAD_REQUEST)
-
-            # Get lists of players with valid PER
             forward_players = forwards['Player'].tolist()
             defender_players = defenders['Player'].tolist()
 
+            # --- Determine Combination Sizes based on Situation ---
+            num_forwards, num_defenders = 0, 0
+            if game_situation == 'even_strength':
+                num_forwards, num_defenders = 3, 2
+            elif game_situation == 'power_play':
+                num_forwards, num_defenders = 4, 1
+            elif game_situation == 'penalty_kill':
+                 num_forwards, num_defenders = 2, 2
+
+            # --- Validate Player Counts ---
+            if len(forward_players) < num_forwards:
+                 return Response({"error": f"Not enough forwards ({len(forward_players)}) for {game_situation} ({num_forwards} required)."}, status=status.HTTP_400_BAD_REQUEST)
+            if len(defender_players) < num_defenders:
+                 return Response({"error": f"Not enough defenders ({len(defender_players)}) for {game_situation} ({num_defenders} required)."}, status=status.HTTP_400_BAD_REQUEST)
+
+
             # --- Generate Combinations ---
-            print(f"Generating combinations for {len(forward_players)}F / {len(defender_players)}D...")
-            forward_trios = list(combinations(forward_players, 3))
-            defender_pairs = list(combinations(defender_players, 2))
-            print(f"Total potential lineups: {len(forward_trios) * len(defender_pairs)}")
+            print(f"Generating combinations: {num_forwards}F / {num_defenders}D...")
+            forward_combos = list(combinations(forward_players, num_forwards))
+            defender_combos = list(combinations(defender_players, num_defenders))
+            print(f"Total potential lineups: {len(forward_combos) * len(defender_combos)}")
 
             lineup_scores = []
             calculation_count = 0
 
             # --- Iterate and Calculate Scores ---
-            for f_trio in forward_trios:
-                for d_pair in defender_pairs:
+            for f_combo in forward_combos:
+                for d_combo in defender_combos:
                     current_lineup_score = 0
-                    lineup_players = list(f_trio) + list(d_pair)
-
-                    # Sum PER for all 5 players in the lineup
+                    lineup_players = list(f_combo) + list(d_combo)
                     valid_lineup = True
                     for player in lineup_players:
                         player_per = per_lookup.get(player)
-                        if player_per is None or pd.isna(player_per): # Should have been dropped, but double check
-                             print(f"Warning: Missing PER for player {player} in lineup {lineup_players}. Skipping.")
+                        if player_per is None or pd.isna(player_per):
                              valid_lineup = False
                              break
                         current_lineup_score += player_per
 
                     if valid_lineup:
                         lineup_scores.append({
-                            "Forwards": list(f_trio), # Convert tuple to list for JSON
-                            "Defenders": list(d_pair), # Convert tuple to list for JSON
-                            "Total_PER_Score": round(current_lineup_score, 3) # Round score
+                            "Forwards": list(f_combo), # Store as list
+                            "Defenders": list(d_combo), # Store as list
+                            "Total_PER_Score": round(current_lineup_score, 3)
                         })
                         calculation_count += 1
 
@@ -508,23 +504,19 @@ class OptimalLinesPERView(views.APIView):
 
             # --- Rank Lineups ---
             if not lineup_scores:
-                 return Response({"message": "No valid lineups could be scored.", "top_lineups": []}, status=status.HTTP_200_OK)
+                 return Response({"message": f"No valid lineups could be scored for {game_situation}.", "top_lineups": []}, status=status.HTTP_200_OK)
 
             optimal_lineups_df = pd.DataFrame(lineup_scores)
             optimal_lineups_df = optimal_lineups_df.sort_values("Total_PER_Score", ascending=False)
 
-            # Return top N lineups (e.g., top 100 or configurable)
-            N = request.data.get('top_n', 100) # Allow frontend to specify how many, default 100
-            try:
-                 top_n = int(N)
-            except (ValueError, TypeError):
-                 top_n = 100
-
+            # Return top N lineups
+            N = request.data.get('top_n', 100)
+            try: top_n = int(N)
+            except (ValueError, TypeError): top_n = 100
             top_lineups_list = optimal_lineups_df.head(top_n).to_dict(orient='records')
 
-            print(f"Returning top {len(top_lineups_list)} lineups.")
-            return Response({"top_lineups": top_lineups_list}, status=status.HTTP_200_OK)
-
+            print(f"Returning top {len(top_lineups_list)} lineups for {game_situation}.")
+            return Response({"top_lineups": top_lineups_list, "situation_calculated": game_situation}, status=status.HTTP_200_OK)
 
         except Exception as e:
             print(f"Error in OptimalLinesPERView POST: {e}")
