@@ -493,7 +493,7 @@ class OptimalLinesPERView(views.APIView):
             return Response({"error": error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
                 
 
-'''
+
 # Synergy scores
 class SynScoreView(views.APIView):
     permission_classes = [AllowAny]
@@ -518,6 +518,7 @@ class SynScoreView(views.APIView):
                 # data frames
                 lines = pd.DataFrame(results_lines, columns=columns_lines)
                 skaters = pd.DataFrame(results_skaters, columns=columns_skaters)
+                skaters = skaters[skaters['Type'] == "Total"]
 
                 # Preprocessing
                 lines['total_toi_minutes'] = (lines['Time on ice (mins)'] * 60 + lines['Time on ice (secs)']) / 60
@@ -633,7 +634,7 @@ class SynScoreView(views.APIView):
                 )
         except Exception as e:
             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)      
-'''
+
 # Lines ranking 
 class LinesRankingsView(views.APIView):
     permission_classes = [AllowAny]

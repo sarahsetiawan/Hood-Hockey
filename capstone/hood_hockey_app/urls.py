@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import DriveBasicQueryView, FaceoffWinPercentView, GARView, GamesFileUploadView, GamesQueryView, GoaliesQueryView, GoaliesSavePercentBarChartView, LogRegView, OptimalLinesPERView, PERView, SavesPerGameView, testListCreate, testFileUpload, SkatersFileUploadView, GoaliesFileUploadView, LinesFileUploadView, DriveFileUploadView, LinesRankingsView, FitnessCorrelationView, SkaterCFView
+from .views import DriveBasicQueryView, FaceoffWinPercentView, GARView, GamesFileUploadView, GamesQueryView, GoaliesQueryView, GoaliesSavePercentBarChartView, LogRegView, OptimalLinesPERView, PERView, SavesPerGameView, SynScoreView, testListCreate, testFileUpload, SkatersFileUploadView, GoaliesFileUploadView, LinesFileUploadView, DriveFileUploadView, LinesRankingsView, FitnessCorrelationView, SkaterCFView
 
 urlpatterns = [
     path("games/", views.GamesListCreate.as_view(), name="games-list"),
@@ -23,7 +23,7 @@ urlpatterns = [
     path('gar/', GARView.as_view(), name='gar'),
     path('per/', PERView.as_view(), name='per'),
     path('CFPercentage/', SkaterCFView.as_view(), name='cf-percentage'),
-    # path('syn-scores/', SynScoreView.as_view(), name='syn-scores'),
+    path('syn-scores/', SynScoreView.as_view(), name='syn-scores'),
     path('linesPER/', OptimalLinesPERView.as_view(), name='lines-per'),
     path('LogReg/', LogRegView.as_view(), name='logreg'),
 ]
