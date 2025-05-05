@@ -294,19 +294,19 @@ def upload(table, request, replace=True, json=False):
             db_url = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
             engine = create_engine(db_url)
 
-            # Data cleaning/transformation
-            if table == "hood_hockey_app_skaters":
-                df = clean_skaters(df)
-            elif table == "hood_hockey_app_goalies":
-                df = clean_goalies(df)
-            elif table == "hood_hockey_app_games":
-                df = clean_games(df)
-            elif table == "hood_hockey_app_lines":
-                df = clean_lines(df)
-            elif table == "hood_hockey_app_drive":
-                df = clean_drive(df)
-            else:
-                print("No cleaning function found for this table")
+            ### # Data cleaning/transformation
+            ### if table == "hood_hockey_app_skaters":
+            ###     df = clean_skaters(df)
+            ### elif table == "hood_hockey_app_goalies":
+            ###     df = clean_goalies(df)
+            ### elif table == "hood_hockey_app_games":
+            ###     df = clean_games(df)
+            ### elif table == "hood_hockey_app_lines":
+            ###     df = clean_lines(df)
+            ### elif table == "hood_hockey_app_drive":
+            ###     df = clean_drive(df)
+            ### else:
+            ###     print("No cleaning function found for this table")
 
             # Push data to SQL -- replace or append 
             table_name = table  
@@ -492,7 +492,7 @@ class OptimalLinesPERView(views.APIView):
             return Response({"error": error_message}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
                 
 
-
+'''
 # Synergy scores
 class SynScoreView(views.APIView):
     permission_classes = [AllowAny]
@@ -632,7 +632,7 @@ class SynScoreView(views.APIView):
                 )
         except Exception as e:
             return Response({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)      
-
+'''
 # Lines ranking 
 class LinesRankingsView(views.APIView):
     permission_classes = [AllowAny]
