@@ -423,12 +423,13 @@ class OptimalLinesPERView(views.APIView):
 
                 # Fetch skaters data - Only Player and Position needed for filtering
                 cursor.execute("""
-                    SELECT "Player", "Position", "Shirt number"
+                    SELECT "Player", "Position", "Shirt number", "Type"
                     FROM hood_hockey_app_skaters
                 """)
                 columns_skaters = [col[0] for col in cursor.description]
                 results_skaters = cursor.fetchall()
                 skaters_df = pd.DataFrame(results_skaters, columns=columns_skaters)
+                skaters_df = skaters_df[skaters_df['Type'] == "Total"]
 
 
             # --- Data Processing and Merging ---
@@ -887,7 +888,7 @@ class PERView(views.APIView):
                     raise ValueError(f"Invalid or non-numeric metric requested: {metric}")
 
             # Columns needed for identification/display
-            required_id_cols = ["Player", "Position", "Shirt number"] # Add any others needed for tables/charts
+            required_id_cols = ["Player", "Position", "Shirt number"] 
 
             all_required_cols = list(set(required_numeric_metrics + required_id_cols))
             # Format for SQL query (ensure correct quoting if needed)
@@ -896,12 +897,12 @@ class PERView(views.APIView):
 
             # --- Fetch Data ---
             with connection.cursor() as cursor:
-                query = f"SELECT {sql_select_cols} FROM hood_hockey_app_skaters"
-                print(f"Executing Query: {query}") # For debugging
+                query = "SELECT * FROM hood_hockey_app_skaters"
                 cursor.execute(query)
                 results = cursor.fetchall()
                 columns = [col[0] for col in cursor.description]
                 skaters = pd.DataFrame(results, columns=columns)
+                skaters = skaters[skaters['Type'] == "Total"]
 
             # --- Data Cleaning & Preparation ---
             # Convert numeric cols, coerce errors, drop NAs in *required* numeric cols
@@ -976,6 +977,8 @@ class PERView(views.APIView):
             db_url = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
             engine = create_engine(db_url)
             forwards_df = pd.DataFrame(forwards, columns=all_required_cols + ['OffensiveValue', 'DefensiveValue', 'PER'])
+            print(" --------------------- forwards_df before database -------------------------------")
+            print(forwards_df)
             defenders_df = pd.DataFrame(defenders, columns=all_required_cols + ['OffensiveValue', 'DefensiveValue', 'PER'])
             forwards_df.to_sql("hood_hockey_app_per_forwards", engine, if_exists='replace', index=False)
             defenders_df.to_sql("hood_hockey_app_per_defenders", engine, if_exists='replace', index=False)
