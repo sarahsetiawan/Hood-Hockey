@@ -6,7 +6,7 @@ db.sqlite3
 /capstone/media/
 .vscode
 .gitignore
-data/
+data
 *.pyc
 __pycache__
 db.sqlite3
@@ -14,5 +14,5 @@ db.sqlite3
 *.env
 /capstone/media/
 .vscode
-node_modules/
+node_modules
 venv/
