@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import GamesFileUploadView, testListCreate, testFileUpload, SkatersFileUploadView, GoaliesFileUploadView, LinesFileUploadView, DriveFileUploadView, LinesRankingsView
+from .views import DriveBasicQueryView, FaceoffWinPercentView, GARView, GamesFileUploadView, GamesQueryView, GoaliesQueryView, GoaliesSavePercentBarChartView, LogRegView, OptimalLinesPERView, PERView, SavesPerGameView, SynScoreView, testListCreate, testFileUpload, SkatersFileUploadView, GoaliesFileUploadView, LinesFileUploadView, DriveFileUploadView, LinesRankingsView, FitnessCorrelationView, SkaterCFView
 
 urlpatterns = [
     path("games/", views.GamesListCreate.as_view(), name="games-list"),
@@ -12,5 +12,18 @@ urlpatterns = [
     path('goalies-upload-file/', GoaliesFileUploadView.as_view(), name='goalie-file-upload'),
     path('lines-upload-file/', LinesFileUploadView.as_view(), name='line-file-upload'),
     path('drive-upload-file/', DriveFileUploadView.as_view(), name='drive-file-upload'),
-    path('lines-rankings/', LinesRankingsView.as_view(), name='lines-rankings')
+    path('lines-rankings/', LinesRankingsView.as_view(), name='lines-rankings'),
+    path('fitness-corr/', FitnessCorrelationView.as_view(), name='fitness-corr'),
+    path('games-query/', GamesQueryView.as_view(), name='display-games'),
+    path('goalies-query/', GoaliesQueryView.as_view(), name='display-goalies'),
+    path('goalies-savepercent-barchart/', GoaliesSavePercentBarChartView.as_view(), name='savepercent-chart'),
+    path('saves-per-game/', SavesPerGameView.as_view(), name='saves-per-game-barchart'),
+    path('faceoff-wins-graph/', FaceoffWinPercentView.as_view(), name='faceoff-wins'),
+    path('drive-query/', DriveBasicQueryView.as_view(), name='drive-query'),
+    path('gar/', GARView.as_view(), name='gar'),
+    path('per/', PERView.as_view(), name='per'),
+    path('CFPercentage/', SkaterCFView.as_view(), name='cf-percentage'),
+    path('syn-scores/', SynScoreView.as_view(), name='syn-scores'),
+    path('linesPER/', OptimalLinesPERView.as_view(), name='lines-per'),
+    path('LogReg/', LogRegView.as_view(), name='logreg'),
 ]
