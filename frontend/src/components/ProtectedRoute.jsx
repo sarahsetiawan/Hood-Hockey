@@ -3,14 +3,14 @@ import { jwtDecode } from "jwt-decode";
 import api from "../api";
 import { REFRESH_TOKEN, ACCESS_TOKEN } from "../constants";
 import { useState, useEffect } from "react";
-
+import { Container, Spinner } from 'react-bootstrap';
 
 function ProtectedRoute({ children }) {
     const [isAuthorized, setIsAuthorized] = useState(null);
 
     useEffect(() => {
-        auth().catch(() => setIsAuthorized(false))
-    }, [])
+        auth().then(setIsAuthorized).catch(() => setIsAuthorized(false)); // Simplified useEffect
+    }, []);
 
     const refreshToken = async () => {
         const refreshToken = localStorage.getItem(REFRESH_TOKEN);
@@ -18,37 +18,37 @@ function ProtectedRoute({ children }) {
             const res = await api.post("/hood_hockey_app/token/refresh/", {
                 refresh: refreshToken,
             });
-            if (res.status === 200) {
-                localStorage.setItem(ACCESS_TOKEN, res.data.access)
-                setIsAuthorized(true)
-            } else {
-                setIsAuthorized(false)
-            }
+            return res.status === 200; // Directly return boolean
         } catch (error) {
-            console.log(error);
-            setIsAuthorized(false);
+            console.error("ProtectedRoute: refreshToken - API error:", error);
+            return false;
         }
     };
 
     const auth = async () => {
         const token = localStorage.getItem(ACCESS_TOKEN);
         if (!token) {
-            setIsAuthorized(false);
-            return;
+            return false;
         }
-        const decoded = jwtDecode(token);
-        const tokenExpiration = decoded.exp;
-        const now = Date.now() / 1000;
-
-        if (tokenExpiration < now) {
-            await refreshToken();
-        } else {
-            setIsAuthorized(true);
+        try {
+            const decoded = jwtDecode(token);
+            const tokenExpiration = decoded.exp;
+            const now = Date.now() / 1000;
+            return !(tokenExpiration < now) || await refreshToken(); // Directly return boolean
+        } catch (error) {
+            console.error("ProtectedRoute: auth - jwtDecode error:", error);
+            return false;
         }
     };
 
     if (isAuthorized === null) {
-        return <div>Loading...</div>;
+        return (
+            <Container className="text-center mt-5">
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            </Container>
+        );
     }
 
     return isAuthorized ? children : <Navigate to="/login" />;
