@@ -1,7 +1,7 @@
 // --- START OF FILE Skaters.js ---
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Container, Row, Col, Spinner, Alert, Table, Form, Button, Card, ListGroup, InputGroup } from 'react-bootstrap'; // Removed Image import if not used elsewhere
+import { Container, Row, Col, Spinner, Alert, Table, Form, Button, Card, ListGroup, InputGroup, Image } from 'react-bootstrap'; // Removed Image import if not used elsewhere
 import Plot from 'react-plotly.js'; // Ensure Plot is imported
 
 // --- Define Available Metrics --- (Existing - Unchanged)
@@ -201,7 +201,7 @@ function Skaters() {
        <h1>Skaters</h1>
 
         {/* --- Scatterplot Section (Using Plotly) --- */}
-        <h2 className="mt-3">Player Fitness Correlations (Max Speed vs Goals)</h2>
+        <h2 className="mt-3">Player Fitness Correlations</h2>
         {loadingScatter ? (
              <div className="text-center my-3"><Spinner animation="border" size="sm" /> Loading correlation plots...</div>
         ) : (
@@ -233,7 +233,7 @@ function Skaters() {
 
        {/* --- GAR Section --- */}
        <h2 className="mt-5">Player Value Above Replacement</h2>
-        <Form className="my-3"> <Form.Group as={Row} controlId="metricSelect"> <Form.Label column sm={3} md={2}> Select GAR Metric: </Form.Label> <Col sm={6} md={4}> <Form.Select value={selectedMetric} onChange={handleMetricChange} disabled={loading || isFetchingPer}> <option value="Points">Points</option> <option value="Goals">Goals</option> <option value="Assists">Assists</option> </Form.Select> </Col> {(loading && !isFetchingPer) && <Col sm={1} className="d-flex align-items-center"><Spinner animation="border" size="sm" /></Col>} </Form.Group> </Form>
+        <Form className="my-3"> <Form.Group as={Row} controlId="metricSelect"> <Form.Label column sm={3} md={2}> Select Metric: </Form.Label> <Col sm={6} md={4}> <Form.Select value={selectedMetric} onChange={handleMetricChange} disabled={loading || isFetchingPer}> <option value="Points">Points</option> <option value="Goals">Goals</option> <option value="Assists">Assists</option> </Form.Select> </Col> {(loading && !isFetchingPer) && <Col sm={1} className="d-flex align-items-center"><Spinner animation="border" size="sm" /></Col>} </Form.Group> </Form>
        {/* Combined Loading / Error Display for subsequent sections */}
        {loading && <div className="text-center mt-5"><Spinner animation="border" style={{ width: '3rem', height: '3rem' }}/><h3>Loading Remaining Data...</h3></div>}
        {isFetchingPer && !loading && <div className="text-center mt-3"><Spinner animation="border" size="sm"/> Updating PER...</div>}
@@ -253,7 +253,7 @@ function Skaters() {
                 </Row>
 
                 {/* --- Dynamic PER Section --- */}
-               <h2 className="mt-5">Player Efficiency Rating (PER) - Dynamic Configuration</h2>
+               <h2 className="mt-5">Player Efficiency Ratings (PER)</h2>
                <Card className="my-4"> {/* ... PER config UI ... */} <Card.Header>Configure PER Calculation</Card.Header> <Card.Body> <Row> <Col md={6}> <h5>Offensive Metrics & Weights</h5> <ListGroup variant="flush" style={{ maxHeight: '400px', overflowY: 'auto' }}> {availableMetrics.map(metric => ( <ListGroup.Item key={`off-${metric}`}> <InputGroup> <InputGroup.Checkbox aria-label={`Select offensive metric ${metric}`} checked={selectedOffensiveMetrics.has(metric)} onChange={(e) => handleCheckboxChange(metric, 'offensive', e.target.checked)} disabled={isFetchingPer || loading} /> <InputGroup.Text className="text-truncate" style={{maxWidth: '150px'}} title={metric}>{metric}</InputGroup.Text> <Form.Control type="number" step="0.01" aria-label={`Weight for offensive metric ${metric}`} value={offensiveWeights[metric] ?? ''} onChange={(e) => handleWeightChange(metric, 'offensive', e.target.value)} disabled={!selectedOffensiveMetrics.has(metric) || isFetchingPer || loading} placeholder="Weight" /> </InputGroup> </ListGroup.Item> ))} </ListGroup> </Col> <Col md={6}> <h5>Defensive Metrics & Weights</h5> <ListGroup variant="flush" style={{ maxHeight: '400px', overflowY: 'auto' }}> {availableMetrics.map(metric => ( <ListGroup.Item key={`def-${metric}`}> <InputGroup> <InputGroup.Checkbox aria-label={`Select defensive metric ${metric}`} checked={selectedDefensiveMetrics.has(metric)} onChange={(e) => handleCheckboxChange(metric, 'defensive', e.target.checked)} disabled={isFetchingPer || loading} /> <InputGroup.Text className="text-truncate" style={{maxWidth: '150px'}} title={metric}>{metric}</InputGroup.Text> <Form.Control type="number" step="0.01" aria-label={`Weight for defensive metric ${metric}`} value={defensiveWeights[metric] ?? ''} onChange={(e) => handleWeightChange(metric, 'defensive', e.target.value)} disabled={!selectedDefensiveMetrics.has(metric) || isFetchingPer || loading} placeholder="Weight" /> </InputGroup> </ListGroup.Item> ))} </ListGroup> </Col> </Row> <Button variant="primary" className="mt-3" onClick={handleUpdatePerClick} disabled={isFetchingPer || loading} > {isFetchingPer ? <><Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" /> Updating...</> : 'Update PER Rankings & Charts'} </Button> </Card.Body> </Card>
                 {perFormula.offensive && ( <Card className="mb-4 bg-light"> <Card.Body> <Card.Title>Current PER Formula</Card.Title> <pre style={{fontSize: '0.9em', whiteSpace: 'pre-wrap', wordBreak: 'break-all'}}> {perFormula.offensive}<br/> {perFormula.defensive}<br/> {perFormula.per} </pre> </Card.Body> </Card> )}
                 {/* PER Charts and Tables - Render only if not fetching PER */}
@@ -266,8 +266,8 @@ function Skaters() {
                          </Row>
                          {/* PER Tables */}
                          <Row className="mt-4">
-                             <Col md={6}> <h3>Top 10 Forwards (PER)</h3> {topPerForwards.length > 0 ? ( <Table striped bordered hover responsive size="sm"><thead><tr><th>#</th><th>Player</th><th>PER</th></tr></thead><tbody>{topPerForwards.slice(0, 10).map((player, index) => (<tr key={player['Shirt number'] || `per-fwd-${index}`}><td>{player['Shirt number']}</td><td>{player['Player']}</td><td>{player.PER !== undefined && player.PER !== null ? player.PER.toFixed(3) : 'N/A'}</td></tr>))}</tbody></Table> ) : ( <Alert variant="info">No forward PER ranking data available for current configuration.</Alert> )} </Col>
-                             <Col md={6}> <h3>Top 10 Defenders (PER)</h3> {topPerDefenders.length > 0 ? ( <Table striped bordered hover responsive size="sm"><thead><tr><th>#</th><th>Player</th><th>PER</th></tr></thead><tbody>{topPerDefenders.slice(0, 10).map((player, index) => (<tr key={player['Shirt number'] || `per-def-${index}`}><td>{player['Shirt number']}</td><td>{player['Player']}</td><td>{player.PER !== undefined && player.PER !== null ? player.PER.toFixed(3) : 'N/A'}</td></tr>))}</tbody></Table> ) : ( <Alert variant="info">No defender PER ranking data available for current configuration.</Alert> )} </Col>
+                             <Col md={6}> <h3>Forwards Ranked by PER</h3> {topPerForwards.length > 0 ? ( <Table striped bordered hover responsive size="sm"><thead><tr><th>#</th><th>Player</th><th>PER</th></tr></thead><tbody>{topPerForwards.slice(0, 10).map((player, index) => (<tr key={player['Shirt number'] || `per-fwd-${index}`}><td>{player['Shirt number']}</td><td>{player['Player']}</td><td>{player.PER !== undefined && player.PER !== null ? player.PER.toFixed(3) : 'N/A'}</td></tr>))}</tbody></Table> ) : ( <Alert variant="info">No forward PER ranking data available for current configuration.</Alert> )} </Col>
+                             <Col md={6}> <h3>Defenders Ranked by PER</h3> {topPerDefenders.length > 0 ? ( <Table striped bordered hover responsive size="sm"><thead><tr><th>#</th><th>Player</th><th>PER</th></tr></thead><tbody>{topPerDefenders.slice(0, 10).map((player, index) => (<tr key={player['Shirt number'] || `per-def-${index}`}><td>{player['Shirt number']}</td><td>{player['Player']}</td><td>{player.PER !== undefined && player.PER !== null ? player.PER.toFixed(3) : 'N/A'}</td></tr>))}</tbody></Table> ) : ( <Alert variant="info">No defender PER ranking data available for current configuration.</Alert> )} </Col>
                          </Row>
                      </>
                  )}
@@ -285,6 +285,18 @@ function Skaters() {
                  ) : !isFetchingCfPercentage ? ( // Check specific loading state here
                      <Alert variant="info" className="mt-3">CF% chart data is currently unavailable.</Alert>
                  ) : null }
+                {/* --- Linear Regression Results --- */}
+                <h2 className="mt-5">Goals Predictions - Linear Regression Results</h2>
+                 <Image
+                         src="/newplot1.png" // Path relative to the public folder
+                         alt="Team Shot Chart"
+                         fluid // Makes the image responsive
+                     />
+                 <Image
+                         src="/newplot2.png" // Path relative to the public folder
+                         alt="Team Shot Chart"
+                         fluid // Makes the image responsive
+                     />
             </>
         )}
 
