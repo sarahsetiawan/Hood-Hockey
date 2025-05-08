@@ -40,10 +40,10 @@ function App() {
                             {isAuthenticated && (<>
                                 <Nav.Link as={Link} to="/games">Games</Nav.Link>
                                 <Nav.Link as={Link} to="/skaters">Skaters</Nav.Link>
-                                <Nav.Link as={Link} to="/goalies">Goalies</Nav.Link>
+                                {/* <Nav.Link as={Link} to="/goalies">Goalies</Nav.Link> */}
                                 <Nav.Link as={Link} to="/lines">Lines</Nav.Link>
                                 <Nav.Link as={Link} to="/upload">Upload</Nav.Link>
-                                <Nav.Link as={Link} to="/drive">Drive</Nav.Link>
+                                {/* <Nav.Link as={Link} to="/drive">Drive</Nav.Link> */}
                             </>)}
                         </Nav>
                         <Nav>
