@@ -34,7 +34,6 @@ The project follows this general directory structure (some files/folders omitted
 ```
 Hood-Hockey/
 |-- LICENSE
-|-- LinearReg.ipynb
 |-- Presentations/
 |   |-- CS475_MidtermPresentation.pdf
 |   |-- CS475_MidtermPresentation.pptx
