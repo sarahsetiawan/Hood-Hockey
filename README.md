@@ -1,110 +1,223 @@
-# Hood Womens Ice Hockey Visualization & Analysis 
+# Hood Women's Ice Hockey Visualization & Analysis (HWIHVA)
+
+**Last Updated:** May 9, 2025
+
+**Team Information:**
+
+* Sarah Setiawan - \[[sarah.setiawan@example.com](mailto:sarah.setiawan@example.com)]
+* Don Ngo - \[[don.ngo@example.com](mailto:don.ngo@example.com)] 
+* Sam Lawrence - \[[sam.lawrence@example.com](mailto:sam.lawrence@example.com)]
+* Jeremias Argueta - \[[jeremias.argueta@example.com](mailto:jeremias.argueta@example.com)]
+
+**Repository URL:**
+
+* [https://github.com/sarahsetiawan/Hood-Hockey.git](https://github.com/sarahsetiawan/Hood-Hockey.git)
 
 ## Description
-<p>Hood Women's Ice Hockey Visualization & Analysis (HWIHVA) will be built as a standalone web application using modern web development
-frameworks. The platform will integrate with the Hood Ice Hockey dataset to provide
-tailored visualizations and predictive analytics for Hood Hockey analytics. By
-addressing the unique needs of this domain, HWIHVA bridges the gap between raw datas
-and actionable insights.</p>
 
-<p>HWIHVA will offer several key features, including dynamic visualizations of Hood Ice
-Hockey data such as player performance trends and heatmaps. Users will be able to interact with visualizations and 
-filter/compare data subsets to gain deeper insights. The application will also include
-predictive analytics tools to forecast player and team performance. The application will keep the data secure, requiring a login. Lastly, be built
-with a user-friendly interface tailored to the needs of coaches, analysts, and organizations.</p>
+Hood Women's Ice Hockey Visualization & Analysis (HWIHVA) is a standalone web application designed to provide tailored visualizations and predictive analytics for Hood College Women’s Ice Hockey. It leverages modern web development frameworks and integrates with a specialized dataset to offer actionable insights.
+
+HWIHVA will offer several key features, including dynamic visualizations of Hood Ice Hockey data such as player performance trends and heatmaps. Users will be able to interact with visualizations and filter/compare data subsets to gain deeper insights. The application will also include predictive analytics tools to forecast player and team performance. The application will keep the data secure, requiring a login. Lastly, it will be built with a user-friendly interface tailored to the needs of coaches, analysts, and organizations.
 
 ## Tech Stack
-- Python: Pandas, SK Learn, Plotly
-- Backend: Django
-- Frontend: React
-- Database: PostgreSQL
 
-## Devoloper Documentation
-To start the app, create a virtual environment 
+* **Python:** Pandas, Scikit-learn (SK Learn), Plotly
+* **Backend:** Django
+* **Frontend:** React (with Vite)
+* **Database:** PostgreSQL
+* **Data Analysis/Exploration:** Jupyter Notebooks
+
+## Directory Structure
+
+The project follows this general directory structure (some files/folders omitted for brevity):
+
 ```
+Hood-Hockey/
+|-- LICENSE
+|-- LinearReg.ipynb
+|-- Presentations/
+|   |-- CS475_MidtermPresentation.pdf
+|   |-- CS475_MidtermPresentation.pptx
+|-- README.md
+|-- capstone/
+|   |-- capstone/
+|   |   |-- __init__.py
+|   |   |-- asgi.py
+|   |   |-- settings.py
+|   |   |-- urls.py
+|   |   |-- wsgi.py
+|   |-- hood_hockey_app/
+|   |   |-- __init__.py
+|   |   |-- admin.py
+|   |   |-- apps.py
+|   |   |-- management/
+|   |   |   |-- commands/
+|   |   |       |-- list_tables.py
+|   |   |-- migrations/
+|   |   |-- models.py
+|   |   |-- populateDB.py
+|   |   |-- serializers.py
+|   |   |-- tests.py
+|   |   |-- urls.py
+|   |   |-- views.py
+|   |-- manage.py
+|   |-- media/
+|   |-- run_tests.bat
+|   |-- server_log.txt
+|-- frontend/
+|   |-- README.md
+|   |-- eslint.config.js
+|   |-- index.html
+|   |-- package-lock.json
+|   |-- package.json
+|   |-- public/
+|   |-- src/
+|   |   |-- App.jsx
+|   |   |-- api.js
+|   |   |-- components/
+|   |   |-- constants.js
+|   |   |-- context/
+|   |   |-- main.jsx
+|   |   |-- pages/
+|   |   |-- styles/
+|   |-- vite.config.js
+|-- notebooks/
+|   |-- DataAnalysis/
+|   |-- DataCleaning/
+|   |-- DataExploration/
+|-- package-lock.json
+|-- package.json
+|-- requirements.txt
+```
+
+## Developer Documentation
+
+### 1. Prerequisites
+
+Before you begin, ensure you have the following installed on your system:
+
+* Python >= 3.8
+* pip
+* Node.js (LTS)
+* npm
+* PostgreSQL
+* Git
+
+### 2. Clone the Repository
+
+```bash
+git clone https://github.com/sarahsetiawan/Hood-Hockey.git
+cd Hood-Hockey
+```
+
+### 3. Backend Setup (Django)
+
+```bash
+cd capstone
 python -m venv env
+# On Windows:
+env\Scripts\activate
+# On macOS/Linux:
+source env/bin/activate
+pip install -r ../requirements.txt
 ```
-Activate the virtual environment
+
+Update `capstone/settings.py` with your PostgreSQL credentials:
+
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'your_hwihva_db_name',
+        'USER': 'your_postgres_user',
+        'PASSWORD': 'your_postgres_password',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 ```
-env\scripts\activate
+
+Apply migrations and create a superuser:
+
+```bash
+python manage.py migrate
+python manage.py createsuperuser
 ```
-To run the backend, run
+
+To populate the database (if using `populateDB.py`):
+
+```bash
+python hood_hockey_app/populateDB.py
 ```
+
+### 4. Frontend Setup (React)
+
+```bash
+cd ../frontend
+npm install
+```
+
+### 5. Running the Application
+
+Backend:
+
+```bash
+cd capstone
+source env/bin/activate
 python manage.py runserver
 ```
-To run the frontend, split your terminal and run
-```
+
+Frontend:
+
+```bash
+cd frontend
 npm run dev
 ```
-Click on the link that comes up in the terminal running the frontend 
+
+### 6. Running Tests
+
+Backend:
+
+```bash
+python manage.py test hood_hockey_app
+```
+
+Windows (optional):
+
+```bash
+run_tests.bat
+```
+
+Frontend:
+
+```bash
+npm test
+```
 
 ## User Documentation
 
-**1. Introduction**
+### 1. Introduction
 
-*   **Who is this guide for?**
-    *   Coaches
-    *   Team Analysts
-    *   Hood Womens Ice Hockey Players 
-    *   Individuals interested in Hood Womens Ice Hockey
+This guide is intended for coaches, team analysts, Hood Women’s Ice Hockey players, and anyone interested in exploring performance analytics for the team.
 
-**2. Getting Started**
+### 2. Getting Started
 
-*   **Logging In**
-    *   You will be presented with a login screen.
-    *   Enter your **Username** and **Password**.
-    *   Click the "Login" or "Sign In" button.
+Upon launching the application, users are presented with a login screen. After entering a valid username and password, users are directed to the main dashboard. This page provides a summary of key metrics and links to different sections of the application.
 
-*   **Dashboard Overview**
-    Once logged in, you will typically land on the main dashboard. This area provides:
-    *   A high-level overview of key metrics or recent data.
-    *   Main navigation links to access different sections of the application.
+### 3. Core Features
 
-**3. Core Features**
+**Dynamic Visualizations**
+Users can explore charts and graphs that reveal trends and insights within player and team data. These charts support interactions like hovering to display tooltips, clicking to isolate data segments, and zooming/panning on supported views. Visualization types include line charts for player trends, bar/radar charts for team comparisons, and charts illustrating possession metrics such as Corsi.
 
-*   **Dynamic Visualizations**
-    HWIHVA provides various interactive charts and graphs to help you understand performance patterns and trends.
+**Filtering and Comparison**
+Users can refine views using filters for player selection, game type (regular season, playoffs, etc.), and game situations (power play, even strength, etc.). Multiple filters may be applied to enable side-by-side comparisons within visualizations.
 
-    *   **Accessing Visualizations:** Use the main navigation bar to find the specific datasets you want to visualize.
-    *   **Interacting with Charts:**
-        *   **Hover:** Move your mouse cursor over data points (like bars, lines, or dots) on a chart to see specific values or details in a tooltip.
-        *   **Click:** Click on elements (like legend items) to highlight or filter data directly within the chart. 
-        *   **Zoom/Pan:** Some charts (especially time-series or heatmaps) may allow you to zoom in on specific areas or pan across the view for closer inspection. Look for zoom icons or use mouse scroll/drag actions if enabled.
-    *   **Available Visualization Types (Examples):**
-        *   **Player Performance Trends:** Line charts showing individual player stats (goals, assists, shots, etc.) over time (games or seasons).
-        *   **Team Stat Comparisons:** Bar charts or radar charts comparing team performance metrics across different games, seasons, or against opponents.
-        *   **Possession Metrics:** Charts visualizing Corsi, or other relevant possession statistics.
+**Predictive Analytics**
+Users may engage with forecast tools to predict stats like goal scoring and win probabilities. These predictions come with confidence intervals and probability indicators derived from historical data. While useful, such forecasts are statistical in nature and should complement, not replace, coaching strategies.
 
-*   **Filtering and Comparing Data**
-    Refine your analysis by focusing on specific segments of the data.
+**Navigation**
+Users can move through different sections via the main navigation bar and interact with standard UI elements such as buttons, dropdowns, and forms.
 
-    *   **Using Filter Controls:** Look for filter panels or dropdown menus, typically located near the visualizations or in a dedicated sidebar. Common filters include:
-        *   **Player:** Choose specific players to analyze.
-        *   **Game Type:** Filter by Regular Season, Playoffs, Exhibition, etc.
-        *   **Game Situation:** Analyze data for Even Strength, Power Play, Penalty Kill, etc.
+### 4. Data Security
 
-    *   **Comparing Players, Seasons, or Games:**
-        *   Use the filter controls to select multiple items you want to compare (e.g., select two players in the Player filter).
-        *   The visualizations will often update automatically to show side-by-side comparisons or overlapping data series for the selected items.
-
-*   **Predictive Analytics**
-    Leverage historical data to generate forecasts for future performance. Some sections have predictive analyses along with visualizations.
-    
-    *   **Understanding Forecasts:**
-        *   Select the parameters for your prediction
-        *   The application will display the predicted outcomes, often accompanied by confidence intervals or probability scores. These indicate the model's certainty level.
-        *   Predictions might cover areas like: potential goal scoring, points projection, or team win probability based on certain factors.
-    *   **Important Considerations:**
-        *   Predictive models are based on **historical data and statistical algorithms**. They identify patterns but **cannot guarantee future results**.
-        *   Performance can be influenced by numerous factors not always captured in the data (e.g., injuries, team chemistry changes, opponent adjustments).
-        *   Use predictions as an **additional tool** to inform strategy and expectations, not as definitive outcomes.
-
-*   **Navigating the Application**
-    *   Use the main navigation bar at the top of the screen to move between major sections.
-    *   Look for standard web interface elements like buttons, links, dropdown menus, and forms to interact with the application.
-
-**4. Data Security**
-
-*   **Login Required:** Access to HWIHVA is strictly controlled via unique user accounts and passwords.
-*   **Confidentiality:** The data contained within HWIHVA is considered sensitive and proprietary to the Hood Women's Ice Hockey program. Do not share data or screenshots outside of authorized personnel.
-*   **Secure Platform:** The application is built with security considerations in mind to protect data integrity and prevent unauthorized access.
+HWIHVA uses a secure login system to protect access. All data is considered confidential and should not be shared beyond authorized users. The system is built with safeguards to ensure data integrity and security.
