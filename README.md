@@ -4,10 +4,10 @@
 
 **Team Information:**
 
-* Sarah Setiawan - \[[sarah.setiawan@example.com](mailto:sarah.setiawan@example.com)]
-* Don Ngo - \[[don.ngo@example.com](mailto:don.ngo@example.com)] 
-* Sam Lawrence - \[[sam.lawrence@example.com](mailto:sam.lawrence@example.com)]
-* Jeremias Argueta - \[[jeremias.argueta@example.com](mailto:jeremias.argueta@example.com)]
+* Sarah Setiawan - \[[sarah.setiawan@example.com](mailto:sss13@hood.edu)]
+* Don Ngo - \[[don.ngo@example.com](mailto:dtn1@hood.edu)] 
+* Sam Lawrence - \[[sam.lawrence@example.com](mailto:sl26@hood.edu)]
+* Jeremias Argueta - \[[jeremias.argueta@example.com](mailto:ja16@hood.edu)]
 
 **Repository URL:**
 
